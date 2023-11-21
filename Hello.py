@@ -26,11 +26,11 @@ def run():
 
     st.write("# Demo GUI")
 
-    st.sidebar.header("Select above.")
+    st.sidebar.header("Select a tool above.")
 
     st.markdown(
         """
-        ### This app is a project by out team in HCMUT.
+        ### This app is a project by my team at HCMUT.
         **👈 Select from the sidebar** to choose a tool
         ### Check out source code in [github](https://github.com/hvghieuvo/beam-analysis-python)
     """
