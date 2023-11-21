@@ -27,7 +27,7 @@ def run():
     st.write("# Demo GUI")
 
     st.sidebar.header("Select a tool above.")
-
+    st.markdown("---")
     st.markdown(
         """
         ### This app is a project by my team at HCMUT.
@@ -36,7 +36,7 @@ def run():
         ### Check out source code in [github](https://github.com/hvghieuvo/beam-analysis-python)
     """
     )
-
+    st.markdown("---")
 
 if __name__ == "__main__":
     run()
