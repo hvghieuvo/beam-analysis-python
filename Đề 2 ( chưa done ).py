@@ -1,80 +1,110 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import plotly.graph_objs as go
-import sympy as sp
-P1 = float(input('Nhap luc cat P1 ='))
-P2 = float(input('Nhap luc cat P2 ='))
-P3 = float(input('Nhap luc cat P3 ='))
-P4 = float(input('Nhap luc doc truc P4 ='))
-q1 = float(input('Nhap luc phan bo deu q1 ='))
-q2 = float(input('Nhap luc phan bo deu q2 ='))
-q3 = float(input('Nhap luc phan bo deu q3 ='))
-M1 = float(input('Nhap moment tap trung M1 = '))
-M2 = float(input('Nhap moment tap trung M2 = '))
-M3 = float(input('Nhap moment tap trung M3 = '))
-AB = float(input('Nhap chieu dai doan AB = '))
-BC = float(input('Nhap chieu dai doan BC = '))
-CD = float(input('Nhap chieu dai doan CD = '))
+import pandas as pd
+import math
+print('Từ kết quả của bài tính toán trên, hãy nhập những dữ liệu sau để thực hiện bài toán tính bền cho mặt cắt thanh dầm')
+Mmax = float(input('Hãy nhập giá trị moment uốn lớn nhất trên thanh:'))
+Qmax = float(input('Hãy nhập giá trị lực cắt lớn nhất trên thanh:'))
+Qy = float(input('Hãy nhập giá trị lực cắt tại vị trí có moment lớn nhất:'))
+sigma = float(input('Hãy nhập ứng suất cho phép (giới hạn bền):'))
+loaimatcat = str(input('Hãy nhập loại mặt cắt:'))
+if loaimatcat == 'hình chữ nhật':
+    x,y = map(float,input('Hãy nhập kích thước dài x rộng:').split())
+    print('Kích thước của hình chữ nhật:',x,y)
+    thuyetben = input('Chọn thuyết bền muốn sử dụng cho bài toán (Von Mises hoặc Tresca):')
+    if thuyetben == 'Von Mises':
+        tau = sigma/math.sqrt(3)
+    else:
+        tau = sigma/2
+    def hinhchunhat(x, y, Mmax, Qmax):
+        Sx = x*y*(y/2)
+        Sy = x*y*(x/2)
+        Jx = (x*(y**3))/12
+        Jy = (y*(x**3))/12
+        Wx = (x*(y**2))/6
+        Wy = (y*(x**2))/6
+        print('Moment tĩnh Sx có giá trị là:', Sx)
+        print('Moment tĩnh Sy có giá trị là:', Sy)
+        print('Moment quán tính Jx có giá trị là:', Jx)
+        print('Moment quán tính Jy có giá trị là:', Jy)
+        print('Moment chống uốn Wx có giá trị là:', Wx)
+        print('Moment chống uốn Wy có giá trị là:', Wy)
+        print('Xét lớp biên, ta có:')
+        sigmamax = (abs(Mmax)) / Wx
+        print('Ứng suất pháp lớn nhất trên mặt cắt là:', sigmamax)
+        if sigmamax <= sigma:
+            print('Lớp biên thỏa bền')
+        else:
+            print('Lớp biên không thỏa bền')
+        print('Xét lớp trung hòa, ta có:')
+        taumax = (3*Qmax)/(2*x*y)
+        print('Ứng suất tiếp lớn nhất trên mặt cắt là:', taumax)
+        if taumax <= tau:
+            print('Lớp trung hòa thỏa bền')
+        else:
+            print('Lớp trung hòa không thỏa bền')
+        return Sx, Sy, Jx, Jy, Wx, Wy, sigmamax, taumax
+    hinhchunhat(x, y, Mmax, Qmax)
+elif loaimatcat == 'hình tròn':
+    R = float(input('Hãy nhập vào bán kính hình tròn:'))
+    print('Hình tròn có bán kính:',R)
+    thuyetben = input('Chọn thuyết bền muốn sử dụng cho bài toán (Von Mises hoặc Tresca):')
+    if thuyetben == 'Von Mises':
+        tau = sigma/math.sqrt(3)
+    else:
+        tau = sigma/2
+    def hinhtron(Mmax, Qmax, R):
+        Jx = (3.14 * R ** 4) / 4
+        Wx = (3.14 * R ** 3) / 4
+        print('Moment quán tính Jx = Jy có giá trị là:', Jx)
+        print('Moment chống uốn Wx = Wy có giá trị là:', Wx)
+        print('Xét lớp biên, ta có:')
+        sigmamax = (abs(Mmax)) / Wx
+        print('Ứng suất pháp lớn nhất trên mặt cắt là:', sigmamax)
+        if sigmamax <= sigma:
+            print('Lớp biên thỏa bền')
+        else:
+            print('Lớp biên không thỏa bền')
+        print('Xét lớp trung hòa, ta có:')
+        taumax = (4 * Qmax) / (3 * 3.14 * R ** 2)
+        print('Ứng suất tiếp lớn nhất trên mặt cắt là:', taumax)
+        if taumax <= tau:
+            print('Lớp trung hòa thỏa bền')
+        else:
+            print('Lớp trung hòa không thỏa bền')
+        return Jx, Wx, sigmamax, taumax
+    hinhtron(Mmax, Qmax, R)
+elif loaimatcat == 'hình vành khăn':
+    r1,r2 = map(float,input('Hãy nhập lần lượt kích thước bán kính trong và bán kính ngoài:').split())
+    print('Hình vành khăn có kích thước:',r1,r2)
+    thuyetben = input('Chọn thuyết bền muốn sử dụng cho bài toán (Von Mises hoặc Tresca):')
+    if thuyetben == 'Von Mises':
+        tau = sigma / math.sqrt(3)
+    else:
+        tau = sigma / 2
+    def hinhvanhkhan(Mmax, Qmax, r1, r2):
+        Jx = (3.14 * r2 ** 4) / 4 - (3.14 * r1 ** 4) / 4
+        a = r1 / r2
+        Wx = (3.14 * r2 ** 3) / 4 * (1 - a ** 4)
+        print('Moment quán tính Jx = Jy có giá trị là:', Jx)
+        print('Moment chống uốn Wx = Wy có giá trị là:', Wx)
+        print('Xét lớp biên, ta có:')
+        sigmamax = (abs(Mmax)) / Wx
+        print('Ứng suất pháp lớn nhất trên mặt cắt là:', sigmamax)
+        if sigmamax <= sigma:
+            print('Lớp biên thỏa bền')
+        else:
+            print('Lớp biên không thỏa bền')
+        print('Xét lớp trung hòa, ta có:')
+        taumax = (4*Qmax)/(3*3.14*(r2**2-r1**2))
+        print('Ứng suất tiếp lớn nhất trên mặt cắt là:', taumax)
+        if taumax <= tau:
+            print('Lớp trung hòa thỏa bền')
+        else:
+            print('Lớp trung hòa không thỏa bền')
+        return Jx, Wx, sigmamax, taumax
+    hinhvanhkhan(Mmax, Qmax, r1, r2)
+elif loaimatcat == 'hình I':
+    I = input('Hãy nhập số hiệu mặt cắt I:')
+    print('Mã số hiệu mặt cắt I:',I)
 
-print('Quy Ước Chiều (+) từ dưới lên trên, từ trái sang phải, CCW')
-
-#P2 mac dinh huong ra ngoai
 
 
-def console():
-    AD=AB+BC+CD
-    Q1 = q1*AB
-    Q2 = q2*BC
-    Q3 = q3*CD
-    Py_total = P1+P2+P3
-    Qy_total = Q1+Q2+Q3
-    M_total = M1+M2+M3
-
-    #CAL REACTIONS:
-    # P4 duong (trai->phai)
-    Ax = -P4 #Ax am (phai->trai)/ Ax duong(trai->phai)
-    print('Ax =', Ax)
-    Ay = -Qy_total - Py_total #Duong huong len / Am huong xuong
-    print('Ay = ', Ay)
-
-    #CAL MOMENT:
-    Ma = -( (Q1*AB/2)+(P1*AB)+(Q2*(AB+BC/2))+P2*(AB+BC)+Q3*(AB+BC+CD/2)+(P3*AD)+M1+M2+M3 )
-    MD = M3
-    MC = M3+P3*CD+Q3*CD/2+M2
-    MB = M3+P3*(BC+CD)+Q3*(BC+CD/2)+P2*BC+Q2*BC/2+M1
-    MA = M3+P3*AD+Q3*(AB+BC+CD/2)+M2+P2*(AB+BC)+Q2*(AB+BC/2)+M1+P1*AB+Q1*AB/2+Ma
-
-    #CREATE A QUADRATIC EQUATION ACCORDING M AND L
-    L1 = np.linspace(0,AB,1000)
-    Mx1 = q1/2*(L1**2) +Ay*L1 -Ma
-    L2 = np.linspace(AB,AB+BC,1000)
-    Mx2 = q2/2*(L2**2) +(Ay+P1+Q1)*L2 + Q1*AB/2 +Ay*AB -Ma-M1
-    L3 = np.linspace(AB+BC,AD,1000)
-    Mx3 = q3/2*(L3**2) + (Q1+Q2+Ay+P1+P2)*L3 + (Q2/2 +Q1+Ay+P1)*BC + (Q1/2 +Ay)*AB -M1-M2-Ma
-
-
-    #PLOT AXIAL FORCES NZ:
-    plt.subplot(3, 1, 1)
-    plt.plot([0, 0, AD, AD, 0], [0, P4, P4, 0, 0])
-    plt.title('Axial Forces')
-    distance = np.arange(0, AD, 0.01)
-    plt.fill_between(distance,P4,color='red', alpha=0.5, hatch='//')
-
-    #PLOT SHEAR FORCES QY:
-    plt.subplot(3, 1, 2)
-    plt.plot([0, 0, AB, AB, AB + BC, AB + BC, AD, AD, 0],
-             [0, Ay, Ay + Q1, Ay + Q1 + P1, Ay + Q1 + P1 + Q2, Ay + Q1 + P1 + Q2 + P2, Ay + Q1 + P1 + Q2 + P2 + Q3,
-              Ay + Q1 + P1 + Q2 + P2 + Q3 + P3, 0])
-    plt.xlim([-.1, AD + .1])
-    plt.title('Shear Forces')
-
-    #PLOT BENDING MOMENT MZ:
-    plt.subplot(3,1,3)
-    plt.plot(L1, Mx1)
-    plt.plot(L2, Mx2)
-    plt.plot(L3, Mx3)
-    plt.xlim([-.1, AD + .1])
-    plt.title('Bending Moment')
-    plt.show()
-    
-console()
