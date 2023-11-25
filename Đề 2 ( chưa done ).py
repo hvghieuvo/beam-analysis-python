@@ -76,4 +76,5 @@ def console():
     plt.xlim([-.1, AD + .1])
     plt.title('Bending Moment')
     plt.show()
+    
 console()

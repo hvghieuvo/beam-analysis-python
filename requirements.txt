@@ -3,3 +3,4 @@ numpy
 pandas
 pydeck
 streamlit
+kaleido==0.1.0post1
