@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import plotly.graph_objs as go
 import sympy as sp
+
 P1 = float(input('Nhap luc cat P1 ='))
 P2 = float(input('Nhap luc cat P2 ='))
 P3 = float(input('Nhap luc cat P3 ='))
