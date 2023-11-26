@@ -107,7 +107,7 @@ elif loaimatcat == 'hình vành khăn':
         return Jx, Wx, sigmamax, taumax
     hinhvanhkhan(Mmax, Qmax, r1, r2)
 elif loaimatcat == 'hình I':
-    I = int(input('Hãy nhập số hiệu mặt cắt I:'))
+    I = input('Hãy nhập số hiệu mặt cắt I:')
     print('Mã số hiệu mặt cắt I:',I)
     # Tên cột cần chọn dữ liệu
     column_name = "N0"  # Thay bằng tên cột cần chọn
