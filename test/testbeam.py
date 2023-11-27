@@ -54,7 +54,9 @@ fig_1 = beam.plot_beam_external()
 fig_2 = beam.plot_beam_internal()
 
 #Save result as png file
-# fig_1.write_image("./images/fig1.png",format='png',engine='kaleido')
+fig_1.write_image("./images/fig1.png",format='png',engine='kaleido')
+fig_2.write_image("./images/fig2.png",format='png',engine='kaleido')
+
 # fig_2.write_image("./example_internal.png")
 
 #========== End step 4 

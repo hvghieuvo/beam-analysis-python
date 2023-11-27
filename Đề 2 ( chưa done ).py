@@ -1,5 +1,6 @@
 import pandas as pd
 import math
+import openpyxl
 
 hinhI = pd.read_excel('chu_I.xlsx',dtype=dict)
 hinhC = pd.read_excel('chu_C.xlsx',dtype=dict)
