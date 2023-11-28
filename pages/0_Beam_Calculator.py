@@ -10,6 +10,6 @@ st.sidebar.header('Đề 1')
 
 st.title('Tính toán dầm')
 option = st.selectbox(
-    'Hãy chọn loại dầm cần tính', 
+    st.write('Hãy chọn loại dầm cần tính'), 
     ('Dầm console','Dầm 2 gối'))
 st.write('Lựa chọn là: ', option)
