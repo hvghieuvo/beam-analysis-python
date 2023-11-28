@@ -18,5 +18,22 @@ def app():
         "nav-link-selected": {"background-color": "blue"},
     })
     selected
+
+    length = st.slider('Chiều dài của dầm?', 0,100)
     
+
+    if selected == "Lý thuyết":
+        st.write('hehehe')
+
+    if selected == "Nhập thông số đầu vào":
+        col1, col2 = st.columns([1,2])
+        with col1:
+            st.subheader('Chọn loại dầm')
+            dam_console = st.checkbox('Dầm console')
+            if dam_console:
+                st.write('Nhập chiều dài: ', length)
+            dam_2goi = st.checkbox('Dầm 2 gối')
+            if dam_2goi
+
+
         
