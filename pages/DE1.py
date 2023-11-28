@@ -16,13 +16,5 @@ def app():
         "nav-link-selected": {"background-color": "blue"},
     })
     selected
-    
-option = st.selectbox(
-    'Hãy chọn loại dầm cần tính', 
-    ('Dầm console','Dầm 2 gối'))
-st.write('Lựa chọn là: ', option)
-
-
-selected = option_menu(None, ["Lý thuyết", "Nhập thông số đầu vào","Kết quả"]
-                       
-)
+    if selected == "Lý thuyết":
+        
