@@ -33,7 +33,4 @@ def app():
             if dam_console:
                 st.write('Nhập chiều dài: ', length)
             dam_2goi = st.checkbox('Dầm 2 gối')
-            if dam_2goi
-
-
-        
+            if dam_2goi:
