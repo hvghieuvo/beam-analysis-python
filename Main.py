@@ -14,30 +14,15 @@
 
 import streamlit as st
 from streamlit.logger import get_logger
+from streamlit_option_menu import option_menu
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+from PIL import Image
 
-LOGGER = get_logger(__name__)
-
-
-def run():
-    st.set_page_config(
-        page_title="Beam sus",
-        page_icon="🙂",
-    )
-
-    st.write("# Demo GUI")
-
-    st.sidebar.header("Select a tool above.")
-    st.markdown("---")
-    st.markdown(
-        """
-        ### This app is a project by my team at HCMUT.
-        ### STILL UNDER CONSTRUCTION!!!
-        **👈 Select from the sidebar** to choose a tool
-        ### Check out source code in [github](https://github.com/hvghieuvo/beam-analysis-python)
-    """
-    )
-    st.markdown("---")
-
-if __name__ == "__main__":
-    run()
-
+st.set_page_config(
+    page_title="Cơ học vật rắn biến dạng",
+    layout='wide',
+    initial_sidebar_state='auto'
+)
+st.sidebar.image('bku.png')
