@@ -25,3 +25,12 @@ st.set_page_config(
     layout='wide',
     initial_sidebar_state='auto'
 )
+with st.sidebar:
+    selected = option_menu(
+        None
+        options = ['Đề 1', 'Đề 2']
+    )
+if selected == 'Đề 1':
+    st.write(f'Hãy làm đề 1 nào {selected}')
+if selected == 'Đề 2':
+    st.write(f'Hãy làm đề 2 nào {selected}')
