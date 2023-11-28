@@ -18,18 +18,10 @@ from streamlit_option_menu import option_menu
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+from streamlit_lottie import st_lottie
 
 st.set_page_config(
     page_title="Cơ học vật rắn biến dạng",
     layout='wide',
     initial_sidebar_state='auto'
 )
-with st.sidebar:
-    selected = option_menu(
-        menu_title='Tổng quan',
-        options = ['Đề 1', 'Đề 2']
-    )
-if selected == 'Đề 1':
-    st.write(f'Hãy làm đề 1 nào {selected}')
-if selected == 'Đề 2':
-    st.write(f'Hãy làm đề 2 nào {selected}')
