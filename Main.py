@@ -14,22 +14,28 @@
 
 import streamlit as st
 from streamlit.logger import get_logger
-import matplotlib.pyplot as plt
-import pandas as pd
-import numpy as np
+
+LOGGER = get_logger(__name__)
 
 
-st.set_page_config(
-    page_title="Cơ học vật rắn biến dạng",
-    layout='wide',
-    initial_sidebar_state='auto'
-)
-st.markdown('---')
+def run():
+    st.set_page_config(
+        page_title="Beam sus",
+        page_icon="🙂",
+    )
 
-st.title('Cơ học vật rắn biến dạng')
-data = {
-    'Tên': ['Lê Thành', 'Huỳnh Thạch Thảo', 'Hoàng Quốc Thái', 'Võ Trung Hiếu', 'Vũ Hoàng Khả Vy'],
-    'MSSV': ['2153800', '2153805','2153788','2153994','2153994']
-}
-df = pd.DataFrame(data)
-st.table(df)
+    st.write("# Demo GUI")
+
+    st.sidebar.header("Select a tool above.")
+    st.markdown("---")
+    st.markdown(
+        """
+        ### This app is a project by my team at HCMUT.
+        ### STILL UNDER CONSTRUCTION!!!
+        **👈 Select from the sidebar** to choose a tool
+        ### Check out source code in [github](https://github.com/hvghieuvo/beam-analysis-python)
+    """
+    )
+    st.markdown("---")
+if __name__ == "__main__":
+    run()
