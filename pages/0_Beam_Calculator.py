@@ -18,3 +18,7 @@ def app():
         "nav-link-selected": {"background-color": "blue"},
     })
     selected
+    if selected == "Lý thuyết":
+        st.write('hehehe')
+
+        
