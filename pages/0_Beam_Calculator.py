@@ -2,7 +2,7 @@ from typing import Any
 import numpy as np
 import streamlit as st
 from streamlit.hello.utils import show_code
-from streamlit_option_menu ipmort option_menu 
+from streamlit_option_menu import option_menu 
 
 st.set_page_config(page_title='Đề 1',layout='wide')
 st.markdown("---")
