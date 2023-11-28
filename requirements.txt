@@ -3,9 +3,9 @@ numpy
 pandas
 pydeck
 streamlit
-kaleido==0.1.0post1
+kaleido==0.1.*
 openpyxl
 indeterminatebeam
 sympy
 matplotlib
-pyss
+sectionproperties
