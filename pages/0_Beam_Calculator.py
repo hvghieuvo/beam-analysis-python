@@ -3,25 +3,14 @@ import numpy as np
 import streamlit as st
 from streamlit.hello.utils import show_code
 
-
-st.header("Beam Calculator")
-
-st.set_page_config(page_title="Beam Calculator", page_icon="🙃")
-st.markdown("# Beam Calculator")
-st.sidebar.header("Beam Calculator Tool")
-st.markdown("---")
-st.write(
-    """
-    ### STILL UNDER CONSTRUCTION!!!
-    This tool is use to calculate and plot the internal force, shear force and bending moment diagram.
-    """
-)
+st.set_page_config(page_title='Đề 1',layout='wide')
 st.markdown("---")
 
+st.sidebar.header('Đề 1')
 
 def app():
-    st.title("Beam Calculator")
-
+    st.title('Tính toán dầm')
     option = st.selectbox(
-    'Bạn muốn chọn loại dầm nào',
-    ('Dầm console', 'Dầm 2 gối'))
+        'Hãy chọn loại dầm cần tính', 
+        ('Dầm console','Dầm 2 gối'))
+    st.write('Lựa chọn là: ', option)
