@@ -20,12 +20,11 @@ with tab2:
         select = st.selectbox('Hãy chọn loại dầm',
         ('Dầm console', 'Dầm 2 gối'))
         if select == 'Dầm console':
-            # dằm có 3 đoạn chia làm AB, BC, CD
-            length1, length2, length3 = st.slider("Choose lengths for each segment:", 0.0, 100.0, (33.3, 33.3, 33.3))
+            AB = st.number_input('Chiều dài đoạn AB')
+            BC = st.number_input('Chiều dài đoạn BC')
+            CD = st.number_input('Chiều dài đoạn CD')
 
-            # Hiển thị thanh dầm liên tục
-            st.progress([length1, length2, length3])
-
+           
 def app():
     st.title('Tính toán dầm')
     selected = option_menu(None, ["Lý thuyết", "Input"],
