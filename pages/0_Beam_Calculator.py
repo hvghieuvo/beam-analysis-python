@@ -23,6 +23,7 @@ with tab2:
             AB = st.number_input('Chiều dài đoạn AB')
             BC = st.number_input('Chiều dài đoạn BC')
             CD = st.number_input('Chiều dài đoạn CD')
+            AD = AB+BC+CD
 
            
 def app():
