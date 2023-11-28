@@ -4,7 +4,7 @@ import streamlit as st
 from streamlit.hello.utils import show_code
 from streamlit_option_menu import option_menu 
 from st_functions import st_button, load_css
-
+from PIL import Image
 
 st.set_page_config(page_title="Beam Calculator", page_icon="🙃")
 st.markdown("# Beam Calculator")
