@@ -25,10 +25,12 @@ st.set_page_config(
     layout='wide',
     initial_sidebar_state='auto'
 )
+st.markdown('---')
+
 st.title('Cơ học vật rắn biến dạng')
 data = {
     'Tên': ['Lê Thành', 'Huỳnh Thạch Thảo', 'Hoàng Quốc Thái', 'Võ Trung Hiếu', 'Vũ Hoàng Khả Vy'],
-    'MSSV': ['2153800', '2153805','2153788','','2153994']
+    'MSSV': ['2153800', '2153805','2153788','215','2153994']
 }
 df = pd.DataFrame(data)
 st.table(df)
