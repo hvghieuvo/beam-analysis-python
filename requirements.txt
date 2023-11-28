@@ -8,3 +8,4 @@ openpyxl
 indeterminatebeam
 sympy
 matplotlib
+pyss
