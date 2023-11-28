@@ -9,3 +9,4 @@ indeterminatebeam
 sympy
 matplotlib
 sectionproperties
+streamlit-option-menu
