@@ -5,16 +5,24 @@ from streamlit.hello.utils import show_code
 from streamlit_option_menu import option_menu 
 
 st.set_page_config(page_title='Đề 1',layout='wide')
-st.markdown("---")
 
-st.sidebar.header('Đề 1')
-
-st.title('Tính toán dầm')
+def app():
+    st.title('Tính toán dầm')
+    selected = option_menu(None, ["Lý thuyết", "Nhập thông số đầu vào","Kết quả"],
+    default_index=0, orientation="horizontal",styles={
+        "container": {"padding": "0!important", "background-color": "#fafafa"},
+        "icon": {"color": "orange", "font-size": "20px"}, 
+        "nav-link": {"font-size": "16px", "text-align": "left", "margin":"0px", "--hover-color": "#eee"},
+        "nav-link-selected": {"background-color": "blue"},
+    })
+    selected
+    
 option = st.selectbox(
     'Hãy chọn loại dầm cần tính', 
     ('Dầm console','Dầm 2 gối'))
 st.write('Lựa chọn là: ', option)
 
-selected = option_menu(None,
-    options=["Lý thuyết", "Nhập thông số đầu vào","Kết quả"]
+
+selected = option_menu(None, ["Lý thuyết", "Nhập thông số đầu vào","Kết quả"]
+                       
 )
