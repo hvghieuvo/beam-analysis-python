@@ -15,6 +15,6 @@ option = st.selectbox(
     ('Dầm console','Dầm 2 gối'))
 st.write('Lựa chọn là: ', option)
 
-selected = option_menu(
+selected = option_menu(None,
     options=["Lý thuyết", "Nhập thông số đầu vào","Kết quả"]
 )
