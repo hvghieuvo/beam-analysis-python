@@ -20,17 +20,13 @@ with tab2:
         select = st.selectbox('Hãy chọn loại dầm',
         ('Dầm console', 'Dầm 2 gối'))
         if select == 'Dầm console':
-            x = st.slider('Chọn chiều dài của dầm từ 0 - 100?', min_value=0, max_value=100, step=0)
-            length_1 = st.write('Chiều dài của dầm là: ', x)
-            a = st.selectbox('Số lực muốn chọn cho dằm', ('2'), ('3'))
-            if a == '2':
-                luc_1 = st.slider('Vị trí dặt lực 1?', 0,100)
-                luc_2 = st.slider('Vị trí dặt lực 2?', 0,100)
-            else:
-                luc_1 = st.slider('Vị trí dặt lực 1?', 0,100)
-                luc_2 = st.slider('Vị trí dặt lực 2?', 0,100)
-                luc_3 = st.slider('Vị trí dặt lực 3?', 0,100)
-
+            # dằm có 3 đoạn chia làm AB, BC, CD
+            AB=st.slider('AB: ', 0, 100, 33) 
+            BC=st.slider('BC: ', 0, 100 - AB, 33)
+            CD=st.slider('CD: ', 0, 100 - AB - BC, 33)
+            st.progress(AB)
+            st.progress(BC)
+            st.progress(CD)
 
 def app():
     st.title('Tính toán dầm')
