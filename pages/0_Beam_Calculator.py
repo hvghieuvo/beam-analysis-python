@@ -24,9 +24,20 @@ with tab2:
             AB=st.slider('AB: ', 0, 100, 33) 
             BC=st.slider('BC: ', 0, 100 - AB, 33)
             CD=st.slider('CD: ', 0, 100 - AB - BC, 33)
-            st.progress(AB)
-            st.progress(BC)
-            st.progress(CD)
+            st.markdown(
+    f"""
+    <style>
+        .stProgress > div:nth-child(1) {{
+            border-radius: 5px 0 0 5px;
+        }}
+        .stProgress > div:nth-child(3) {{
+            border-radius: 0 5px 5px 0;
+        }}
+    </style>
+    """
+)
+
+            st.progress([AB, BC, CD])
 
 def app():
     st.title('Tính toán dầm')
