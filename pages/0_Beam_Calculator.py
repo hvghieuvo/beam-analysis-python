@@ -3,8 +3,6 @@ import numpy as np
 import streamlit as st
 from streamlit.hello.utils import show_code
 from streamlit_option_menu import option_menu 
-from st_functions import st_button, load_css
-from PIL import Image
 
 st.set_page_config(page_title="Beam Calculator", page_icon="🙃")
 st.markdown("# Beam Calculator")
@@ -14,7 +12,7 @@ tab1, tab2 = st.tabs(["Lý thuyết", "Input"])
 with tab1:
     st.header('Theory')
     st.text('A brief overview of the engineering theory and conventions used in this program are illustrated below. Theory is adapted from the Hibbeler textbook [2]. A more rigorous overview of the basic theory behind statically determinate structures is presented in the beambending package documentation')
-    st_button('https://indeterminatebeam.readthedocs.io/en/main/theory.html?fbclid=IwAR18lJpYVJm1MnqkVdXydhA0eLWQwSmCV4w6VzKAIK5dueK9zq-_gYrxMy0', 'Ấn vào đường link để biết thêm chi tiết')
+    st.link_button('Ấn để biết thêm chi tiết','https://indeterminatebeam.readthedocs.io/en/main/theory.html?fbclid=IwAR18lJpYVJm1MnqkVdXydhA0eLWQwSmCV4w6VzKAIK5dueK9zq-_gYrxMy0')
 
 
 
