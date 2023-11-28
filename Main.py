@@ -33,7 +33,7 @@ def run():
         ### This app is a project by my team at HCMUT.
         ### STILL UNDER CONSTRUCTION!!!
         **👈 Select from the sidebar** to choose a tool
-        ### Check out source code in [github](https://github.com/hvghieuvo/beam-analysis-python)
+        ### Check out our source code in [github](https://github.com/hvghieuvo/beam-analysis-python)
     """
     )
     st.markdown("---")
