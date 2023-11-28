@@ -14,7 +14,6 @@
 
 import streamlit as st
 from streamlit.logger import get_logger
-from streamlit_option_menu import option_menu
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
@@ -30,7 +29,7 @@ st.markdown('---')
 st.title('Cơ học vật rắn biến dạng')
 data = {
     'Tên': ['Lê Thành', 'Huỳnh Thạch Thảo', 'Hoàng Quốc Thái', 'Võ Trung Hiếu', 'Vũ Hoàng Khả Vy'],
-    'MSSV': ['2153800', '2153805','2153788','215','2153994']
+    'MSSV': ['2153800', '2153805','2153788','2153994','2153994']
 }
 df = pd.DataFrame(data)
 st.table(df)
