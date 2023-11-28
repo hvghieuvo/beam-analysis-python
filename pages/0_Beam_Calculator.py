@@ -8,9 +8,8 @@ st.markdown("---")
 
 st.sidebar.header('Đề 1')
 
-def app():
-    st.title('Tính toán dầm')
-    option = st.selectbox(
-        'Hãy chọn loại dầm cần tính', 
-        ('Dầm console','Dầm 2 gối'))
-    st.write('Lựa chọn là: ', option)
+st.title('Tính toán dầm')
+option = st.selectbox(
+    'Hãy chọn loại dầm cần tính', 
+    ('Dầm console','Dầm 2 gối'))
+st.write('Lựa chọn là: ', option)
