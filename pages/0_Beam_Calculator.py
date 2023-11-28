@@ -8,7 +8,7 @@ st.set_page_config(page_title="Beam Calculator", page_icon="🙃")
 st.markdown("# Beam Calculator")
 st.sidebar.header("Beam Calculator Tool")
 st.markdown("---")
-
+selected = option_menu(None, ["Lý thuyết", "Input"])
 
 def app():
     st.title('Tính toán dầm')
