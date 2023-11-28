@@ -18,7 +18,6 @@ from streamlit_option_menu import option_menu
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-from PIL import Image
 
 st.set_page_config(
     page_title="Cơ học vật rắn biến dạng",
@@ -27,7 +26,7 @@ st.set_page_config(
 )
 with st.sidebar:
     selected = option_menu(
-        None
+        menu_title='Tổng quan',
         options = ['Đề 1', 'Đề 2']
     )
 if selected == 'Đề 1':
