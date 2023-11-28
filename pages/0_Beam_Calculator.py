@@ -14,3 +14,7 @@ option = st.selectbox(
     'Hãy chọn loại dầm cần tính', 
     ('Dầm console','Dầm 2 gối'))
 st.write('Lựa chọn là: ', option)
+
+selected = option_menu(
+    options=["Lý thuyết", "Nhập thông số đầu vào","Kết quả"]
+)
