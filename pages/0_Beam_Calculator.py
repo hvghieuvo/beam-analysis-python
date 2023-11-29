@@ -30,7 +30,7 @@ with tab2:
                 st.write(equivalent_forces)
                 for force in equivalent_forces:
                     st.subheader(force)
-                    position = st.number_input(f"Position {force}", min_value=0, max_value=length, step=1)
+                    position = st.text_input(f"Position {force}", min_value=0, max_value=length, step=1)
                     magnitude = st.text_input(f"Magnitude {force}")
                     if position > length:
                         st.warning(f"The position of {force} must be on the beam.")
