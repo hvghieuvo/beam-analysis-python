@@ -23,7 +23,7 @@ with tab2:
         ('Dầm console', 'Dầm 2 gối'))
         if select == 'Dầm console':
             length = st.number_input('Length of beam?',min_value=0,max_value=None,step=1, placeholder='Type a number...')
-            num_force = st.number_input('Amount of force want to add?', min_value=0,max_value=None,step=1, placeholder='Type a number...')
+            num_forces = st.number_input('Amount of force want to add?', min_value=0,max_value=None,step=1, placeholder='Type a number...')
             if num_forces > 0:
                 st.write(f"Equivalent forces:")
             for i in range(1, num_forces + 1):
