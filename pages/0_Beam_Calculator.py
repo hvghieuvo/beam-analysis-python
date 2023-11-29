@@ -30,10 +30,8 @@ with tab2:
                 st.write(equivalent_forces)
                 for force in equivalent_forces:
                     st.subheader(force)
-                    position = st.text_input(f"Vị trí đặt {force}")
-                    magnitude = st.text_input(f"Độ lớn của {force}")
-                    st.write(f"Vị trí đặt {force}: {position}")
-                    st.write(f"Độ lớn của {force}: {magnitude}")
+                    position = st.text_input(f"Position {force}", max_value=length)
+                    magnitude = st.text_input(f"Magnitude {force}")
             distributed_load = st.number_input('Amount of distributed load want to add?', min_value=0,max_value=None,step=1, placeholder='Type a number...')
             
             moment = st.number_input('Magnitude of moment',min_value=0,max_value=None,step=1, placeholder='Type a number...')
