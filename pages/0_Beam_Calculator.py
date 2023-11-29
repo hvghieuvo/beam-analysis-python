@@ -12,7 +12,6 @@ st.sidebar.header("Beam Calculator Tool")
 st.markdown("---")
 tab1, tab2 = st.tabs(["Theory", "Input"])
 with tab1:
-    st.header('Theory')
     st.markdown('''<p style="font-size:20px; text-align:justyfy">A brief overview of the engineering theory and conventions used in this program are illustrated below. Theory is adapted from the Hibbeler textbook [2]. A more rigorous overview of the basic theory behind statically determinate structures is presented in the beambending package documentation.</p>''',unsafe_allow_html=True)
     st.link_button('Click here!','https://indeterminatebeam.readthedocs.io/en/main/theory.html?fbclid=IwAR18lJpYVJm1MnqkVdXydhA0eLWQwSmCV4w6VzKAIK5dueK9zq-_gYrxMy0')
 with tab2:
@@ -24,7 +23,7 @@ with tab2:
         forces = []
         num_forces = st.number_input('Number of forces', min_value=0, step=1, value=0)
         for i in range(1, num_forces + 1):
-            st.subheader(f'Force {i}')
+            st.write(f'Force {i}')
             position = st.number_input(f"Position {i}", min_value=0, max_value=length, step=1)
             magnitude = st.number_input(f"Magnitude {i}")
             
@@ -37,7 +36,7 @@ with tab2:
         num_distributed_loads = st.number_input('Number of distributed loads', min_value=0, step=1, value=0)
 
         for i in range(1, num_distributed_loads + 1):
-            st.subheader(f'Distributed Force {i}')
+            st.write(f'Distributed Force {i}')
             start_point = st.number_input(f'Start point {i}', min_value=0, max_value=length, step=1)
             end_point = st.number_input(f'End point {i}', min_value=start_point, max_value=length, step=1)
             magnitude = st.number_input(f'Magnitude {i}')
@@ -52,7 +51,7 @@ with tab2:
         num_moments = st.number_input('Number of moments', min_value=0, step=1, value=0)
 
         for i in range(1, num_moments + 1):
-            st.subheader(f'Moment {i}')
+            st.write(f'Moment {i}')
             position = st.number_input(f'Position {i}', min_value=0,max_value=length, step=1)
             magnitude = st.number_input(f'Magnitude {i}')
 
@@ -60,6 +59,7 @@ with tab2:
                 'position': position,
                 'magnitude': magnitude
             })
+    
 
 
             
