@@ -22,7 +22,7 @@ with tab2:
         select = st.selectbox('Chọn loại dầm',
         ('Dầm console', 'Dầm 2 gối'))
         if select == 'Dầm console':
-            length = st.number_input('Length of beam?', value=None, placeholder='Type a number...')
+            length = st.number_input('Length of beam?',min_value=0,max_value=None,step=1, placeholder='Type a number...')
             point_load = st.number_input('Amount of force want to add?', min_value=0,max_value=None,step=1, placeholder='Type a number...')
 
 
