@@ -11,5 +11,3 @@ matplotlib
 sectionproperties
 streamlit-option-menu
 streamlit-marquee
-st_functions
-PIL
