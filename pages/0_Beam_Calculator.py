@@ -24,12 +24,12 @@ with tab2:
         num_forces = st.number_input('Number of forces', min_value=0, step=1, value=0)
         for i in range(1, num_forces + 1):
             st.write(f'Force {i}')
-            position = st.number_input(f"Position {i}", min_value=0, max_value=length, step=1)
-            magnitude = st.number_input(f"Magnitude {i}")
+            position_of_forces = st.number_input(f"Position of force {i}", min_value=0, max_value=length, step=1)
+            magnitude_of_forces = st.number_input(f"Magnitude of force {i}",)
             
             forces.append({
-                'position': position,
-                'magnitude': magnitude
+                'position': position_of_forces,
+                'magnitude': magnitude_of_forces
             })
 
         distributed_loads = []
@@ -39,12 +39,12 @@ with tab2:
             st.write(f'Distributed Force {i}')
             start_point = st.number_input(f'Start point {i}', min_value=0, max_value=length, step=1)
             end_point = st.number_input(f'End point {i}', min_value=start_point, max_value=length, step=1)
-            magnitude = st.number_input(f'Magnitude {i}')
+            magnitude_of_Distributed = st.number_input(f'Magnitude of distributed load {i}')
 
             distributed_loads.append({
                 'start_point': start_point,
                 'end_point': end_point,
-                'magnitude': magnitude
+                'magnitude': magnitude_of_Distributed
             })
         
         moments = []
@@ -52,12 +52,12 @@ with tab2:
 
         for i in range(1, num_moments + 1):
             st.write(f'Moment {i}')
-            position = st.number_input(f'Position {i}', min_value=0,max_value=length, step=1)
-            magnitude = st.number_input(f'Magnitude {i}')
+            position_of_moment = st.number_input(f'Position of moment {i}', min_value=0,max_value=length, step=1)
+            magnitude_of_moment = st.number_input(f'Magnitude of moment {i}',)
 
             moments.append({
-                'position': position,
-                'magnitude': magnitude
+                'position': position_of_moment,
+                'magnitude': magnitude_of_moment
             })
     
 
