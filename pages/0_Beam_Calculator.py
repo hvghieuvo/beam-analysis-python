@@ -23,7 +23,18 @@ with tab2:
         ('Dầm console', 'Dầm 2 gối'))
         if select == 'Dầm console':
             length = st.number_input('Length of beam?',min_value=0,max_value=None,step=1, placeholder='Type a number...')
-            point_load = st.number_input('Amount of force want to add?', min_value=0,max_value=None,step=1, placeholder='Type a number...')
+            num_force = st.number_input('Amount of force want to add?', min_value=0,max_value=None,step=1, placeholder='Type a number...')
+            if num_force > 0:
+                st.write(f"Equivalent forces:")
+            for i in range(1, num_forces + 1):
+                force_position = st.number_input(f'Force {i} - Vị trí lực:', min_value=0, max_value=length, step=1, key=f'position_{i}')
+                force_magnitude = st.number_input(f'Force {i} - Độ lớn lực:', min_value=0, max_value=None, step=1, key=f'magnitude_{i}')
+
+                st.write(f"Force {i}: Position - {force_position}, Magnitude - {force_magnitude}")
+
+            if __name__ == '__main__':
+                main()
+                
             distributed_load = st.number_input('Amount of distributed load want to add?', min_value=0,max_value=None,step=1, placeholder='Type a number...')
             moment = st.number_input('Magnitude of moment',min_value=0,max_value=None,step=1, placeholder='Type a number...')
                 
