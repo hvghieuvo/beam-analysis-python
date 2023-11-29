@@ -22,7 +22,5 @@ with tab2:
         select = st.selectbox('Chọn loại dầm',
         ('Dầm console', 'dầm 2 gối'))
         if select == 'Dầm console':
-            AB = st.number_input('Length AB')
-            BC = st.number_input('Length BC')
-            CD = st.number_input('Length CD') 
+            length = st.number_input('Length of beam')
             
