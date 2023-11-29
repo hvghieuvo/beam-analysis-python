@@ -14,7 +14,7 @@ tab1, tab2 = st.tabs(["Theory", "Input"])
 with tab1:
     st.header('Theory')
     st.markdown('''<p style="font-size:20px; text-align:justyfy">A brief overview of the engineering theory and conventions used in this program are illustrated below. Theory is adapted from the Hibbeler textbook [2]. A more rigorous overview of the basic theory behind statically determinate structures is presented in the beambending package documentation.</p>''',unsafe_allow_html=True)
-    st.link_button('Ấn để biết thêm chi tiết','https://indeterminatebeam.readthedocs.io/en/main/theory.html?fbclid=IwAR18lJpYVJm1MnqkVdXydhA0eLWQwSmCV4w6VzKAIK5dueK9zq-_gYrxMy0')
+    st.link_button('Click here!','https://indeterminatebeam.readthedocs.io/en/main/theory.html?fbclid=IwAR18lJpYVJm1MnqkVdXydhA0eLWQwSmCV4w6VzKAIK5dueK9zq-_gYrxMy0')
 with tab2:
     col1, col2 = st.columns(2)
     with col1:
@@ -23,5 +23,7 @@ with tab2:
         ('Dầm console', 'Dầm 2 gối'))
         if select == 'Dầm console':
             length = st.number_input('Length of beam?', value=None, placeholder='Type a number...')
-            force = st.number_input('Amount of force want to add?', value=None, placeholder='Type a number...')
+            point_load = st.number_input('Amount of force want to add?', value=int, placeholder='Type a number...')
+
+
                         
