@@ -27,6 +27,8 @@ with tab2:
             CD = st.number_input('Length CD') 
     
     with col2:
+        def linear_activation(x, a, b):
+            return a * x + b
         x=np.linspace(-10,10,400)
         y = linear_activation(x, a, b)
         fig, ax = plt.subplots()
