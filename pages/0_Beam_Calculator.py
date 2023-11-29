@@ -28,7 +28,12 @@ with tab2:
             equivalent_forces = [f'Force {i}' for i in range(1, point_load + 1)]
             if st.button('Show Equivalent Forces'):
                 st.write(equivalent_forces)
-            
+                for force in equivalent_forces:
+                    st.subheader(force)
+                    position = st.text_input(f"Vị trí đặt {force}")
+                    magnitude = st.text_input(f"Độ lớn của {force}")
+                    st.write(f"Vị trí đặt {force}: {position}")
+                    st.write(f"Độ lớn của {force}: {magnitude}")
             distributed_load = st.number_input('Amount of distributed load want to add?', min_value=0,max_value=None,step=1, placeholder='Type a number...')
             
             moment = st.number_input('Magnitude of moment',min_value=0,max_value=None,step=1, placeholder='Type a number...')
