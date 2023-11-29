@@ -21,18 +21,47 @@ with tab2:
     if select == 'Console':
         length = st.number_input('Length',min_value=0,max_value=None,step=1, placeholder='Type a number...')
             
-        point_load = st.number_input('Amount of force want to add?', min_value=0,max_value=None,step=1, placeholder='Type a number...')
-        equivalent_forces = [f'Force {i}' for i in range(1, point_load + 1)]
-        st.write(equivalent_forces)
-        for force in equivalent_forces:
-            st.subheader(force)
-            position = st.number_input(f"Position {force}", min_value=0, max_value=length, step=1)
-            magnitude = st.number_input(f"Magnitude {force}")
-            if position > length:
-                st.warning(f"The position of {force} must be on the beam.")
-        distributed_load = st.number_input('Amount of distributed load want to add?', min_value=0,max_value=None,step=1, placeholder='Type a number...')
+        forces = []
+        num_forces = st.number_input('Number of forces', min_value=0, step=1, value=0)
+        for i in range(1, num_forces + 1):
+            st.subheader(f'Force {i}')
+            position = st.number_input(f"Position {i}", min_value=0, max_value=length, step=1)
+            magnitude = st.number_input(f"Magnitude {i}")
             
-        moment = st.number_input('Magnitude of moment',min_value=0,max_value=None,step=1, placeholder='Type a number...')
+            forces.append({
+                'position': position,
+                'magnitude': magnitude
+            })
+
+        distributed_loads = []
+        num_distributed_loads = st.number_input('Number of distributed loads', min_value=0, step=1, value=0)
+
+        for i in range(1, num_distributed_loads + 1):
+            st.subheader(f'Distributed Force {i}')
+            start_point = st.number_input(f'Start point {i}', min_value=0, max_value=length, step=1)
+            end_point = st.number_input(f'End point {i}', min_value=start_point, max_value=length, step=1)
+            magnitude = st.number_input(f'Magnitude {i}')
+
+            distributed_loads.append({
+                'start_point': start_point,
+                'end_point': end_point,
+                'magnitude': magnitude
+            })
+        
+        moments = []
+        num_moments = st.number_input('Number of moments', min_value=0, step=1, value=0)
+
+        for i in range(1, num_moments + 1):
+            st.subheader(f'Moment {i}')
+            position = st.number_input(f'Position {i}', min_value=0,max_value=length, step=1)
+            magnitude = st.number_input(f'Magnitude {i}')
+
+            moments.append({
+                'position': position,
+                'magnitude': magnitude
+            })
+
+
             
             
 
