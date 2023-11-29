@@ -20,7 +20,8 @@ with tab2:
     with col1:
         st.subheader('Chọn loại dầm')
         select = st.selectbox('Chọn loại dầm',
-        ('Dầm console', 'dầm 2 gối'))
+        ('Dầm console', 'Dầm 2 gối'))
         if select == 'Dầm console':
-            length = st.number_input('Length of beam')
-            
+            length = st.number_input('Length of beam?')
+            force = st.number_input('Amount of force want to add?')
+                        
