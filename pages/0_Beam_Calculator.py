@@ -33,12 +33,7 @@ with tab2:
                     position = st.number_input(f"Position {force}", min_value=0, max_value=length, step=1)
                     magnitude = st.text_input(f"Magnitude {force}")
                     if position > length:
-                        st.warning(f"Vị trí đặt {force} không thể vượt quá chiều dài của thanh.")
-                    else:
-                        # Sử dụng giá trị của position và magnitude để thực hiện công việc cụ thể ở đây
-                        # Ví dụ: Hiển thị giá trị đã nhập
-                        st.write(f"Vị trí đặt {force}: {position}")
-                        st.write(f"Độ lớn của {force}: {magnitude}")
+                        st.warning(f"The position of {force} must be on the beam.")
             distributed_load = st.number_input('Amount of distributed load want to add?', min_value=0,max_value=None,step=1, placeholder='Type a number...')
             
             moment = st.number_input('Magnitude of moment',min_value=0,max_value=None,step=1, placeholder='Type a number...')
