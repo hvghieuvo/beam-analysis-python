@@ -25,17 +25,4 @@ with tab2:
             AB = st.number_input('Length AB')
             BC = st.number_input('Length BC')
             CD = st.number_input('Length CD') 
-    
-    with col2:
-        def linear_activation(x, a, b):
-            return a * x + b
-        x=np.linspace(-10,10,400)
-        y = linear_activation(x, a, b)
-        fig, ax = plt.subplots()
-        ax.plot(x, y,color=colour,linewidth=thickness)
-        ax.set_xlabel("Input (x)")
-        ax.set_ylabel("Output (f(x))")
-        ax.set_ylim(-10,10)
-        ax.set_title("Linear Activation Function")
-        plt.grid()
-        st.pyplot(fig)
+            
