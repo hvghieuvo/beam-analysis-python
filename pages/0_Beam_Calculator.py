@@ -24,6 +24,8 @@ with tab2:
         if select == 'Dầm console':
             length = st.number_input('Length of beam?',min_value=0,max_value=None,step=1, placeholder='Type a number...')
             point_load = st.number_input('Amount of force want to add?', min_value=0,max_value=None,step=1, placeholder='Type a number...')
-
+            distributed_load = st.number_input('Amount of distributed load want to add?', min_value=0,max_value=None,step=1, placeholder='Type a number...')
+            moment = st.number_input('Magnitude of moment',min_value=0,max_value=None,step=1, placeholder='Type a number...')
+                
 
                         
