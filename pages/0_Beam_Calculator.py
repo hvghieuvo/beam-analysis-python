@@ -3,6 +3,8 @@ import numpy as np
 import streamlit as st
 from streamlit.hello.utils import show_code
 from streamlit_option_menu import option_menu 
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 
 st.set_page_config(page_title="Beam Calculator", page_icon="🙃")
 st.markdown("# Beam Calculator")
@@ -17,9 +19,21 @@ with tab2:
     col1, col2 = st.columns(2)
     with col1:
         st.subheader('Chọn loại dầm')
-        select = st.selectbox('Hãy chọn loại dầm',
-        ('Dầm console', 'Dầm 2 gối'))
+        select = st.selectbox('Chọn loại dầm',
+        ('Dầm console', 'dầm 2 gối'))
         if select == 'Dầm console':
             AB = st.number_input('Length AB')
             BC = st.number_input('Length BC')
-            CD = st.number_input('Length CD')        
+            CD = st.number_input('Length CD') 
+    
+    with col2:
+        x=np.linspace(-10,10,400)
+        y = linear_activation(x, a, b)
+        fig, ax = plt.subplots()
+        ax.plot(x, y,color=colour,linewidth=thickness)
+        ax.set_xlabel("Input (x)")
+        ax.set_ylabel("Output (f(x))")
+        ax.set_ylim(-10,10)
+        ax.set_title("Linear Activation Function")
+        plt.grid()
+        st.pyplot(fig)
