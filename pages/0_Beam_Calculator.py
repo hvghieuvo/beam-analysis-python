@@ -16,6 +16,10 @@ if 'console_forces' not in st.session_state:
 if 'beam_forces' not in st.session_state:
     st.session_state.beam_forces = []
 
+# Biến trạng thái để kiểm soát việc hiển thị và tính toán
+if 'solve_clicked' not in st.session_state:
+    st.session_state.solve_clicked = False
+
 st.set_page_config(page_title="Beam Calculator", page_icon="🙃")
 st.markdown("# Beam Calculator")
 st.sidebar.header("Beam Calculator Tool")
@@ -67,7 +71,9 @@ with tab2:
             if delete_checkbox:
                 st.session_state.console_forces.pop(idx - 1)
         st.markdown('---')
-    
+        if st.button('Solve'):
+            st.session_state.solve_clicked = True
+
     # Beam with 2 supports
     elif select == 'Beam with 2 supports':
         length_1 = st.number_input(label='Length (m)', min_value=1.00, max_value=None, step=0.01)
@@ -100,6 +106,8 @@ with tab2:
             if delete_checkbox_1:
                 st.session_state.beam_forces.pop(idx - 1)
         st.markdown('---')
+        if st.button('Solve'):
+            st.session_state.solve_clicked = True
 with tab3:
     x = np.linspace(0, 10, 100)
     y = np.sin(x)   
