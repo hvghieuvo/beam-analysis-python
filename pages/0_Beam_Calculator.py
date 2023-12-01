@@ -26,104 +26,97 @@ with tab2:
     ('Console', 'Beam with 2 supports'))
     if select == 'Console':
         length = st.number_input('Length (in m)',min_value=0,max_value=None,step=1, placeholder='Type a number...')
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.write('Forces')
+            forces = []
+            num_forces = st.number_input('Number of forces', min_value=0, step=1, value=0)
+            for i in range(1, num_forces + 1):
+                st.write(f'Force {i}')
+                position_of_forces = st.number_input(f"Position of force {i} (in m)", min_value=0, max_value=length, step=1)
+                magnitude_of_forces = st.number_input(f"Magnitude of force {i} (in kN)",)
             
-        forces = []
-        num_forces = st.number_input('Number of forces', min_value=0, step=1, value=0)
-        for i in range(1, num_forces + 1):
-            st.write(f'Force {i}')
-            position_of_forces = st.number_input(f"Position of force {i} (in m)", min_value=0, max_value=length, step=1)
-            magnitude_of_forces = st.number_input(f"Magnitude of force {i} (in kN)",)
-            
-            forces.append({
-                'position': position_of_forces,
-                'magnitude': magnitude_of_forces
-            })
-
-        distributed_loads = []
-        num_distributed_loads = st.number_input('Number of distributed loads', min_value=0, step=1, value=0)
-
-        for i in range(1, num_distributed_loads + 1):
-            st.write(f'Distributed Force {i}')
-            start_point = st.number_input(f'Start point {i} (in m)', min_value=0, max_value=length, step=1)
-            end_point = st.number_input(f'End point {i} (in m)', min_value=start_point, max_value=length, step=1)
-            magnitude_of_Distributed = st.number_input(f'Magnitude of distributed load {i} (in kN)')
-
-            distributed_loads.append({
-                'start_point': start_point,
-                'end_point': end_point,
-                'magnitude': magnitude_of_Distributed
-            })
+                forces.append({
+                    'position': position_of_forces,
+                    'magnitude': magnitude_of_forces
+                })
         
-        moments = []
-        num_moments = st.number_input('Number of moments', min_value=0, step=1, value=0)
+        with col2:
+            st.write('Distributed Loads')
+            distributed_loads = []
+            num_distributed_loads = st.number_input('Number of distributed loads', min_value=0, step=1, value=0)
 
-        for i in range(1, num_moments + 1):
-            st.write(f'Moment {i}')
-            position_of_moment = st.number_input(f'Position of moment {i} (in m)', min_value=0,max_value=length, step=1)
-            magnitude_of_moment = st.number_input(f'Magnitude of moment {i} (in kN/m^2)',)
+            for i in range(1, num_distributed_loads + 1):
+                st.write(f'Distributed Force {i}')
+                start_point = st.number_input(f'Start point {i} (in m)', min_value=0, max_value=length, step=1)
+                end_point = st.number_input(f'End point {i} (in m)', min_value=start_point, max_value=length, step=1)
+                magnitude_of_Distributed = st.number_input(f'Magnitude of distributed load {i} (in kN)')
 
-            moments.append({
-                'position': position_of_moment,
-                'magnitude': magnitude_of_moment
-            })
+                distributed_loads.append({
+                    'start_point': start_point,
+                    'end_point': end_point,
+                    'magnitude': magnitude_of_Distributed
+                    })
         
-    if select == 'Beam with 2 supports':
+        with col3:
+            st.write('Moments')
+            moments = []
+            num_moments = st.number_input('Number of moments', min_value=0, step=1, value=0)
+
+            for i in range(1, num_moments + 1):
+                st.write(f'Moment {i}')
+                position_of_moment = st.number_input(f'Position of moment {i} (in m)', min_value=0,max_value=length, step=1)
+                magnitude_of_moment = st.number_input(f'Magnitude of moment {i} (in kN/m^2)',)
+
+                moments.append({
+                    'position': position_of_moment,
+                    'magnitude': magnitude_of_moment
+                    })
+    if select == 'Beam with 2 supports':   
         length_1 = st.number_input('Length (in m)',min_value=1,max_value=None,step=1, placeholder='Type a number...')
         pinned_1 = st.slider("Position of pinned 1 (in m)", 0, length_1, None)
         pinned_2 = st.slider("Position of pinned 2 (in m)", 0, length_1, None)
         
-        forces_1 = []
-        num_forces_1 = st.number_input('Number of forces', min_value=0, step=1, value=0)
-        for i in range(1, num_forces_1 + 1):
-            st.write(f'Force {i}')
-            position_of_forces_1 = st.number_input(f"Position of force {i} (in m)", min_value=0, max_value=length_1, step=1)
-            magnitude_of_forces_1 = st.number_input(f"Magnitude of force {i} (in kN)",)
+        col_1, col_2, col_3 = st.columns(3)
+        with col_1:
+            forces_1 = []
+            num_forces_1 = st.number_input('Number of forces', min_value=0, step=1, value=0)
+            for i in range(1, num_forces_1 + 1):
+                st.write(f'Force {i}')
+                position_of_forces_1 = st.number_input(f"Position of force {i} (in m)", min_value=0, max_value=length_1, step=1)
+                magnitude_of_forces_1 = st.number_input(f"Magnitude of force {i} (in kN)",)
             
-            forces_1.append({
-                'position': position_of_forces_1,
-                'magnitude': magnitude_of_forces_1
-            })
+                forces_1.append({
+                    'position': position_of_forces_1,
+                    'magnitude': magnitude_of_forces_1
+                })
 
-        distributed_loads_1 = []
-        num_distributed_loads_1 = st.number_input('Number of distributed loads', min_value=0, step=1, value=0)
+        with col_2:
+            distributed_loads_1 = []
+            num_distributed_loads_1 = st.number_input('Number of distributed loads', min_value=0, step=1, value=0)
 
-        for i in range(1, num_distributed_loads_1 + 1):
-            st.write(f'Distributed Force {i}')
-            start_point_1 = st.number_input(f'Start point {i} (in m)', min_value=0, max_value=length_1, step=1)
-            end_point_1 = st.number_input(f'End point {i} (in m)', min_value=0, max_value=length_1, step=1)
-            magnitude_of_Distributed_1 = st.number_input(f'Magnitude of distristreabuted load {i} (in kN)')
+            for i in range(1, num_distributed_loads_1 + 1):
+                st.write(f'Distributed Force {i}')
+                start_point_1 = st.number_input(f'Start point {i} (in m)', min_value=0, max_value=length_1, step=1)
+                end_point_1 = st.number_input(f'End point {i} (in m)', min_value=0, max_value=length_1, step=1)
+                magnitude_of_Distributed_1 = st.number_input(f'Magnitude of distristreabuted load {i} (in kN)')
 
-            distributed_loads_1.append({
-                'start_point': start_point_1,
-                'end_point': end_point_1,
-                'magnitude': magnitude_of_Distributed_1
-            })
-        
-        moments_1 = []
-        num_moments_1 = st.number_input('Number of moments', min_value=0, step=1, value=0)
+                distributed_loads_1.append({
+                    'start_point': start_point_1,
+                    'end_point': end_point_1,
+                    'magnitude': magnitude_of_Distributed_1
+                })
 
-        for i in range(1, num_moments_1 + 1):
-            st.write(f'Moment {i}')
-            position_of_moment_1 = st.number_input(f'Position of moment {i} (in m)', min_value=0,max_value=length_1, step=1)
-            magnitude_of_moment_1 = st.number_input(f'Magnitude of moment {i} (in kN/m**2)',)
+        with col_3:
+            moments_1 = []
+            num_moments_1 = st.number_input('Number of moments', min_value=0, step=1, value=0)
 
-            moments_1.append({
-                'position': position_of_moment_1,
-                'magnitude': magnitude_of_moment_1
-                 })
+            for i in range(1, num_moments_1 + 1):
+                st.write(f'Moment {i}')
+                position_of_moment_1 = st.number_input(f'Position of moment {i} (in m)', min_value=0,max_value=length_1, step=1)
+                magnitude_of_moment_1 = st.number_input(f'Magnitude of moment {i} (in kN/m**2)',)
 
-def fig_to_bytes(fig):
-    with BytesIO() as buffer:
-        fig.savefig(buffer, format='png')
-        buffer.seek(0)
-        return buffer.getvalue()      
-with tab3:
-    if select == 'Console':
-        fig, ax = plt.subplots(figsize=(8, 6))
-        image_data = fig_to_bytes(fig)
-        st.image(image_data, caption='Figure 1')
-    elif select == 'Beam with 2 supports':
-        fig, ax = plt.subplots(figsize=(8, 6))
-        image_data = fig_to_bytes(fig)
-        st.image(image_data, caption='Figure 1')
-    
+                moments_1.append({
+                    'position': position_of_moment_1,
+                    'magnitude': magnitude_of_moment_1
+                    })
