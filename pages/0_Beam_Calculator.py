@@ -28,7 +28,6 @@ with tab2:
         length = st.number_input('Length (in m)',min_value=0,max_value=None,step=1, placeholder='Type a number...')
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.write('Forces')
             forces = []
             num_forces = st.number_input('Number of forces', min_value=0, step=1, value=0)
             for i in range(1, num_forces + 1):
@@ -42,7 +41,6 @@ with tab2:
                 })
         
         with col2:
-            st.write('Distributed Loads')
             distributed_loads = []
             num_distributed_loads = st.number_input('Number of distributed loads', min_value=0, step=1, value=0)
 
@@ -59,7 +57,6 @@ with tab2:
                     })
         
         with col3:
-            st.write('Moments')
             moments = []
             num_moments = st.number_input('Number of moments', min_value=0, step=1, value=0)
 
@@ -120,3 +117,4 @@ with tab2:
                     'position': position_of_moment_1,
                     'magnitude': magnitude_of_moment_1
                     })
+    
