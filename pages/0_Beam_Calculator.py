@@ -197,11 +197,7 @@ with tab2:
 
 with tab3:
     x = np.linspace(0, 10, 100)
-    y = np.sin(x)   
-    st.subheader("Problem")
-    plt.plot(x, y)
-    plt.title('Image 1')
-    st.pyplot(plt)
+    y = np.sin(x)  
     
     
     st.subheader("Axial Force")
