@@ -6,10 +6,10 @@ from streamlit_option_menu import option_menu
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import pandas as pd
-from PIL import Image
 from io import BytesIO
 from PIL import Image
 import base64
+
 # Kiểm tra nếu 'console_forces' không tồn tại trong session state thì khởi tạo
 if 'console_forces' not in st.session_state:
     st.session_state.console_forces = []
@@ -52,6 +52,7 @@ st.set_page_config(page_title="Beam Calculator", page_icon="🙃")
 st.markdown("# Beam Calculator")
 st.sidebar.header("Beam Calculator Tool")
 st.markdown("---")
+
 
 # Tạo các tab
 tab1, tab2, tab3 = st.tabs(["Theory", "Input", "Output"])
