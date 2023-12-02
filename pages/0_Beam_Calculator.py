@@ -27,10 +27,11 @@ if 'solve_clicked' not in st.session_state:
 # Đường dẫn đến hình ảnh của bạn
 image_path = 'D://year3/cohocvatranbiendang/btl/beam-analysis-python/images/console.png'
 image_path_1 = 'D:/year3/cohocvatranbiendang/btl/beam-analysis-python/images/2sup.png'
-image_path_2 = ''
+image_path_2 = 'D:/year3/cohocvatranbiendang/btl/beam-analysis-python/images/advanced.png'
 # Load hình ảnh bằng thư viện Pillow
 image = Image.open(image_path)
 image_1 = Image.open(image_path_1)
+image_2 = Image.open(image_path_2)
 # Hàm chuyển đổi hình ảnh sang dạng base64
 def image_to_base64(image):
     buffered = BytesIO()
@@ -104,7 +105,7 @@ with tab2:
                 if delete_checkbox:
                     st.session_state.console_forces.pop(idx - 1)
         
-        st.image(image, caption='Console Image')   
+        st.image(image, caption='Console')   
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
@@ -148,7 +149,7 @@ with tab2:
                         (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox_1:
                     st.session_state.beam_forces.pop(idx - 1)
-        st.image(image, caption='Beam with 2 supports')   
+        st.image(image_1, caption='Beam with 2 supports')   
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
@@ -200,8 +201,8 @@ with tab2:
             
             elif type_load_2 == 'Distributed load':
                 magnitude_2 = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
-                start_point_2 = st.slider('Start position (m)', min_value=1.00, max_value=None, step=0.01)
-                end_point_2 = st.slider('End position (m)', min_value=1.00, max_value=length_2, step=0.01)
+                start_point_2 = st.slider('Start position (m)', min_value=0.00, max_value=None, step=0.01)
+                end_point_2 = st.slider('End position (m)', min_value=0.00, max_value=length_2, step=0.01)
                 if st.button('Add'):
                     st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Start Position': start_point_2, 'End Position': end_point_1})
             
@@ -215,7 +216,7 @@ with tab2:
                         (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox_2:
                     st.session_state.advanced_forces.pop(idx - 1)
-        st.image(image, caption='Beam with many supports') 
+        st.image(image_2, caption='Beam with many supports') 
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
