@@ -26,7 +26,7 @@ with tab2:
     if select == 'Rectangle' or select == 'Circle' or select == 'Annulus':
         col1, col2, col3 = st.columns(3, gap='large')
         with col1:
-            high = st.number_input(label='Hight', min_value=0.00, max_value=None, step=0.01)
+            high = st.number_input(label='Height', min_value=0.00, max_value=None, step=0.01)
             st.markdown('---')
             width = st.number_input(label='Width', min_value=0.00, max_value=None, step=0.01)
             st.markdown('---')
