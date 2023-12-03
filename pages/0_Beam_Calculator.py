@@ -6,9 +6,7 @@ from streamlit_option_menu import option_menu
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import pandas as pd
-from io import BytesIO
-from PIL import Image
-import base64
+
 
 # Kiểm tra nếu 'console_forces' không tồn tại trong session state thì khởi tạo
 if 'console_forces' not in st.session_state:
@@ -24,29 +22,6 @@ if 'advanced_forces' not in st.session_state:
 # Biến trạng thái để kiểm soát việc hiển thị và tính toán
 if 'solve_clicked' not in st.session_state:
     st.session_state.solve_clicked = False
-# Đường dẫn đến hình ảnh của bạn
-image_path = 'D://year3/cohocvatranbiendang/btl/beam-analysis-python/images/console.png'
-image_path_1 = 'D:/year3/cohocvatranbiendang/btl/beam-analysis-python/images/2sup.png'
-image_path_2 = 'D:/year3/cohocvatranbiendang/btl/beam-analysis-python/images/advanced.png'
-# Load hình ảnh bằng thư viện Pillow
-image = Image.open(image_path)
-image_1 = Image.open(image_path_1)
-image_2 = Image.open(image_path_2)
-# Hàm chuyển đổi hình ảnh sang dạng base64
-def image_to_base64(image):
-    buffered = BytesIO()
-    image.save(buffered, format="PNG")
-    return base64.b64encode(buffered.getvalue()).decode()
-
-def image_to_base64(image_path_1):
-    buffered = BytesIO()
-    image_path_1.save(buffered, format="PNG")
-    return base64.b64encode(buffered.getvalue()).decode()
-
-def image_to_base64(image_path_2):
-    buffered = BytesIO()
-    image_path_2.save(buffered, format="PNG")
-    return base64.b64encode(buffered.getvalue()).decode()
 
 st.set_page_config(page_title="Beam Calculator", page_icon="🙃")
 st.markdown("# Beam Calculator")
@@ -106,7 +81,8 @@ with tab2:
                 if delete_checkbox:
                     st.session_state.console_forces.pop(idx - 1)
         
-        st.image(image, caption='Console')   
+
+        st.image('images/console.jpg', caption='Console')
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
@@ -150,7 +126,7 @@ with tab2:
                         (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox_1:
                     st.session_state.beam_forces.pop(idx - 1)
-        st.image(image_1, caption='Beam with 2 supports')   
+        st.image('images/2sup.jpg', caption='Beam with 2 supports')   
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
@@ -217,7 +193,7 @@ with tab2:
                         (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox_2:
                     st.session_state.advanced_forces.pop(idx - 1)
-        st.image(image_2, caption='Beam with many supports') 
+        st.image('images/advanced.jpg', caption='Beam with many supports') 
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
