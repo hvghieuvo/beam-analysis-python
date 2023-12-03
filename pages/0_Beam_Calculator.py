@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import pandas as pd
 from io import BytesIO
+from beam import create_beam, add_sp, add_load, plot_diagram
 
 # Kiểm tra nếu 'console_forces' không tồn tại trong session state thì khởi tạo
 if 'console_forces' not in st.session_state:
