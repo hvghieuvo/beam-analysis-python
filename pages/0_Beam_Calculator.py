@@ -51,16 +51,13 @@ with tab2:
         # Tạo hộp để nhập số liệu
         with col1: 
             length = st.number_input(label='Length (m)', min_value=0.00, max_value=None, step=0.01)
-            
-            #Tạo beam với độ dài length
-            create_beam(length)
             st.markdown('---')
             
             fixed_type = st.selectbox('Fixed position', ('Fixed left end', 'Fixed right end'))
             #Thêm ngàm trái hoặc phải
-            if fixed_type == "Fixed left end":
-                add_sp(0, "fixed")
-            else: add_sp(length, "fixed")
+            # if fixed_type == "Fixed left end":
+            #     add_sp(0, "fixed")
+            # else: add_sp(length, "fixed")
             
         with col2:
             type_load = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment')) 
@@ -97,8 +94,6 @@ with tab2:
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
-            #Giải và plot đồ thị
-            plot_diagram(1)
             
     # Beam with 2 supports
     elif select == 'Beam with 2 supports':
@@ -106,8 +101,6 @@ with tab2:
         
         with col1_1:
             length_1 = st.number_input(label='Length (m)', min_value=1.00, max_value=None, step=0.01)
-            #Tạo beam với độ dài length_1
-            create_beam(length_1)
             st.markdown('---')
             support_type_right = st.selectbox('Support type right', ('Pin', 'Roller'))
             support_type_left = st.selectbox('Support type left', ('Pin', 'Roller'))
@@ -115,9 +108,6 @@ with tab2:
         with col1_2:
             sup_1 = st.slider("Position of support 1 (m)", 0.00, length_1, None)
             sup_2 = st.slider("Position of support 2 (m)", 0.00, length_1, None)
-            #Thêm supports
-            add_sp(sup_1, support_type_left)
-            add_sp(sup_2, support_type_right)
             
         with col1_3:
             type_load_1 = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment'))
@@ -218,8 +208,9 @@ with tab2:
                         (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox_2:
                     st.session_state.advanced_forces.pop(idx - 1) 
-            st.button('Quick solve')
-            
+            if st.button('Quick Solve'):
+                #Giải và plot đồ thị
+                plot_diagram(0)
         
                     
         st.image('images/advanced.jpg', caption='Beam with many supports') 
