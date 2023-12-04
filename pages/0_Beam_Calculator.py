@@ -73,7 +73,8 @@ with tab2:
                 end_point = st.number_input('End position (m)', min_value=0.00, max_value=length, step=0.01)
                 if st.button('Add'):
                     st.session_state.console_forces.append({'Type Load': type_load, 'Magnitude': magnitude, 'Start Position': start_point, 'End Position': end_point})
-            
+            st.image('images/console.jpg', caption='Console')
+            st.markdown('---')
         # Hiển thị các lực đã thêm vào (Console)
         with col3: 
             st.write('Added forces:')
@@ -89,8 +90,7 @@ with tab2:
 
 
 
-        st.image('images/console.jpg', caption='Console')
-        st.markdown('---')
+        
         if st.button('Solve'):
             st.session_state.solve_clicked = True
             
