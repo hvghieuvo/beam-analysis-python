@@ -42,7 +42,7 @@ with tab1:
 added_forces=[]
 with tab2:
     # Tab nhập liệu
-    select = st.selectbox('Beam type', ('Console', 'Beam with 2 supports','Advanced'))
+    select = st.selectbox('Beam type', ('Console', 'Beam with 2 supports','Advanced Beam'))
     st.markdown('---')
     # Chọn Console
     if select == 'Console':
@@ -152,7 +152,7 @@ with tab2:
             # plot_diagram(1)
 
     # Advanced beam        
-    elif select == 'Advanced beam':
+    elif select == 'Advanced Beam':
         col2_1, col2_2, col2_3, col2_4 = st.columns(4, gap='large')
         with col2_1:
             length_2 = st.number_input(label='Length (m)', min_value=1.00, max_value=None, step=0.01)
