@@ -46,7 +46,7 @@ with tab2:
     st.markdown('---')
     # Chọn Console
     if select == 'Console':
-        col1, col2, col3 = st.columns(3, gap='large')
+        col1, col2, col3 = st.columns(3)
         # Tạo hộp để nhập số liệu
         with col1: 
             length = st.number_input(label='Length (m)', min_value=0.00, max_value=None, step=0.01)
@@ -73,7 +73,7 @@ with tab2:
                 end_point = st.number_input('End position (m)', min_value=0.00, max_value=length, step=0.01)
                 if st.button('Add'):
                     st.session_state.console_forces.append({'Type Load': type_load, 'Magnitude': magnitude, 'Start Position': start_point, 'End Position': end_point})
-            
+
         # Hiển thị các lực đã thêm vào (Console)
         with col3: 
             st.write('Added forces:')
@@ -86,10 +86,12 @@ with tab2:
                 if delete_checkbox:
                     st.session_state.console_forces.pop(idx - 1)
             st.button('Quick solve')
-
-
-
-        st.image('images/console.jpg', caption='Console')
+      
+        st.markdown('---')
+        keo, bua, bao = st.columns([1,3,1])
+        with bua:
+          st.image('images/console.jpg', caption='Console')  
+        
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
@@ -138,7 +140,10 @@ with tab2:
                     st.session_state.beam_forces.pop(idx - 1)
             st.button('Quick solve')
         
-        st.image('images/2sup.jpg', caption='Beam with 2 supports')   
+        st.markdown('---')        
+        keo1, bua1, bao1 = st.columns([1,3,1])
+        with bua1:
+          st.image('images/2sup.jpg', caption='Console')             
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
@@ -215,8 +220,10 @@ with tab2:
                 #Giải và plot đồ thị
                 # plot_diagram(0)
         
-                    
-        st.image('images/advanced.jpg', caption='Beam with many supports')
+        st.markdown('---')
+        keo2, bua2, bao2 = st.columns([1,3,1])
+        with bua2:
+          st.image('images/advanced.jpg', caption='many supports')              
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
