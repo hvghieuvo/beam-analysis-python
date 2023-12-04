@@ -9,7 +9,7 @@ from io import BytesIO
 from PIL import Image
 import base64
 
-st.set_page_config(page_title="Section Designer", page_icon="🙃")
+st.set_page_config(page_title="Section Designer", page_icon="🙃", layout = 'wide')
 st.markdown("# Section Designer")
 st.sidebar.header("Section Designer Tool")
 st.markdown("---")
