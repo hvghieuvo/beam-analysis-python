@@ -6,8 +6,7 @@ from streamlit_option_menu import option_menu
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import pandas as pd
-from io import BytesIO
-from beam import create_beam, add_load, add_sp, plot_diagram
+# from beam import create_beam, add_load, add_sp, plot_diagram
 
 # Kiểm tra nếu 'console_forces' không tồn tại trong session state thì khởi tạo
 if 'console_forces' not in st.session_state:
@@ -141,8 +140,9 @@ with tab2:
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
+            
             #Giải và plot đồ thị
-            plot_diagram(1)
+            # plot_diagram(1)
             
     elif select == 'Advanced':
         col2_1, col2_2, col2_3, col2_4 = st.columns(4, gap='large')
@@ -210,7 +210,7 @@ with tab2:
                     st.session_state.advanced_forces.pop(idx - 1) 
             if st.button('Quick Solve'):
                 #Giải và plot đồ thị
-                plot_diagram(0)
+                # plot_diagram(0)
         
                     
         st.image('images/advanced.jpg', caption='Beam with many supports') 
@@ -218,7 +218,7 @@ with tab2:
         if st.button('Solve'):
             st.session_state.solve_clicked = True
             #Giải và plot đồ thị
-            plot_diagram(1)
+            # plot_diagram(1)
             
 with tab3:
     st.image('images/fig_reac.png', caption='Reaction force diagram')
