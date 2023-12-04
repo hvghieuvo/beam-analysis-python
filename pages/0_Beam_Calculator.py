@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import pandas as pd
 from io import BytesIO
+from beam import create_beam, add_load, add_sp, plot_diagram
 
 # Kiểm tra nếu 'console_forces' không tồn tại trong session state thì khởi tạo
 if 'console_forces' not in st.session_state:
@@ -193,6 +194,7 @@ with tab2:
                         (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox_2:
                     st.session_state.advanced_forces.pop(idx - 1)
+                    
         st.image('images/advanced.jpg', caption='Beam with many supports') 
         st.markdown('---')
         if st.button('Solve'):
@@ -201,7 +203,6 @@ with tab2:
 with tab3:
     x = np.linspace(0, 10, 100)
     y = np.sin(x)  
-    
     
     st.subheader("Axial Force")
     plt.plot(x, y)
