@@ -23,7 +23,7 @@ if 'advanced_forces' not in st.session_state:
 if 'solve_clicked' not in st.session_state:
     st.session_state.solve_clicked = False
 
-st.set_page_config(page_title="Beam Calculator", page_icon="🙃")
+st.set_page_config(page_title="Beam Calculator", page_icon="🙃",layout = 'wide')
 st.markdown("# Beam Calculator")
 st.sidebar.header("Beam Calculator Tool")
 st.markdown("---")
@@ -209,6 +209,7 @@ with tab2:
                 if delete_checkbox_2:
                     st.session_state.advanced_forces.pop(idx - 1) 
             if st.button('Quick Solve'):
+                st.session_state.quick_solve_clicked = True
                 #Giải và plot đồ thị
                 # plot_diagram(0)
         
