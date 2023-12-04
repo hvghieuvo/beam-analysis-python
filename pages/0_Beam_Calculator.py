@@ -19,9 +19,13 @@ if 'beam_forces' not in st.session_state:
 if 'advanced_forces' not in st.session_state:
     st.session_state.advanced_forces = []
 
+if 'type_support' not in st.session_state:
+    st.session_state.type_support = []
+
 # Biến trạng thái để kiểm soát việc hiển thị và tính toán
 if 'solve_clicked' not in st.session_state:
     st.session_state.solve_clicked = False
+
 
 st.set_page_config(page_title="Beam Calculator", page_icon="🙃", layout="wide")
 st.markdown("# Beam Calculator")
@@ -40,6 +44,7 @@ with tab1:
 
 # Tab nhập liệu
 added_forces=[]
+added_support=[]
 with tab2:
     # Tab nhập liệu
     select = st.selectbox('Beam type', ('Console', 'Beam with 2 supports','Advanced beam'))
@@ -157,39 +162,32 @@ with tab2:
         with col2_1:
             length_2 = st.number_input(label='Length (m)', min_value=1.00, max_value=None, step=0.01)
             st.markdown('---')
-            data_df = pd.DataFrame(
-                {
-                    "category": [
-                        "Pin",
-                        "Roller",
-                        "Fixed",
-                    ],
-                }
-            )
-
-            st.data_editor(
-                data_df,
-                column_config={
-                    "category": st.column_config.SelectboxColumn(
-                        "Support type",
-                        help="The category of the app",
-                        width="medium",
-                        options=[
-                            "Pin",
-                            "Roller",
-                            "Fixed"
-                        ],
-                        required=True,
-                    )
-                },
-                hide_index=True,
-                num_rows="dynamic",
-            )
-            
+            type_support = st.selectbox('Type support', ('Fixed', 'Roller', 'Pin'))
+            st.markdown('---')
+            if type_support in ['Roller', 'Pin']:
+                roller = st.slider('Roller', min_value=0.00, max_value=length_2, step=0.01)
+                pin = st.slider('Pin', min_value=0.00, max_value=length_2, step=0.01)
+                if st.button('Add type support'):
+                    st.session_state.type_support.append({'Type support': type_support, 'Roller': roller, 'Pin': pin})
+            elif type_support == 'Fixed':
+                fixed_left_end = st.checkbox('Fixed left end')
+                fixed_right_end = st.checkbox('Fixed right end')
+                if st.button('Add type support'):
+                    st.session_state.type_support.append({'Type support': type_support, 'Fixed left end': fixed_left_end, 'Fixed right end': fixed_right_end})
         with col2_2:
-            support_1_position = st.slider('Position of support 1', 0.00, length_2,None)
-            support_2_position = st.slider('Position of support 2', 0.00, length_2,None)
-            support_3_position = st.slider('Position of support 3', 0.00, length_2,None)
+            st.write('Added type support:')
+            for idx, support in enumerate(st.session_state.type_support, start=1):
+                delete_checkbox = st.checkbox(f"Delete {support['Type support']} {idx}")
+                st.write(
+                    f"{idx}. Type support is {support['Type support']} " +
+                    (f", Roller: {support['Roller']} (m)" if 'Roller' in support else "") +
+                    (f", Pin: {support['Pin']} (m)" if 'Pin' in support else "") +
+                    (f", Fixed left end: {support['Fixed left end']}" if 'Fixed left end' in support else "") +
+                    (f", Fixed right end: {support['Fixed right end']}" if 'Fixed right end' in support else "")
+                )
+        
+                if delete_checkbox:
+                    st.session_state.type_support.pop(idx - 1)
         with col2_3:
             type_load_2 = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment'))
             st.markdown('---')
@@ -201,10 +199,10 @@ with tab2:
             
             elif type_load_2 == 'Distributed load':
                 magnitude_2 = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
-                start_point_2 = st.slider('Start position (m)', min_value=0.00, max_value=None, step=0.01)
+                start_point_2 = st.slider('Start position (m)', min_value=0.00, max_value=length_2, step=0.01)
                 end_point_2 = st.slider('End position (m)', min_value=0.00, max_value=length_2, step=0.01)
                 if st.button('Add'):
-                    st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Start Position': start_point_2, 'End Position': end_point_1})
+                    st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Start Position': start_point_2, 'End Position': end_point_2})
             
         with col2_4:
             st.write('Added forces:')
