@@ -42,7 +42,7 @@ with tab1:
 added_forces=[]
 with tab2:
     # Tab nhập liệu
-    select = st.selectbox('Beam type', ('Console', 'Beam with 2 supports','Advanced Beam'))
+    select = st.selectbox('Beam type', ('Console', 'Beam with 2 supports','Advanced beam'))
     st.markdown('---')
     # Chọn Console
     if select == 'Console':
@@ -152,7 +152,7 @@ with tab2:
             # plot_diagram(1)
 
     # Advanced beam        
-    elif select == 'Advanced Beam':
+    elif select == 'Advanced beam':
         col2_1, col2_2, col2_3, col2_4 = st.columns(4, gap='large')
         with col2_1:
             length_2 = st.number_input(label='Length (m)', min_value=1.00, max_value=None, step=0.01)
@@ -222,25 +222,30 @@ with tab2:
                 # plot_diagram(0)
         
         st.markdown('---')
+        
         keo2, bua2, bao2 = st.columns([1,3,1])
         with bua2:
           st.image('images/advanced.jpg', caption='Many supports')              
         st.markdown('---')
+        
         if st.button('Solve'):
             st.session_state.solve_clicked = True
             #Giải và plot đồ thị
             # plot_diagram(1)
             
 with tab3:
-    st.image('images/fig_reac.png', caption='Reaction force diagram')
-    st.divider()
-    
-    st.image('images/fig_shear.png', caption='Shear force diagram')
-    st.divider()
+    keo3, bua3, bao3 = st.columns([1,2,1])
+    with bua3:
+        st.write("")
+        st.image('images/fig_reac.png', caption='Reaction force diagram')
+        st.divider()
 
-    st.image('images/fig_normal.png', caption='Normal force diagram')
-    st.divider()
+        st.image('images/fig_shear.png', caption='Shear force diagram')
+        st.divider()
 
-    st.image('images/fig_moment.png', caption='Bending moment diagram')
-    st.divider()
+        st.image('images/fig_normal.png', caption='Normal force diagram')
+        st.divider()
+
+        st.image('images/fig_moment.png', caption='Bending moment diagram')
+        
 
