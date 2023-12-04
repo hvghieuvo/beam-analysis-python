@@ -5,8 +5,8 @@ import kaleido
 
 def create_beam(l, E = 200 * 10**9, I = 9.05 * 10**-6, A = 0.23):
     # E is "Young's Modulus" and default = 200 * 10**9
-    # A is "Second Moment of Area" and default = 9.05 * 10**-6
-    # I is "Cross-Sectional Area" and default = 0.23
+    # I is "Second Moment of Area" and default = 9.05 * 10**-6
+    # A is "Cross-Sectional Area" and default = 0.23
     
     beam = Beam(l, E, I, A)
     
@@ -17,11 +17,11 @@ def add_sp(x, type):
     #Roller = (0,1,0)
     #Fixed = (1,1,1)
     
-    if type == "pin":
+    if type == "Pin":
         return beam.add_supports(Support(x, (1,1,0)))
-    if type == "roller":
+    if type == "Roller":
         return beam.add_supports(Support(x, (0,1,0)))
-    if type == "fixed":
+    if type == "Fixed":
         return beam.add_supports(Support(x, (1,1,1)))
     
 def add_load(x1, magnitude, type, x2 = None):
@@ -39,7 +39,6 @@ def plot_diagram(x=0):
     if x == 0:
         #PLot beam schematic
         fig_beam = beam.plot_beam_diagram()
-        return fig_beam
         fig_beam.write_image("./images/fig_beam.png",format='png',engine='kaleido')
     else:
         #PLot beam schematic
@@ -63,11 +62,11 @@ def plot_diagram(x=0):
         fig_deflection.write_image("./images/fig_deflection.png",format='png',engine='kaleido')
 
 beam = create_beam(10)
-add_sp(0, "fixed")
-add_sp(10, "pin")
-add_sp(5, "roller")
-add_load(2, -10, "pload")
-add_load(7, -15, "dlv", 10)
-add_load(5, 20, "ptorque")
+# add_sp(0, "fixed")
+add_sp(0, "pin")
+add_sp(10, "roller")
+# add_load(2, -10, "pload")
+add_load(0, -10, "dlv", 10)
+# add_load(5, 20, "ptorque")
 plot_diagram(0)
 plot_diagram(1)

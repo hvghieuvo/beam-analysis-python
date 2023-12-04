@@ -51,8 +51,16 @@ with tab2:
         # Tạo hộp để nhập số liệu
         with col1: 
             length = st.number_input(label='Length (m)', min_value=0.00, max_value=None, step=0.01)
+            
+            #Tạo beam với độ dài length
+            create_beam(length)
             st.markdown('---')
+            
             fixed_type = st.selectbox('Fixed position', ('Fixed left end', 'Fixed right end'))
+            #Thêm ngàm trái hoặc phải
+            if fixed_type == "Fixed left end":
+                add_sp(0, "fixed")
+            else: add_sp(length, "fixed")
             
         with col2:
             type_load = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment')) 
@@ -87,20 +95,28 @@ with tab2:
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
-
+            #Giải và plot đồ thị
+            plot_diagram(1)
+            
     # Beam with 2 supports
     elif select == 'Beam with 2 supports':
         col1_1, col1_2, col1_3, col1_4 = st.columns(4, gap='large')
+        
         with col1_1:
             length_1 = st.number_input(label='Length (m)', min_value=1.00, max_value=None, step=0.01)
+            #Tạo beam với độ dài length_1
+            create_beam(length_1)
             st.markdown('---')
             support_type_right = st.selectbox('Support type right', ('Pin', 'Roller'))
             support_type_left = st.selectbox('Support type left', ('Pin', 'Roller'))
         
         with col1_2:
-            pinned_1 = st.slider("Position of pinned 1 (m)", 0.00, length_1, None)
-            pinned_2 = st.slider("Position of pinned 2 (m)", 0.00, length_1, None)
-        
+            sup_1 = st.slider("Position of support 1 (m)", 0.00, length_1, None)
+            sup_2 = st.slider("Position of support 2 (m)", 0.00, length_1, None)
+            #Thêm supports
+            add_sp(sup_1, support_type_left)
+            add_sp(sup_2, support_type_right)
+            
         with col1_3:
             type_load_1 = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment'))
             st.markdown('---')
@@ -131,7 +147,9 @@ with tab2:
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
-    
+            #Giải và plot đồ thị
+            plot_diagram(1)
+            
     elif select == 'Advanced':
         col2_1, col2_2, col2_3, col2_4 = st.columns(4, gap='large')
         with col2_1:
@@ -199,22 +217,19 @@ with tab2:
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
-
+            #Giải và plot đồ thị
+            plot_diagram(1)
+            
 with tab3:
-    x = np.linspace(0, 10, 100)
-    y = np.sin(x)  
+    st.image('images/fig_reac.png', caption='Reaction force diagram')
+    st.divider()
     
-    st.subheader("Axial Force")
-    plt.plot(x, y)
-    plt.title('Axial Force')
-    st.pyplot(plt)
+    st.image('images/fig_shear.png', caption='Shear force diagram')
+    st.divider()
 
-    st.subheader("Shear Force")
-    plt.plot(x, y)
-    plt.title('Shear Force')
-    st.pyplot(plt)
+    st.image('images/fig_normal.png', caption='Normal force diagram')
+    st.divider()
 
-    st.subheader("Bending Moment")
-    plt.plot(x, y)
-    plt.title('Bending Moment')
-    st.pyplot(plt)
+    st.image('images/fig_moment.png', caption='Bending moment diagram')
+    st.divider()
+
