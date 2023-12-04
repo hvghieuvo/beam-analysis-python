@@ -214,7 +214,7 @@ with tab2:
                 # plot_diagram(0)
         
                     
-        st.image('images/advanced.jpg', caption='Beam with many supports') 
+        st.image('images/advanced.jpg', caption='Beam with many supports')
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
