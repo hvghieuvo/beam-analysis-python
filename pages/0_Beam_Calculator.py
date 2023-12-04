@@ -80,7 +80,9 @@ with tab2:
                     (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox:
                     st.session_state.console_forces.pop(idx - 1)
-        
+            st.button('Quick solve')
+
+
 
         st.image('images/console.jpg', caption='Console')
         st.markdown('---')
@@ -126,6 +128,8 @@ with tab2:
                         (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox_1:
                     st.session_state.beam_forces.pop(idx - 1)
+            st.button('Quick solve')
+        
         st.image('images/2sup.jpg', caption='Beam with 2 supports')   
         st.markdown('---')
         if st.button('Solve'):
@@ -162,7 +166,9 @@ with tab2:
                     )
                 },
                 hide_index=True,
+                num_rows="dynamic",
             )
+            
         with col2_2:
             support_1_position = st.slider('Position of support 1', 0.00, length_2,None)
             support_2_position = st.slider('Position of support 2', 0.00, length_2,None)
@@ -193,6 +199,9 @@ with tab2:
                         (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox_2:
                     st.session_state.advanced_forces.pop(idx - 1)
+            st.button('Quick solve')
+            
+        
         st.image('images/advanced.jpg', caption='Beam with many supports') 
         st.markdown('---')
         if st.button('Solve'):
