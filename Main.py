@@ -22,7 +22,7 @@ def run():
     st.set_page_config(
         page_title="Beam sus",
         page_icon="🙂",
-        layout = 'wide',
+        layout = 'wide'
     )
 
     st.write("# Demo GUI")

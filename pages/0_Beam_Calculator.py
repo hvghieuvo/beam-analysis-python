@@ -6,8 +6,7 @@ from streamlit_option_menu import option_menu
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import pandas as pd
-from io import BytesIO
-from beam import create_beam, add_load, add_sp, plot_diagram
+# from beam import create_beam, add_load, add_sp, plot_diagram
 
 # Kiểm tra nếu 'console_forces' không tồn tại trong session state thì khởi tạo
 if 'console_forces' not in st.session_state:
@@ -24,7 +23,7 @@ if 'advanced_forces' not in st.session_state:
 if 'solve_clicked' not in st.session_state:
     st.session_state.solve_clicked = False
 
-st.set_page_config(page_title="Beam Calculator", page_icon="🙃")
+st.set_page_config(page_title="Beam Calculator", page_icon="🙃", layout="wide")
 st.markdown("# Beam Calculator")
 st.sidebar.header("Beam Calculator Tool")
 st.markdown("---")
@@ -51,16 +50,13 @@ with tab2:
         # Tạo hộp để nhập số liệu
         with col1: 
             length = st.number_input(label='Length (m)', min_value=0.00, max_value=None, step=0.01)
-            
-            #Tạo beam với độ dài length
-            create_beam(length)
             st.markdown('---')
             
             fixed_type = st.selectbox('Fixed position', ('Fixed left end', 'Fixed right end'))
             #Thêm ngàm trái hoặc phải
-            if fixed_type == "Fixed left end":
-                add_sp(0, "fixed")
-            else: add_sp(length, "fixed")
+            # if fixed_type == "Fixed left end":
+            #     add_sp(0, "fixed")
+            # else: add_sp(length, "fixed")
             
         with col2:
             type_load = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment')) 
@@ -99,7 +95,7 @@ with tab2:
         if st.button('Solve'):
             st.session_state.solve_clicked = True
             #Giải và plot đồ thị
-            plot_diagram(1)
+            # plot_diagram(1)
             
     # Beam with 2 supports
     elif select == 'Beam with 2 supports':
@@ -226,7 +222,7 @@ with tab2:
         if st.button('Solve'):
             st.session_state.solve_clicked = True
             #Giải và plot đồ thị
-            plot_diagram(1)
+            # plot_diagram(1)
             
 with tab3:
     st.image('images/fig_reac.png', caption='Reaction force diagram')
