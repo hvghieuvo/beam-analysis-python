@@ -42,7 +42,7 @@ with tab1:
 added_forces=[]
 with tab2:
     # Tab nhập liệu
-    select = st.selectbox('Beam type', ('Console', 'Beam with 2 supports','Advanced'))
+    select = st.selectbox('Beam type', ('Console', 'Beam with 2 supports','Advanced beam'))
     st.markdown('---')
     # Chọn Console
     if select == 'Console':
@@ -152,7 +152,84 @@ with tab2:
             # plot_diagram(1)
 
     # Advanced beam        
-    
+    elif select == 'Advanced beam':
+        col2_1, col2_2, col2_3, col2_4 = st.columns(4, gap='large')
+        with col2_1:
+            length_2 = st.number_input(label='Length (m)', min_value=1.00, max_value=None, step=0.01)
+            st.markdown('---')
+            data_df = pd.DataFrame(
+                {
+                    "category": [
+                        "Pin",
+                        "Roller",
+                        "Fixed",
+                    ],
+                }
+            )
+
+            st.data_editor(
+                data_df,
+                column_config={
+                    "category": st.column_config.SelectboxColumn(
+                        "Support type",
+                        help="The category of the app",
+                        width="medium",
+                        options=[
+                            "Pin",
+                            "Roller",
+                            "Fixed"
+                        ],
+                        required=True,
+                    )
+                },
+                hide_index=True,
+                num_rows="dynamic",
+            )
+            
+        with col2_2:
+            support_1_position = st.slider('Position of support 1', 0.00, length_2,None)
+            support_2_position = st.slider('Position of support 2', 0.00, length_2,None)
+            support_3_position = st.slider('Position of support 3', 0.00, length_2,None)
+        with col2_3:
+            type_load_2 = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment'))
+            st.markdown('---')
+            if type_load_2 in ['Point load', 'Moment']:
+                magnitude_2 = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
+                position_2 = st.slider('Position (m)', min_value=0.00, max_value=length_2, step=0.01)
+                if st.button('Add'):
+                    st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Position': position_2})
+            
+            elif type_load_2 == 'Distributed load':
+                magnitude_2 = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
+                start_point_2 = st.slider('Start position (m)', min_value=0.00, max_value=None, step=0.01)
+                end_point_2 = st.slider('End position (m)', min_value=0.00, max_value=length_2, step=0.01)
+                if st.button('Add'):
+                    st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Start Position': start_point_2, 'End Position': end_point_1})
+            
+        with col2_4:
+            st.write('Added forces:')
+            for idx, force in enumerate(st.session_state.advanced_forces, start=1):
+                delete_checkbox_2= st.checkbox(f"Delete load {idx}")
+                st.write(f"{idx}. Type load is {force['Type Load']}, Magnitude: {force['Magnitude']} (kN)" +
+                        (f", Position: {force['Position']} (m)" if force['Type Load'] in ['Point load', 'Moment'] else "") +
+                        (f", Start Position: {force['Start Position']} (m)" if 'Start Position' in force else "") +
+                        (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
+                if delete_checkbox_2:
+                    st.session_state.advanced_forces.pop(idx - 1) 
+            if st.button('Quick Solve'):
+                st.session_state.quick_solve_clicked = True
+                #Giải và plot đồ thị
+                # plot_diagram(0)
+        
+        st.markdown('---')
+        
+        keo2, bua2, bao2 = st.columns([1,3,1])
+        with bua2:
+          st.image('images/advanced.jpg', caption='Many supports')              
+        st.markdown('---')
+        
+        if st.button('Solve'):
+            st.session_state.solve_clicked = True
             #Giải và plot đồ thị
             # plot_diagram(1)
             
