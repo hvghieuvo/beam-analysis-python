@@ -234,15 +234,19 @@ with tab2:
             # plot_diagram(1)
             
 with tab3:
-    st.image('images/fig_reac.png', caption='Reaction force diagram')
-    st.divider()
+    keo3, bua3, bao3 = st.columns([1,2,1])
+    with bua3:
+        st.image('images/fig_reac.png', caption='Reaction force diagram')
+        st.divider()
     
-    st.image('images/fig_shear.png', caption='Shear force diagram')
-    st.divider()
-
-    st.image('images/fig_normal.png', caption='Normal force diagram')
-    st.divider()
-
-    st.image('images/fig_moment.png', caption='Bending moment diagram')
-    st.divider()
+    keo4, bua4, bao4 = st.columns([1,2,1])
+    with bua4:
+        st.image('images/fig_shear.png', caption='Shear force diagram')
+    keo5, bua5, bao5 = st.columns([1,2,1])    
+    with bua5:
+        st.image('images/fig_normal.png', caption='Normal force diagram')
+    keo6, bua6, bao6 = st.columns([1,2,1])    
+    with bua6:
+        st.image('images/fig_moment.png', caption='Bending moment diagram')
+        
 
