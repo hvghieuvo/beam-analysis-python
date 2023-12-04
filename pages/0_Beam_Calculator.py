@@ -150,8 +150,9 @@ with tab2:
             
             #Giải và plot đồ thị
             # plot_diagram(1)
-            
-    elif select == 'Advanced':
+
+    # Advanced beam        
+    elif select == 'Advanced beam':
         col2_1, col2_2, col2_3, col2_4 = st.columns(4, gap='large')
         with col2_1:
             length_2 = st.number_input(label='Length (m)', min_value=1.00, max_value=None, step=0.01)
@@ -223,7 +224,7 @@ with tab2:
         st.markdown('---')
         keo2, bua2, bao2 = st.columns([1,3,1])
         with bua2:
-          st.image('images/advanced.jpg', caption='many supports')              
+          st.image('images/advanced.jpg', caption='Many supports')              
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
