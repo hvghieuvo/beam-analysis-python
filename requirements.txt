@@ -11,3 +11,4 @@ matplotlib
 sectionproperties
 streamlit-option-menu
 streamlit-marquee
+Pillow
