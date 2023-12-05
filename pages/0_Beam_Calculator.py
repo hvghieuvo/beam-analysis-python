@@ -3,10 +3,8 @@ import numpy as np
 import streamlit as st
 from streamlit.hello.utils import show_code
 from streamlit_option_menu import option_menu 
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+from indeterminatebeam import *
 import pandas as pd
-# from beam import create_beam, add_load, add_sp, plot_diagram
 
 # Kiểm tra nếu 'console_forces' không tồn tại trong session state thì khởi tạo
 if 'console_forces' not in st.session_state:
@@ -26,7 +24,6 @@ if 'type_support' not in st.session_state:
 if 'solve_clicked' not in st.session_state:
     st.session_state.solve_clicked = False
 
-
 st.set_page_config(page_title="Beam Calculator", page_icon="🙃", layout="wide")
 st.markdown("# Beam Calculator")
 st.sidebar.header("Beam Calculator Tool")
@@ -44,7 +41,6 @@ with tab1:
 
 # Tab nhập liệu
 added_forces=[]
-added_support=[]
 with tab2:
     # Tab nhập liệu
     select = st.selectbox('Beam type', ('Console', 'Beam with 2 supports','Advanced beam'))
@@ -58,10 +54,6 @@ with tab2:
             st.markdown('---')
             
             fixed_type = st.selectbox('Fixed position', ('Fixed left end', 'Fixed right end'))
-            #Thêm ngàm trái hoặc phải
-            # if fixed_type == "Fixed left end":
-            #     add_sp(0, "fixed")
-            # else: add_sp(length, "fixed")
             
         with col2:
             type_load = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment')) 
@@ -90,18 +82,92 @@ with tab2:
                     (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox:
                     st.session_state.console_forces.pop(idx - 1)
-            st.button('Quick solve')
+                    
+            #Button để tạo beam, add sp và lực, hiển thị đề bài        
+            if st.button('Quick solve'):
+                
+                #Tạo beam với độ dài length
+                beam = Beam(length)
+                
+                if fixed_type == "Fixed left end":
+                    beam.add_supports(Support(0, (1,1,1)))
+                else: beam.add_supports(Support(length, (1,1,1)))
+                
+                for force in st.session_state.console_forces:
+                    # Trích xuất thông tin từ mỗi phần tử
+                    type_load = force.get("Type Load")
+                    magnitude = force.get("Magnitude")
+                    position = force.get("Position", None)
+                    start_position = force.get("Start Position", None)
+                    end_position = force.get("End Position", None)
+
+                    # Gọi hàm add_load với thông tin từng load
+                    if type_load == "Distributed load":
+                        beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
+                    elif type_load == "Moment":
+                        beam.add_loads(PointTorque(round(magnitude,2), position))
+                    elif type_load == "Point load":
+                        beam.add_loads(PointLoadV(round(magnitude,2), position))
+
+                beam.analyse()
+                #Vẽ biểu đồ dựa trên thông tin đã input
+                fig_beam = beam.plot_beam_diagram()
+                fig_beam.write_image("./images/fig_beam_console.png",format='png',engine='kaleido')
+      
       
         st.markdown('---')
-        keo, bua, bao = st.columns([1,3,1])
+        keo, bua, bao = st.columns([1,2,1])
         with bua:
-          st.image('images/console.jpg', caption='Console')  
+          st.image('images/fig_beam_console.png', caption='Console beam')  
         
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
+            
+            #Tạo beam với độ dài length
+            beam = Beam(length)
+            
+            if fixed_type == "Fixed left end":
+                beam.add_supports(Support(0, (1,1,1)))
+            else: beam.add_supports(Support(length, (1,1,1)))
+            
+            for force in st.session_state.console_forces:
+                # Trích xuất thông tin từ mỗi phần tử
+                type_load = force.get("Type Load")
+                magnitude = force.get("Magnitude")
+                position = force.get("Position", None)
+                start_position = force.get("Start Position", None)
+                end_position = force.get("End Position", None)
+
+                # Gọi hàm add_load với thông tin từng load
+                if type_load == "Distributed load":
+                    beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
+                elif type_load == "Moment":
+                    beam.add_loads(PointTorque(round(magnitude,2), position))
+                elif type_load == "Point load":
+                    beam.add_loads(PointLoadV(round(magnitude,2), position))
+                    
+            beam.analyse()
             #Giải và plot đồ thị
-            # plot_diagram(1)
+            #PLot beam schematic
+            fig_reac = beam.plot_reaction_force()
+            fig_reac.write_image("./images/fig_reac.png",format='png',engine='kaleido')
+
+            #PLot normal force
+            fig_normal = beam.plot_normal_force()
+            fig_normal.write_image("./images/fig_normal.png",format='png',engine='kaleido')
+
+            #PLot shear force
+            fig_shear = beam.plot_shear_force()
+            fig_shear.write_image("./images/fig_shear.png",format='png',engine='kaleido')
+
+            #PLot bending moment
+            fig_moment = beam.plot_bending_moment()
+            fig_moment.write_image("./images/fig_moment.png",format='png',engine='kaleido')
+
+            #Plot deflection
+            fig_deflection = beam.plot_deflection()
+            fig_deflection.write_image("./images/fig_deflection.png",format='png',engine='kaleido')
             
     # Beam with 2 supports
     elif select == 'Beam with 2 supports':
@@ -162,32 +228,39 @@ with tab2:
         with col2_1:
             length_2 = st.number_input(label='Length (m)', min_value=1.00, max_value=None, step=0.01)
             st.markdown('---')
-            type_support = st.selectbox('Type support', ('Fixed', 'Roller', 'Pin'))
-            st.markdown('---')
-            if type_support in ['Roller', 'Pin']:
-                roller = st.slider('Roller', min_value=0.00, max_value=length_2, step=0.01)
-                pin = st.slider('Pin', min_value=0.00, max_value=length_2, step=0.01)
-                if st.button('Add type support'):
-                    st.session_state.type_support.append({'Type support': type_support, 'Roller': roller, 'Pin': pin})
-            elif type_support == 'Fixed':
-                fixed_left_end = st.checkbox('Fixed left end')
-                fixed_right_end = st.checkbox('Fixed right end')
-                if st.button('Add type support'):
-                    st.session_state.type_support.append({'Type support': type_support, 'Fixed left end': fixed_left_end, 'Fixed right end': fixed_right_end})
+            data_df = pd.DataFrame(
+                {
+                    "category": [
+                        "Pin",
+                        "Roller",
+                        "Fixed",
+                    ],
+                }
+            )
+
+            st.data_editor(
+                data_df,
+                column_config={
+                    "category": st.column_config.SelectboxColumn(
+                        "Support type",
+                        help="The category of the app",
+                        width="medium",
+                        options=[
+                            "Pin",
+                            "Roller",
+                            "Fixed"
+                        ],
+                        required=True,
+                    )
+                },
+                hide_index=True,
+                num_rows="dynamic",
+            )
+            
         with col2_2:
-            st.write('Added type support:')
-            for idx, support in enumerate(st.session_state.type_support, start=1):
-                delete_checkbox = st.checkbox(f"Delete {support['Type support']} {idx}")
-                st.write(
-                    f"{idx}. Type support is {support['Type support']} " +
-                    (f", Roller: {support['Roller']} (m)" if 'Roller' in support else "") +
-                    (f", Pin: {support['Pin']} (m)" if 'Pin' in support else "") +
-                    (f", Fixed left end: {support['Fixed left end']}" if 'Fixed left end' in support else "") +
-                    (f", Fixed right end: {support['Fixed right end']}" if 'Fixed right end' in support else "")
-                )
-        
-                if delete_checkbox:
-                    st.session_state.type_support.pop(idx - 1)
+            support_1_position = st.slider('Position of support 1', 0.00, length_2,None)
+            support_2_position = st.slider('Position of support 2', 0.00, length_2,None)
+            support_3_position = st.slider('Position of support 3', 0.00, length_2,None)
         with col2_3:
             type_load_2 = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment'))
             st.markdown('---')
@@ -199,10 +272,10 @@ with tab2:
             
             elif type_load_2 == 'Distributed load':
                 magnitude_2 = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
-                start_point_2 = st.slider('Start position (m)', min_value=0.00, max_value=length_2, step=0.01)
+                start_point_2 = st.slider('Start position (m)', min_value=0.00, max_value=None, step=0.01)
                 end_point_2 = st.slider('End position (m)', min_value=0.00, max_value=length_2, step=0.01)
                 if st.button('Add'):
-                    st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Start Position': start_point_2, 'End Position': end_point_2})
+                    st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Start Position': start_point_2, 'End Position': end_point_1})
             
         with col2_4:
             st.write('Added forces:')
