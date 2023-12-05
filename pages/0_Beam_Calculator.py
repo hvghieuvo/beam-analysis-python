@@ -45,6 +45,7 @@ with tab1:
 # Tab nhập liệu
 added_forces=[]
 added_support=[]
+
 with tab2:
     # Tab nhập liệu
     select = st.selectbox('Beam type', ('Console', 'Beam with 2 supports','Advanced beam'))
@@ -159,6 +160,7 @@ with tab2:
     # Advanced beam        
     elif select == 'Advanced beam':
         col2_1, col2_2, col2_3, col2_4 = st.columns(4, gap='large')
+        
         with col2_1:
             length_2 = st.number_input(label='Length (m)', min_value=1.00, max_value=None, step=0.01)
             st.markdown('---')
@@ -174,8 +176,9 @@ with tab2:
                 fixed_right_end = st.checkbox('Fixed right end')
                 if st.button('Add type support'):
                     st.session_state.type_support.append({'Type support': type_support, 'Fixed left end': fixed_left_end, 'Fixed right end': fixed_right_end})
+        
         with col2_2:
-            st.write('Added type support:')
+            st.write('Added support:')
             for idx, support in enumerate(st.session_state.type_support, start=1):
                 delete_checkbox = st.checkbox(f"Delete {support['Type support']} {idx}")
                 st.write(
@@ -188,6 +191,7 @@ with tab2:
         
                 if delete_checkbox:
                     st.session_state.type_support.pop(idx - 1)
+        
         with col2_3:
             type_load_2 = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment'))
             st.markdown('---')

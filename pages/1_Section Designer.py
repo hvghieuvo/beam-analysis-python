@@ -23,12 +23,23 @@ with tab1:
 
 with tab2:
     select = st.selectbox('Cross section type', ('Rectangle', 'Circle','Annulus','C','I'))
-    if select == 'Rectangle' or select == 'Circle' or select == 'Annulus':
+    if select == 'Rectangle':
         col1, col2, col3 = st.columns(3, gap='large')
         with col1:
             high = st.number_input(label='Height', min_value=0.00, max_value=None, step=0.01)
-            st.markdown('---')
+            st.markdown('---')  
             width = st.number_input(label='Width', min_value=0.00, max_value=None, step=0.01)
-            st.markdown('---')
-            thickness = st.number_input(label='Thickness', min_value=0.00, max_value=None, step=0.01)
+    elif select == 'Circle':
+        col1_1, col2_1, col3_1 = st.columns(3, gap='large')
+        with col1_1:
+            R = st.number_input(lable="Radius", min_value=0.00, max_value=None, step=0.01)
+    elif select == 'Annulus':
+        col1_2, col2_2, col3_2 = st.columns(3, gap='large')   
+        with col1_2:
+            Ri = st.number_input(label='Radius in', min_value=0.00, max_value=None, step=0.01)  
+            Ro = st.number_input(label='Radius out', min_value=0.00, max_value=None, step=0.01)
+    elif select == 'C':
+        col1_3, col2_3, col3_3 = st.columns(3, gap='large')
+        with col1_3:
+            N0=st
         
