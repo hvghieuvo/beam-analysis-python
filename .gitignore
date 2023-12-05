@@ -1,0 +1,9 @@
+# Docker container catalog
+.devcontainer/ 
+# Build & Debug assets
+build/
+dist/
+# Python virtual environment 
+venv/
+# Python cache 
+__pycache__
