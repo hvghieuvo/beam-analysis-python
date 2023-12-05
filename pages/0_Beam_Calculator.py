@@ -3,10 +3,8 @@ import numpy as np
 import streamlit as st
 from streamlit.hello.utils import show_code
 from streamlit_option_menu import option_menu 
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
+from indeterminatebeam import *
 import pandas as pd
-# from beam import create_beam, add_load, add_sp, plot_diagram
 
 # Kiểm tra nếu 'console_forces' không tồn tại trong session state thì khởi tạo
 if 'console_forces' not in st.session_state:
@@ -26,6 +24,7 @@ if 'type_support' not in st.session_state:
 if 'solve_clicked' not in st.session_state:
     st.session_state.solve_clicked = False
 
+       
 
 st.set_page_config(page_title="Beam Calculator", page_icon="🙃", layout="wide")
 st.markdown("# Beam Calculator")
@@ -50,33 +49,30 @@ with tab2:
     # Tab nhập liệu
     select = st.selectbox('Beam type', ('Console', 'Beam with 2 supports','Advanced beam'))
     st.markdown('---')
-    # Chọn Console
+    
+    #================================= Chọn Console #=================================
     if select == 'Console':
         col1, col2, col3 = st.columns(3)
         # Tạo hộp để nhập số liệu
         with col1: 
-            length = st.number_input(label='Length (m)', min_value=0.00, max_value=None, step=0.01)
+            length = st.number_input(label='Length (m)', min_value=1.00, max_value=None, step=0.01)
             st.markdown('---')
             
             fixed_type = st.selectbox('Fixed position', ('Fixed left end', 'Fixed right end'))
-            #Thêm ngàm trái hoặc phải
-            # if fixed_type == "Fixed left end":
-            #     add_sp(0, "fixed")
-            # else: add_sp(length, "fixed")
             
         with col2:
             type_load = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment')) 
             if type_load in ['Point load', 'Moment']:
                 magnitude = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
-                position = st.number_input('Position (m)', min_value=0.00, max_value=length, step=0.01)
+                position = st.slider('Position (m)', min_value=0.00, max_value=length, step=0.01)
                 if st.button('Add'):
                     st.session_state.console_forces.append({'Type Load': type_load, 'Magnitude': magnitude, 'Position': position})
             
             elif type_load == 'Distributed load':
                 # Vừa tạo hộp nhập số liệu, vừa tạo slider
                 magnitude = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
-                start_point = st.number_input('Start position (m)', min_value=0.00, max_value=None, step=0.01)
-                end_point = st.number_input('End position (m)', min_value=0.00, max_value=length, step=0.01)
+                start_point = st.slider('Start position (m)', min_value=0.00, max_value=length, step=0.01)
+                end_point = st.slider('End position (m)', min_value=0.00, max_value=length, step=0.01)
                 if st.button('Add'):
                     st.session_state.console_forces.append({'Type Load': type_load, 'Magnitude': magnitude, 'Start Position': start_point, 'End Position': end_point})
 
@@ -91,28 +87,105 @@ with tab2:
                     (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox:
                     st.session_state.console_forces.pop(idx - 1)
-            st.button('Quick solve')
+                    
+            #Button để tạo beam, add sp và lực, hiển thị đề bài        
+            if st.button('Check'):
+                
+                #Tạo beam với độ dài length
+                beam = Beam(length)
+                
+                if fixed_type == "Fixed left end":
+                    beam.add_supports(Support(0, (1,1,1)))
+                else: beam.add_supports(Support(length, (1,1,1)))
+                
+                for force in st.session_state.console_forces:
+                    # Trích xuất thông tin từ mỗi phần tử
+                    type_load = force.get("Type Load")
+                    magnitude = force.get("Magnitude")
+                    position = force.get("Position", None)
+                    start_position = force.get("Start Position", None)
+                    end_position = force.get("End Position", None)
+
+                    # Gọi hàm add_load với thông tin từng load
+                    if type_load == "Distributed load":
+                        beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
+                    elif type_load == "Moment":
+                        beam.add_loads(PointTorque(round(magnitude,2), position))
+                    elif type_load == "Point load":
+                        beam.add_loads(PointLoadV(round(magnitude,2), position))
+
+                beam.analyse()
+                #Vẽ biểu đồ dựa trên thông tin đã input
+                fig_beam = beam.plot_beam_diagram()
+                fig_beam.write_image("./images/fig_beam_console.png",format='png',engine='kaleido')
+      
       
         st.markdown('---')
         keo, bua, bao = st.columns([1,3,1])
         with bua:
-          st.image('images/console.jpg', caption='Console')  
+          st.image('images/fig_beam_console.png', caption='Console beam', width=900)  
         
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
-            #Giải và plot đồ thị
-            # plot_diagram(1)
             
-    # Beam with 2 supports
+            #Tạo beam với độ dài length
+            beam = Beam(length)
+            
+            if fixed_type == "Fixed left end":
+                beam.add_supports(Support(0, (1,1,1)))
+            else: beam.add_supports(Support(length, (1,1,1)))
+            
+            for force in st.session_state.console_forces:
+                # Trích xuất thông tin từ mỗi phần tử
+                type_load = force.get("Type Load")
+                magnitude = force.get("Magnitude")
+                position = force.get("Position", None)
+                start_position = force.get("Start Position", None)
+                end_position = force.get("End Position", None)
+
+                # Gọi hàm add_load với thông tin từng load
+                if type_load == "Distributed load":
+                    beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
+                elif type_load == "Moment":
+                    beam.add_loads(PointTorque(round(magnitude,2), position))
+                elif type_load == "Point load":
+                    beam.add_loads(PointLoadV(round(magnitude,2), position))
+                    
+            beam.analyse()
+            #Giải và plot đồ thị
+            #PLot beam schematic
+            fig_reac = beam.plot_reaction_force()
+            fig_reac.write_image("./images/fig_reac_console.png",format='png',engine='kaleido')
+
+            #PLot normal force
+            fig_normal = beam.plot_normal_force()
+            fig_normal.write_image("./images/fig_normal_console.png",format='png',engine='kaleido')
+
+            #PLot shear force
+            fig_shear = beam.plot_shear_force()
+            fig_shear.write_image("./images/fig_shear_console.png",format='png',engine='kaleido')
+
+            #PLot bending moment
+            fig_moment = beam.plot_bending_moment()
+            fig_moment.write_image("./images/fig_moment_console.png",format='png',engine='kaleido')
+
+            #Plot deflection
+            fig_deflection = beam.plot_deflection()
+            fig_deflection.write_image("./images/fig_deflection_console.png",format='png',engine='kaleido')
+            
+            
+            
+    #================================= Beam with 2 supports #=================================
     elif select == 'Beam with 2 supports':
         col1_1, col1_2, col1_3, col1_4 = st.columns(4, gap='large')
         
         with col1_1:
             length_1 = st.number_input(label='Length (m)', min_value=1.00, max_value=None, step=0.01)
             st.markdown('---')
-            support_type_right = st.selectbox('Support type right', ('Pin', 'Roller'))
             support_type_left = st.selectbox('Support type left', ('Pin', 'Roller'))
+            support_type_right = st.selectbox('Support type right', ('Pin', 'Roller'))
+            
         
         with col1_2:
             sup_1 = st.slider("Position of support 1 (m)", 0.00, length_1, None)
@@ -144,20 +217,103 @@ with tab2:
                         (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox_1:
                     st.session_state.beam_forces.pop(idx - 1)
-            st.button('Quick solve')
+            if st.button('Check'):
+                
+                #Tạo beam với độ dài length
+                beam = Beam(length_1)
+                
+                if support_type_left == "Pin":
+                    beam.add_supports(Support(sup_1, (1,1,0)))
+                elif support_type_left == "Roller": 
+                    beam.add_supports(Support(sup_1, (0,1,0)))
+                    
+                if support_type_right == "Pin":
+                    beam.add_supports(Support(sup_2, (1,1,0)))
+                elif support_type_right == "Roller":
+                    beam.add_supports(Support(sup_2, (0,1,0)))
+                    
+                for force in st.session_state.beam_forces:
+                    # Trích xuất thông tin từ mỗi phần tử
+                    type_load = force.get("Type Load")
+                    magnitude = force.get("Magnitude")
+                    position = force.get("Position", None)
+                    start_position = force.get("Start Position", None)
+                    end_position = force.get("End Position", None)
+
+                    # Gọi hàm add_load với thông tin từng load
+                    if type_load == "Distributed load":
+                        beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
+                    elif type_load == "Moment":
+                        beam.add_loads(PointTorque(round(magnitude,2), position))
+                    elif type_load == "Point load":
+                        beam.add_loads(PointLoadV(round(magnitude,2), position))
+
+                #Vẽ biểu đồ dựa trên thông tin đã input
+                fig_beam = beam.plot_beam_diagram()
+                fig_beam.write_image("./images/fig_beam_2sp.png",format='png',engine='kaleido')
         
         st.markdown('---')        
         keo1, bua1, bao1 = st.columns([1,3,1])
         with bua1:
-          st.image('images/2sup.jpg', caption='Console')             
+          st.image('images/fig_beam_2sp.png', caption='Beam with 2 supports', width=900)             
         st.markdown('---')
+        
         if st.button('Solve'):
             st.session_state.solve_clicked = True
             
-            #Giải và plot đồ thị
-            # plot_diagram(1)
+            #Tạo beam với độ dài length
+            beam = Beam(length_1)
+            
+            if support_type_left == "Pin":
+                beam.add_supports(Support(sup_1, (1,1,0)))
+            elif support_type_left == "Roller": 
+                beam.add_supports(Support(sup_1, (0,1,0)))
+                
+            if support_type_right == "Pin":
+                beam.add_supports(Support(sup_2, (1,1,0)))
+            elif support_type_right == "Roller":
+                beam.add_supports(Support(sup_2, (0,1,0)))
+            
+            for force in st.session_state.beam_forces:
+                # Trích xuất thông tin từ mỗi phần tử
+                type_load = force.get("Type Load")
+                magnitude = force.get("Magnitude")
+                position = force.get("Position", None)
+                start_position = force.get("Start Position", None)
+                end_position = force.get("End Position", None)
 
-    # Advanced beam        
+                # Gọi hàm add_load với thông tin từng load
+                if type_load == "Distributed load":
+                    beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
+                elif type_load == "Moment":
+                    beam.add_loads(PointTorque(round(magnitude,2), position))
+                elif type_load == "Point load":
+                    beam.add_loads(PointLoadV(round(magnitude,2), position))
+                    
+            beam.analyse()
+            #Giải và plot đồ thị
+            #PLot beam schematic
+            fig_reac = beam.plot_reaction_force()
+            fig_reac.write_image("./images/fig_reac_2sp.png",format='png',engine='kaleido')
+
+            #PLot normal force
+            fig_normal = beam.plot_normal_force()
+            fig_normal.write_image("./images/fig_normal_2sp.png",format='png',engine='kaleido')
+
+            #PLot shear force
+            fig_shear = beam.plot_shear_force()
+            fig_shear.write_image("./images/fig_shear_2sp.png",format='png',engine='kaleido')
+
+            #PLot bending moment
+            fig_moment = beam.plot_bending_moment()
+            fig_moment.write_image("./images/fig_moment_2sp.png",format='png',engine='kaleido')
+
+            #Plot deflection
+            fig_deflection = beam.plot_deflection()
+            fig_deflection.write_image("./images/fig_deflection_2sp.png",format='png',engine='kaleido')
+
+
+    #================================= Advanced beam #=================================       
     elif select == 'Advanced beam':
         col2_1, col2_2, col2_3, col2_4 = st.columns(4, gap='large')
         
@@ -169,12 +325,12 @@ with tab2:
             if type_support == 'Roller':
                 roller = st.slider('Position (m)', min_value=0.00, max_value=length_2, step=0.01)
                 if st.button('Add type support'):
-                    st.session_state.type_support.append({'Type support': type_support, 'Roller': roller})
+                    st.session_state.type_support.append({'Type support': type_support, 'Position': roller})
             
             elif type_support == 'Pin':
                 pin = st.slider('Position', min_value=0.00, max_value=length_2, step=0.01)
                 if st.button('Add type support'):
-                    st.session_state.type_support.append({'Type support': type_support, 'Pin': pin})
+                    st.session_state.type_support.append({'Type support': type_support, 'Position': pin})
             
             elif type_support == 'Fixed':
                 fixed_left_end = st.checkbox('Fixed left end')
@@ -186,6 +342,7 @@ with tab2:
                     if fixed_right_end:
                         support_info['Fixed right end'] = True
                     st.session_state.type_support.append(support_info)
+                    
         with col2_2:
             st.write('Added support:')
             for idx, support in enumerate(st.session_state.type_support, start=1):
@@ -210,10 +367,10 @@ with tab2:
             
             elif type_load_2 == 'Distributed load':
                 magnitude_2 = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
-                start_point_2 = st.slider('Start position (m)', min_value=0.00, max_value=length_2, step=0.01)
+                start_point_2 = st.slider('Start position (m)', min_value=0.00, max_value=None, step=0.01)
                 end_point_2 = st.slider('End position (m)', min_value=0.00, max_value=length_2, step=0.01)
                 if st.button('Add'):
-                    st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Start Position': start_point_2, 'End Position': end_point_2})
+                    st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Start Position': start_point_2, 'End Position': end_point_1})
             
         with col2_4:
             st.write('Added forces:')
@@ -227,9 +384,41 @@ with tab2:
                     st.session_state.advanced_forces.pop(idx - 1) 
             if st.button('Quick Solve'):
                 st.session_state.quick_solve_clicked = True
-                #Giải và plot đồ thị
-                # plot_diagram(0)
-        
+
+                #Tạo beam với độ dài length
+                # beam = Beam(length_2)
+                
+                st.write(st.session_state.type_support)
+                # if support_type_left == "Pin":
+                #     beam.add_supports(Support(sup_1, (1,1,0)))
+                # elif support_type_left == "Roller": 
+                #     beam.add_supports(Support(sup_1, (0,1,0)))
+                    
+                # if support_type_right == "Pin":
+                #     beam.add_supports(Support(sup_2, (1,1,0)))
+                # elif support_type_right == "Roller":
+                #     beam.add_supports(Support(sup_2, (0,1,0)))
+                    
+                # for force in st.session_state.advanced_forces:
+                #     # Trích xuất thông tin từ mỗi phần tử
+                #     type_load = force.get("Type Load")
+                #     magnitude = force.get("Magnitude")
+                #     position = force.get("Position", None)
+                #     start_position = force.get("Start Position", None)
+                #     end_position = force.get("End Position", None)
+
+                #     # Gọi hàm add_load với thông tin từng load
+                #     if type_load == "Distributed load":
+                #         beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
+                #     elif type_load == "Moment":
+                #         beam.add_loads(PointTorque(round(magnitude,2), position))
+                #     elif type_load == "Point load":
+                #         beam.add_loads(PointLoadV(round(magnitude,2), position))
+
+                # #Vẽ biểu đồ dựa trên thông tin đã input
+                # fig_beam = beam.plot_beam_diagram()
+                # fig_beam.write_image("./images/fig_beam_2sp.png",format='png',engine='kaleido')
+            
         st.markdown('---')
         
         keo2, bua2, bao2 = st.columns([1,3,1])
@@ -239,55 +428,54 @@ with tab2:
         
         if st.button('Solve'):
             st.session_state.solve_clicked = True
-            #Giải và plot đồ thị
-            # plot_diagram(1)
-            
+
+#================================= Output tab #=================================         
 with tab3:
     image = st.selectbox('Problem', ('Console', 'Beam with 2 supports', 'Advanced Beam'))
     if image == 'Console':
-        keo3, bua3, bao3 = st.columns([1,2,1])
+        keo3, bua3, bao3 = st.columns([1,3,1])
         with bua3:
             st.write("")
-            st.image('images/fig_reac.png', caption='Reaction force diagram')
+            st.image('images/fig_reac_console.png', caption='Reaction force diagram', width=900)
             st.divider()
 
-            st.image('images/fig_shear.png', caption='Shear force diagram')
+            st.image('images/fig_shear_console.png', caption='Shear force diagram', width=900)
             st.divider()
 
-            st.image('images/fig_normal.png', caption='Normal force diagram')
+            st.image('images/fig_normal_console.png', caption='Normal force diagram', width=900)
             st.divider()
 
-            st.image('images/fig_moment.png', caption='Bending moment diagram')
+            st.image('images/fig_moment_console.png', caption='Bending moment diagram', width=900)
     
     elif image == 'Beam with 2 supports': 
         keo3, bua3, bao3 = st.columns([1,2,1])
         with bua3:
             st.write("")
-            st.image('images/fig_reac.png', caption='Reaction force diagram')
+            st.image('images/fig_reac_2sp.png', caption='Reaction force diagram', width=900)
             st.divider()
 
-            st.image('images/fig_shear.png', caption='Shear force diagram')
+            st.image('images/fig_shear_2sp.png', caption='Shear force diagram', width=900)
             st.divider()
 
-            st.image('images/fig_normal.png', caption='Normal force diagram')
+            st.image('images/fig_normal_2sp.png', caption='Normal force diagram', width=900)
             st.divider()
 
-            st.image('images/fig_moment.png', caption='Bending moment diagram')
+            st.image('images/fig_moment_2sp.png', caption='Bending moment diagram', width=900)
     
     elif image == 'Advanced Beam':
         keo3, bua3, bao3 = st.columns([1,2,1])
         with bua3:
             st.write("")
-            st.image('images/fig_reac.png', caption='Reaction force diagram')
+            st.image('images/fig_reac.png', caption='Reaction force diagram', width=900)
             st.divider()
 
-            st.image('images/fig_shear.png', caption='Shear force diagram')
+            st.image('images/fig_shear.png', caption='Shear force diagram', width=900)
             st.divider()
 
-            st.image('images/fig_normal.png', caption='Normal force diagram')
+            st.image('images/fig_normal.png', caption='Normal force diagram', width=900)
             st.divider()
 
-            st.image('images/fig_moment.png', caption='Bending moment diagram')
+            st.image('images/fig_moment.png', caption='Bending moment diagram', width=900)
     
 
     
