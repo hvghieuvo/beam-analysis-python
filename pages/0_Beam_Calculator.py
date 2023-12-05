@@ -503,8 +503,6 @@ with tab2:
             fig_deflection.write_image("./images/fig_deflection_advanced.png",format='png',engine='kaleido')
 
 
-
-
 #================================= Output tab #=================================         
 with tab3:
     image = st.selectbox('Problem', ('Console', 'Beam with 2 supports', 'Complex beam'))
