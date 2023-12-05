@@ -63,14 +63,14 @@ with tab2:
         with col2:
             type_load = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment')) 
             if type_load in ['Point load', 'Moment']:
-                magnitude = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
+                magnitude = st.number_input('Magnitude (kN)', step=0.01)
                 position = st.slider('Position (m)', min_value=0.00, max_value=length, step=0.01)
                 if st.button('Add'):
                     st.session_state.console_forces.append({'Type Load': type_load, 'Magnitude': magnitude, 'Position': position})
             
             elif type_load == 'Distributed load':
                 # Vừa tạo hộp nhập số liệu, vừa tạo slider
-                magnitude = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
+                magnitude = st.number_input('Magnitude (kN)', step=0.01)
                 start_point = st.slider('Start position (m)', min_value=0.00, max_value=length, step=0.01)
                 end_point = st.slider('End position (m)', min_value=0.00, max_value=length, step=0.01)
                 if st.button('Add'):
@@ -197,13 +197,13 @@ with tab2:
             type_load_1 = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment'))
             st.markdown('---')
             if type_load_1 in ['Point load', 'Moment']:
-                magnitude_1 = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
+                magnitude_1 = st.number_input('Magnitude (kN)', step=0.01)
                 position_1 = st.slider('Position (m)', min_value=0.00, max_value=length_1, step=0.01)
                 if st.button('Add'):
                     st.session_state.beam_forces.append({'Type Load': type_load_1, 'Magnitude': magnitude_1, 'Position': position_1})
             
             elif type_load_1 == 'Distributed load':
-                magnitude_1 = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
+                magnitude_1 = st.number_input('Magnitude (kN)', step=0.01)
                 start_point_1 = st.slider('Start position (m)', min_value=0.00, max_value=None, step=0.01)
                 end_point_1 = st.slider('End position (m)', min_value=0.00, max_value=length_1, step=0.01)
                 if st.button('Add'):
