@@ -322,13 +322,14 @@ with tab2:
             st.markdown('---')
             type_support = st.selectbox('Type support', ('Fixed', 'Roller', 'Pin'))
             st.markdown('---')
+            
             if type_support == 'Roller':
-                roller = st.slider('Position (m)', min_value=0.00, max_value=length_2, step=0.01)
+                roller = st.slider('Roller position (m)', min_value=0.00, max_value=length_2, step=0.01)
                 if st.button('Add type support'):
                     st.session_state.type_support.append({'Type support': type_support, 'Position': roller})
             
             elif type_support == 'Pin':
-                pin = st.slider('Position', min_value=0.00, max_value=length_2, step=0.01)
+                pin = st.slider('Pin position (m)', min_value=0.00, max_value=length_2, step=0.01)
                 if st.button('Add type support'):
                     st.session_state.type_support.append({'Type support': type_support, 'Position': pin})
             
@@ -382,7 +383,8 @@ with tab2:
                         (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox_2:
                     st.session_state.advanced_forces.pop(idx - 1) 
-            if st.button('Quick Solve'):
+                    
+            if st.button('Check'):
                 st.session_state.quick_solve_clicked = True
 
                 #Tạo beam với độ dài length
