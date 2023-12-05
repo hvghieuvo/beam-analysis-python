@@ -166,11 +166,16 @@ with tab2:
             st.markdown('---')
             type_support = st.selectbox('Type support', ('Fixed', 'Roller', 'Pin'))
             st.markdown('---')
-            if type_support in ['Roller', 'Pin']:
+            if type_support == 'Roller':
                 roller = st.slider('Roller', min_value=0.00, max_value=length_2, step=0.01)
+                if st.button('Add type support'):
+                    st.session_state.type_support.append({'Type support': type_support, 'Roller': roller})
+            
+            elif type_support == 'Pin':
                 pin = st.slider('Pin', min_value=0.00, max_value=length_2, step=0.01)
                 if st.button('Add type support'):
-                    st.session_state.type_support.append({'Type support': type_support, 'Roller': roller, 'Pin': pin})
+                    st.session_state.type_support.append({'Type support': type_support, 'Pin': pin})
+            
             elif type_support == 'Fixed':
                 fixed_left_end = st.checkbox('Fixed left end')
                 fixed_right_end = st.checkbox('Fixed right end')
