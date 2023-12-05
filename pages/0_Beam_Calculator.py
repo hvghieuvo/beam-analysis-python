@@ -41,16 +41,19 @@ with tab1:
 
 # Tab nhập liệu
 added_forces=[]
+added_support=[]
+
 with tab2:
     # Tab nhập liệu
     select = st.selectbox('Beam type', ('Console', 'Beam with 2 supports','Advanced beam'))
     st.markdown('---')
-    # Chọn Console
+    
+    #================================= Chọn Console #=================================
     if select == 'Console':
         col1, col2, col3 = st.columns(3)
         # Tạo hộp để nhập số liệu
         with col1: 
-            length = st.number_input(label='Length (m)', min_value=0.00, max_value=None, step=0.01)
+            length = st.number_input(label='Length (m)', min_value=1.00, max_value=None, step=0.01)
             st.markdown('---')
             
             fixed_type = st.selectbox('Fixed position', ('Fixed left end', 'Fixed right end'))
@@ -59,15 +62,15 @@ with tab2:
             type_load = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment')) 
             if type_load in ['Point load', 'Moment']:
                 magnitude = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
-                position = st.number_input('Position (m)', min_value=0.00, max_value=length, step=0.01)
+                position = st.slider('Position (m)', min_value=0.00, max_value=length, step=0.01)
                 if st.button('Add'):
                     st.session_state.console_forces.append({'Type Load': type_load, 'Magnitude': magnitude, 'Position': position})
             
             elif type_load == 'Distributed load':
                 # Vừa tạo hộp nhập số liệu, vừa tạo slider
                 magnitude = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
-                start_point = st.number_input('Start position (m)', min_value=0.00, max_value=None, step=0.01)
-                end_point = st.number_input('End position (m)', min_value=0.00, max_value=length, step=0.01)
+                start_point = st.slider('Start position (m)', min_value=0.00, max_value=length, step=0.01)
+                end_point = st.slider('End position (m)', min_value=0.00, max_value=length, step=0.01)
                 if st.button('Add'):
                     st.session_state.console_forces.append({'Type Load': type_load, 'Magnitude': magnitude, 'Start Position': start_point, 'End Position': end_point})
 
@@ -169,7 +172,9 @@ with tab2:
             fig_deflection = beam.plot_deflection()
             fig_deflection.write_image("./images/fig_deflection.png",format='png',engine='kaleido')
             
-    # Beam with 2 supports
+            
+            
+    #================================= Beam with 2 supports #=================================
     elif select == 'Beam with 2 supports':
         col1_1, col1_2, col1_3, col1_4 = st.columns(4, gap='large')
         
@@ -218,49 +223,51 @@ with tab2:
         st.markdown('---')
         if st.button('Solve'):
             st.session_state.solve_clicked = True
-            
-            #Giải và plot đồ thị
-            # plot_diagram(1)
 
-    # Advanced beam        
+
+
+    #================================= Advanced beam #=================================       
     elif select == 'Advanced beam':
         col2_1, col2_2, col2_3, col2_4 = st.columns(4, gap='large')
+        
         with col2_1:
             length_2 = st.number_input(label='Length (m)', min_value=1.00, max_value=None, step=0.01)
             st.markdown('---')
-            data_df = pd.DataFrame(
-                {
-                    "category": [
-                        "Pin",
-                        "Roller",
-                        "Fixed",
-                    ],
-                }
-            )
-
-            st.data_editor(
-                data_df,
-                column_config={
-                    "category": st.column_config.SelectboxColumn(
-                        "Support type",
-                        help="The category of the app",
-                        width="medium",
-                        options=[
-                            "Pin",
-                            "Roller",
-                            "Fixed"
-                        ],
-                        required=True,
-                    )
-                },
-                hide_index=True,
-                num_rows="dynamic",
-            )
+            type_support = st.selectbox('Type support', ('Fixed', 'Roller', 'Pin'))
+            st.markdown('---')
+            if type_support == 'Roller':
+                roller = st.slider('Roller', min_value=0.00, max_value=length_2, step=0.01)
+                if st.button('Add type support'):
+                    st.session_state.type_support.append({'Type support': type_support, 'Roller': roller})
             
+            elif type_support == 'Pin':
+                pin = st.slider('Pin', min_value=0.00, max_value=length_2, step=0.01)
+                if st.button('Add type support'):
+                    st.session_state.type_support.append({'Type support': type_support, 'Pin': pin})
+            
+            elif type_support == 'Fixed':
+                fixed_left_end = st.checkbox('Fixed left end')
+                fixed_right_end = st.checkbox('Fixed right end')
+                if st.button('Add type support'):
+                    support_info = {'Type support': type_support}
+                    if fixed_left_end:
+                        support_info['Fixed left end'] = True
+                    if fixed_right_end:
+                        support_info['Fixed right end'] = True
+                    st.session_state.type_support.append(support_info)
         with col2_2:
-            support_1_position = st.slider('Position of support 1', 0.00, length_2,None)
-            support_2_position = st.slider('Position of support 2', 0.00, length_2,None)
-            support_3_position = st.slider('Position of support 3', 0.00, length_2,None)
+            st.write('Added support:')
+            for idx, support in enumerate(st.session_state.type_support, start=1):
+                delete_checkbox = st.checkbox(f"Delete {support['Type support']} {idx}")
+                support_text = f"{idx}. Type support is {support['Type support']}"
+                if 'Fixed left end' in support:
+                    support_text += ", Fixed left end"
+                if 'Fixed right end' in support:
+                    support_text += ", Fixed right end"
+                st.write(support_text)        
+                if delete_checkbox:
+                    st.session_state.type_support.pop(idx - 1)
+        
         with col2_3:
             type_load_2 = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment'))
             st.markdown('---')
@@ -305,18 +312,52 @@ with tab2:
             # plot_diagram(1)
             
 with tab3:
-    keo3, bua3, bao3 = st.columns([1,2,1])
-    with bua3:
-        st.write("")
-        st.image('images/fig_reac.png', caption='Reaction force diagram')
-        st.divider()
+    image = st.selectbox('Problem', ('Console', 'Beam with 2 supports', 'Advanced Beam'))
+    if image == 'Console':
+        keo3, bua3, bao3 = st.columns([1,2,1])
+        with bua3:
+            st.write("")
+            st.image('images/fig_reac.png', caption='Reaction force diagram')
+            st.divider()
 
-        st.image('images/fig_shear.png', caption='Shear force diagram')
-        st.divider()
+            st.image('images/fig_shear.png', caption='Shear force diagram')
+            st.divider()
 
-        st.image('images/fig_normal.png', caption='Normal force diagram')
-        st.divider()
+            st.image('images/fig_normal.png', caption='Normal force diagram')
+            st.divider()
 
-        st.image('images/fig_moment.png', caption='Bending moment diagram')
-        
+            st.image('images/fig_moment.png', caption='Bending moment diagram')
+    
+    elif image == 'Beam with 2 supports': 
+        keo3, bua3, bao3 = st.columns([1,2,1])
+        with bua3:
+            st.write("")
+            st.image('images/fig_reac.png', caption='Reaction force diagram')
+            st.divider()
+
+            st.image('images/fig_shear.png', caption='Shear force diagram')
+            st.divider()
+
+            st.image('images/fig_normal.png', caption='Normal force diagram')
+            st.divider()
+
+            st.image('images/fig_moment.png', caption='Bending moment diagram')
+    
+    elif image == 'Advanced Beam':
+        keo3, bua3, bao3 = st.columns([1,2,1])
+        with bua3:
+            st.write("")
+            st.image('images/fig_reac.png', caption='Reaction force diagram')
+            st.divider()
+
+            st.image('images/fig_shear.png', caption='Shear force diagram')
+            st.divider()
+
+            st.image('images/fig_normal.png', caption='Normal force diagram')
+            st.divider()
+
+            st.image('images/fig_moment.png', caption='Bending moment diagram')
+    
+
+    
 
