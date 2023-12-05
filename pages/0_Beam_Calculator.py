@@ -243,18 +243,52 @@ with tab2:
             # plot_diagram(1)
             
 with tab3:
-    keo3, bua3, bao3 = st.columns([1,2,1])
-    with bua3:
-        st.write("")
-        st.image('images/fig_reac.png', caption='Reaction force diagram')
-        st.divider()
+    image = st.selectbox('Problem', ('Console', 'Beam with 2 supports', 'Advanced Beam'))
+    if image == 'Console':
+        keo3, bua3, bao3 = st.columns([1,2,1])
+        with bua3:
+            st.write("")
+            st.image('images/fig_reac.png', caption='Reaction force diagram')
+            st.divider()
 
-        st.image('images/fig_shear.png', caption='Shear force diagram')
-        st.divider()
+            st.image('images/fig_shear.png', caption='Shear force diagram')
+            st.divider()
 
-        st.image('images/fig_normal.png', caption='Normal force diagram')
-        st.divider()
+            st.image('images/fig_normal.png', caption='Normal force diagram')
+            st.divider()
 
-        st.image('images/fig_moment.png', caption='Bending moment diagram')
-        
+            st.image('images/fig_moment.png', caption='Bending moment diagram')
+    
+    elif image == 'Beam with 2 supports': 
+        keo3, bua3, bao3 = st.columns([1,2,1])
+        with bua3:
+            st.write("")
+            st.image('images/fig_reac.png', caption='Reaction force diagram')
+            st.divider()
+
+            st.image('images/fig_shear.png', caption='Shear force diagram')
+            st.divider()
+
+            st.image('images/fig_normal.png', caption='Normal force diagram')
+            st.divider()
+
+            st.image('images/fig_moment.png', caption='Bending moment diagram')
+    
+    elif image == 'Advanced Beam':
+        keo3, bua3, bao3 = st.columns([1,2,1])
+        with bua3:
+            st.write("")
+            st.image('images/fig_reac.png', caption='Reaction force diagram')
+            st.divider()
+
+            st.image('images/fig_shear.png', caption='Shear force diagram')
+            st.divider()
+
+            st.image('images/fig_normal.png', caption='Normal force diagram')
+            st.divider()
+
+            st.image('images/fig_moment.png', caption='Bending moment diagram')
+    
+
+    
 
