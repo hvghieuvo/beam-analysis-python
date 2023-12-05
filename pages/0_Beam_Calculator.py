@@ -349,9 +349,9 @@ with tab2:
                 delete_checkbox = st.checkbox(f"Delete {support['Type support']} {idx}")
                 support_text = f"{idx}. Type support is {support['Type support']}"
                 if 'Fixed left end' in support:
-                    support_text += ", Fixed left end"
+                    support_text += f", Position: {support['Roller']} m"
                 if 'Fixed right end' in support:
-                    support_text += ", Fixed right end"
+                    support_text += f", Position: {support['Pin']} m"
                 st.write(support_text)        
                 if delete_checkbox:
                     st.session_state.type_support.pop(idx - 1)
@@ -367,10 +367,10 @@ with tab2:
             
             elif type_load_2 == 'Distributed load':
                 magnitude_2 = st.number_input('Magnitude (kN)', min_value=0.00, step=0.01)
-                start_point_2 = st.slider('Start position (m)', min_value=0.00, max_value=None, step=0.01)
+                start_point_2 = st.slider('Start position (m)', min_value=0.00, max_value=length_2, step=0.01)
                 end_point_2 = st.slider('End position (m)', min_value=0.00, max_value=length_2, step=0.01)
                 if st.button('Add'):
-                    st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Start Position': start_point_2, 'End Position': end_point_1})
+                    st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Start Position': start_point_2, 'End Position': end_point_2})
             
         with col2_4:
             st.write('Added forces:')
