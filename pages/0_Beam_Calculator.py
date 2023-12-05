@@ -349,9 +349,9 @@ with tab2:
                 delete_checkbox = st.checkbox(f"Delete {support['Type support']} {idx}")
                 support_text = f"{idx}. Type support is {support['Type support']}"
                 if 'Fixed left end' in support:
-                    support_text += f", Position: {support['Roller']} m"
+                    support_text += ", Fixed left end"
                 if 'Fixed right end' in support:
-                    support_text += f", Position: {support['Pin']} m"
+                    support_text += ", Fixed right end"
                 st.write(support_text)        
                 if delete_checkbox:
                     st.session_state.type_support.pop(idx - 1)
