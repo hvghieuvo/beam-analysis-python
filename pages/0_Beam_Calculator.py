@@ -120,7 +120,7 @@ with tab2:
         st.markdown('---')
         keo, bua, bao = st.columns([1,3,1])
         with bua:
-          st.image('images/fig_beam_console.png', caption='Console beam', width=800)  
+          st.image('images/fig_beam_console.png', caption='Console beam', width=700)  
           
         #================================= Solve button #================================= 
         st.markdown('---')
@@ -255,7 +255,7 @@ with tab2:
         st.markdown('---')        
         keo1, bua1, bao1 = st.columns([1,3,1])
         with bua1:
-          st.image('images/fig_beam_2sp.png', caption='Beam with 2 supports', width=800)             
+          st.image('images/fig_beam_2sp.png', caption='Beam with 2 supports', width=700)             
         st.markdown('---')
         
         #================================= Solve button #================================= 
@@ -436,7 +436,7 @@ with tab2:
         
         keo2, bua2, bao2 = st.columns([1,3,1])
         with bua2:
-          st.image('images/fig_beam_advanced.png', caption='Beam with many supports', width=800)              
+          st.image('images/fig_beam_advanced.png', caption='Beam with many supports', width=700)              
         st.markdown('---')
         
         #================================= Solve button #================================= 
@@ -512,46 +512,46 @@ with tab3:
         keo3, bua3, bao3 = st.columns([1,3,1])
         with bua3:
             st.write("")
-            st.image('images/fig_reac_console.png', caption='Reaction force diagram', width=800)
+            st.image('images/fig_reac_console.png', caption='Reaction force diagram', width=700)
             st.divider()
 
-            st.image('images/fig_shear_console.png', caption='Shear force diagram', width=800)
+            st.image('images/fig_shear_console.png', caption='Shear force diagram', width=700)
             st.divider()
 
-            st.image('images/fig_normal_console.png', caption='Normal force diagram', width=800)
+            st.image('images/fig_normal_console.png', caption='Normal force diagram', width=700)
             st.divider()
 
-            st.image('images/fig_moment_console.png', caption='Bending moment diagram', width=800)
+            st.image('images/fig_moment_console.png', caption='Bending moment diagram', width=700)
     
     elif image == 'Beam with 2 supports': 
         keo3, bua3, bao3 = st.columns([1,3,1])
         with bua3:
             st.write("")
-            st.image('images/fig_reac_2sp.png', caption='Reaction force diagram', width=800)
+            st.image('images/fig_reac_2sp.png', caption='Reaction force diagram', width=700)
             st.divider()
 
-            st.image('images/fig_shear_2sp.png', caption='Shear force diagram', width=800)
+            st.image('images/fig_shear_2sp.png', caption='Shear force diagram', width=700)
             st.divider()
 
-            st.image('images/fig_normal_2sp.png', caption='Normal force diagram', width=800)
+            st.image('images/fig_normal_2sp.png', caption='Normal force diagram', width=700)
             st.divider()
 
-            st.image('images/fig_moment_2sp.png', caption='Bending moment diagram', width=800)
+            st.image('images/fig_moment_2sp.png', caption='Bending moment diagram', width=700)
     
     elif image == 'Complex beam':
         keo3, bua3, bao3 = st.columns([1,3,1])
         with bua3:
             st.write("")
-            st.image('images/fig_reac_advanced.png', caption='Reaction force diagram', width=800)
+            st.image('images/fig_reac_advanced.png', caption='Reaction force diagram', width=700)
             st.divider()
 
-            st.image('images/fig_shear_advanced.png', caption='Shear force diagram', width=800)
+            st.image('images/fig_shear_advanced.png', caption='Shear force diagram', width=700)
             st.divider()
 
-            st.image('images/fig_normal_advanced.png', caption='Normal force diagram', width=800)
+            st.image('images/fig_normal_advanced.png', caption='Normal force diagram', width=700)
             st.divider()
 
-            st.image('images/fig_moment_advanced.png', caption='Bending moment diagram', width=800)
+            st.image('images/fig_moment_advanced.png', caption='Bending moment diagram', width=700)
     
 
     
