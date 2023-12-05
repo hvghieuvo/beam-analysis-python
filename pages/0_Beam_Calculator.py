@@ -24,17 +24,13 @@ if 'type_support' not in st.session_state:
 if 'solve_clicked' not in st.session_state:
     st.session_state.solve_clicked = False
 
-       
-
 st.set_page_config(page_title="Beam Calculator", page_icon="🙃", layout="wide")
 st.markdown("# Beam Calculator")
 st.sidebar.header("Beam Calculator Tool")
 st.markdown("---")
 
-
 # Tạo các tab
 tab1, tab2, tab3 = st.tabs(["Theory", "Input", "Output"])
-
 # Tab về lý thuyết
 with tab1:
     # Hiển thị lý thuyết với đường link đến tài liệu
@@ -354,6 +350,8 @@ with tab2:
             for idx, support in enumerate(st.session_state.type_support, start=1):
                 delete_checkbox = st.checkbox(f"Delete {support['Type support']} {idx}")
                 support_text = f"{idx}. Type support is {support['Type support']}"
+                if 'Position' in support:
+                    support_text += f", Position: {support['Position']} (m)"
                 if 'Fixed left end' in support:
                     support_text += ", Fixed left end"
                 if 'Fixed right end' in support:
