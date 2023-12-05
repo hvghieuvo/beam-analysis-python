@@ -180,20 +180,22 @@ with tab2:
                 fixed_left_end = st.checkbox('Fixed left end')
                 fixed_right_end = st.checkbox('Fixed right end')
                 if st.button('Add type support'):
-                    st.session_state.type_support.append({'Type support': type_support, 'Fixed left end': fixed_left_end, 'Fixed right end': fixed_right_end})
-        
+                    support_info = {'Type support': type_support}
+                    if fixed_left_end:
+                        support_info['Fixed left end'] = True
+                    if fixed_right_end:
+                        support_info['Fixed right end'] = True
+                    st.session_state.type_support.append(support_info)
         with col2_2:
             st.write('Added support:')
             for idx, support in enumerate(st.session_state.type_support, start=1):
                 delete_checkbox = st.checkbox(f"Delete {support['Type support']} {idx}")
-                st.write(
-                    f"{idx}. Type support is {support['Type support']} " +
-                    (f", Roller: {support['Roller']} (m)" if 'Roller' in support else "") +
-                    (f", Pin: {support['Pin']} (m)" if 'Pin' in support else "") +
-                    (f", Fixed left end: {support['Fixed left end']}" if 'Fixed left end' in support else "") +
-                    (f", Fixed right end: {support['Fixed right end']}" if 'Fixed right end' in support else "")
-                )
-        
+                support_text = f"{idx}. Type support is {support['Type support']}"
+                if 'Fixed left end' in support:
+                    support_text += ", Fixed left end"
+                if 'Fixed right end' in support:
+                    support_text += ", Fixed right end"
+                st.write(support_text)        
                 if delete_checkbox:
                     st.session_state.type_support.pop(idx - 1)
         
