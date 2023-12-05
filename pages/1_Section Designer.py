@@ -32,7 +32,7 @@ with tab2:
     elif select == 'Circle':
         col1_1, col2_1, col3_1 = st.columns(3, gap='large')
         with col1_1:
-            R = st.number_input(lable="Radius", min_value=0.00, max_value=None, step=0.01)
+            R = st.number_input(label="Radius", min_value=0.00, max_value=None, step=0.01)
     elif select == 'Annulus':
         col1_2, col2_2, col3_2 = st.columns(3, gap='large')   
         with col1_2:
@@ -41,5 +41,5 @@ with tab2:
     elif select == 'C':
         col1_3, col2_3, col3_3 = st.columns(3, gap='large')
         with col1_3:
-            N0=st
+            N0 = st.text_input('')
         
