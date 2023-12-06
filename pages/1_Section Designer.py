@@ -5,9 +5,10 @@ from streamlit.hello.utils import show_code
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import pandas as pd
-from io import BytesIO
+from io import StringIO, BytesIO
 from PIL import Image
 import base64
+import plotly.express as px
 
 st.set_page_config(page_title="Section Designer", page_icon="🙃", layout = 'wide')
 st.markdown("# Section Designer")
@@ -29,17 +30,41 @@ with tab2:
             high = st.number_input(label='Height', min_value=0.00, max_value=None, step=0.01)
             st.markdown('---')  
             width = st.number_input(label='Width', min_value=0.00, max_value=None, step=0.01)
+        with col2:
+            max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=0.00, max_value=None, step=0.01)
+            max_shear_force = st.number_input('Maximum shear force (kN)', min_value=0.00, max_value=None, step=0.01)
+            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=0.00, max_value=None, step=0.01)
+            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=0.00, max_value=None, step=0.01)
+        with col3:
+            type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
+    
     elif select == 'Circle':
         col1_1, col2_1, col3_1 = st.columns(3, gap='large')
         with col1_1:
             R = st.number_input(label="Radius", min_value=0.00, max_value=None, step=0.01)
+        with col2_1:
+            max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=0.00, max_value=None, step=0.01)
+            max_shear_force = st.number_input('Maximum shear force (kN)', min_value=0.00, max_value=None, step=0.01)
+            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=0.00, max_value=None, step=0.01)
+            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=0.00, max_value=None, step=0.01)
+        with col3_1:
+            type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
+
     elif select == 'Annulus':
         col1_2, col2_2, col3_2 = st.columns(3, gap='large')   
         with col1_2:
-            Ri = st.number_input(label='Radius in', min_value=0.00, max_value=None, step=0.01)  
-            Ro = st.number_input(label='Radius out', min_value=0.00, max_value=None, step=0.01)
+            R_in = st.number_input(label='Radius in', min_value=0.00, max_value=None, step=0.01)  
+            R_out = st.number_input(label='Radius out', min_value=0.00, max_value=None, step=0.01)
+        with col2_2:
+            max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=0.00, max_value=None, step=0.01)
+            max_shear_force = st.number_input('Maximum shear force (kN)', min_value=0.00, max_value=None, step=0.01)
+            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=0.00, max_value=None, step=0.01)
+            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=0.00, max_value=None, step=0.01)
+        with col3_2:
+            type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
+
     elif select == 'C':
-        col1_3, col2_3, col3_3 = st.columns(3, gap='large')
-        with col1_3:
-            N0 = st.text_input('')
+        st.title('Table data of cross-section C')
+        df=pd.read_csv("data/chu_C.csv")
+        st.table(df)
         
