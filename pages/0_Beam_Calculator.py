@@ -60,21 +60,21 @@ with tab2:
             type_load = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment')) 
             if type_load == 'Point load':
                 magnitude = st.number_input('Magnitude (kN)', step=0.01)
-                position = st.slider('Position (m)', min_value=0.00, max_value=length, step=0.01)
-                angle = st.number_input('Angle (degree)', min_value=0.00, max_value=360.00, step=0.01)
+                position = st.slider('Position (m)', min_value=0.00, max_value=length, step=0.1)
+                angle = st.number_input('Angle (degree)', max_value=360.00, value=90.00 ,step=0.01)
                 if st.button('Add'):
                     st.session_state.console_forces.append({'Type Load': type_load, 'Magnitude': magnitude, 'Position': position, 'Angle': angle})
             elif type_load == 'Moment':
                 magnitude = st.number_input('Magnitude (kN)', step=0.01)
-                position = st.slider('Position (m)', min_value=0.00, max_value=length, step=0.01)
+                position = st.slider('Position (m)', min_value=0.00, max_value=length, step=0.1)
                 if st.button('Add'):
                     st.session_state.console_forces.append({'Type Load': type_load, 'Magnitude': magnitude, 'Position': position})
             
             elif type_load == 'Distributed load':
                 # Vừa tạo hộp nhập số liệu, vừa tạo slider
                 magnitude = st.number_input('Magnitude (kN)', step=0.01)
-                start_point = st.slider('Start position (m)', min_value=0.00, max_value=length, step=0.01)
-                end_point = st.slider('End position (m)', min_value=0.00, max_value=length, step=0.01)
+                start_point = st.slider('Start position (m)', min_value=0.00, max_value=length, step=0.1)
+                end_point = st.slider('End position (m)', min_value=0.00, max_value=length, step=0.1)
                 if st.button('Add'):
                     st.session_state.console_forces.append({'Type Load': type_load, 'Magnitude': magnitude, 'Start Position': start_point, 'End Position': end_point})
 
@@ -106,6 +106,7 @@ with tab2:
                     # Trích xuất thông tin từ mỗi phần tử
                     type_load = force.get("Type Load")
                     magnitude = force.get("Magnitude")
+                    angle = force.get("Angle")
                     position = force.get("Position", None)
                     start_position = force.get("Start Position", None)
                     end_position = force.get("End Position", None)
@@ -115,8 +116,10 @@ with tab2:
                         beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
                     elif type_load == "Moment":
                         beam.add_loads(PointTorque(round(magnitude,2), position))
-                    elif type_load == "Point load":
+                    elif type_load == "Point load" and angle == 90:
                         beam.add_loads(PointLoadV(round(magnitude,2), position))
+                    elif type_load == "Point load" and angle != 90:
+                        beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
 
                 beam.analyse()
                 #Vẽ biểu đồ dựa trên thông tin đã input
@@ -145,6 +148,7 @@ with tab2:
                 # Trích xuất thông tin từ mỗi phần tử
                 type_load = force.get("Type Load")
                 magnitude = force.get("Magnitude")
+                angle = force.get("Angle")
                 position = force.get("Position", None)
                 start_position = force.get("Start Position", None)
                 end_position = force.get("End Position", None)
@@ -154,8 +158,10 @@ with tab2:
                     beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
                 elif type_load == "Moment":
                     beam.add_loads(PointTorque(round(magnitude,2), position))
-                elif type_load == "Point load":
+                elif type_load == "Point load" and angle==90:
                     beam.add_loads(PointLoadV(round(magnitude,2), position))
+                elif type_load == "Point load" and angle != 90:
+                    beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
                     
             beam.analyse()
             #Giải và plot đồ thị
@@ -201,21 +207,21 @@ with tab2:
             st.markdown('---')
             if type_load_1 == 'Point load':
                 magnitude_1 = st.number_input('Magnitude (kN)', step=0.01)
-                position_1 = st.slider('Position (m)', min_value=0.00, max_value=length_1, step=0.01)
-                angle_1 =st.number_input('Angle (degree)', min_value=0.00, max_value=360.00, step=0.01)
+                position_1 = st.slider('Position (m)', min_value=0.00, max_value=length_1, step=0.1)
+                angle_1 =st.number_input('Angle (degree)', max_value=360.00, value=90.00 , step=0.01)
                 if st.button('Add'):
                     st.session_state.beam_forces.append({'Type Load': type_load_1, 'Magnitude': magnitude_1, 'Position': position_1, 'Angle': angle_1})
             
             elif type_load_1 == 'Momnet':
                 magnitude_1 = st.number_input('Magnitude (kN)', step=0.01)
-                position_1 = st.slider('Position (m)', min_value=0.00, max_value=length_1, step=0.01)
+                position_1 = st.slider('Position (m)', min_value=0.00, max_value=length_1, step=0.1)
                 if st.button('Add'):
                     st.session_state.beam_forces.append({'Type Load': type_load_1, 'Magnitude': magnitude_1, 'Position': position_1})
             
             elif type_load_1 == 'Distributed load':
                 magnitude_1 = st.number_input('Magnitude (kN)', step=0.01)
-                start_point_1 = st.slider('Start position (m)', min_value=0.00, max_value=None, step=0.01)
-                end_point_1 = st.slider('End position (m)', min_value=0.00, max_value=length_1, step=0.01)
+                start_point_1 = st.slider('Start position (m)', min_value=0.00, max_value=None, step=0.1)
+                end_point_1 = st.slider('End position (m)', min_value=0.00, max_value=length_1, step=0.1)
                 if st.button('Add'):
                     st.session_state.beam_forces.append({'Type Load': type_load_1, 'Magnitude': magnitude_1, 'Start Position': start_point_1, 'End Position': end_point_1})
             
@@ -251,6 +257,7 @@ with tab2:
                     # Trích xuất thông tin từ mỗi phần tử
                     type_load = force.get("Type Load")
                     magnitude = force.get("Magnitude")
+                    angle = force.get("Angle")
                     position = force.get("Position", None)
                     start_position = force.get("Start Position", None)
                     end_position = force.get("End Position", None)
@@ -260,8 +267,10 @@ with tab2:
                         beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
                     elif type_load == "Moment":
                         beam.add_loads(PointTorque(round(magnitude,2), position))
-                    elif type_load == "Point load":
+                    elif type_load == "Point load" and angle==90:
                         beam.add_loads(PointLoadV(round(magnitude,2), position))
+                    elif type_load == "Point load" and angle != 90:
+                        beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
 
                 #Vẽ biểu đồ dựa trên thông tin đã input
                 fig_beam = beam.plot_beam_diagram()
@@ -294,6 +303,7 @@ with tab2:
                 # Trích xuất thông tin từ mỗi phần tử
                 type_load = force.get("Type Load")
                 magnitude = force.get("Magnitude")
+                angle = force.get("Angle")
                 position = force.get("Position", None)
                 start_position = force.get("Start Position", None)
                 end_position = force.get("End Position", None)
@@ -303,8 +313,10 @@ with tab2:
                     beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
                 elif type_load == "Moment":
                     beam.add_loads(PointTorque(round(magnitude,2), position))
-                elif type_load == "Point load":
+                elif type_load == "Point load" and angle==90:
                     beam.add_loads(PointLoadV(round(magnitude,2), position))
+                elif type_load == "Point load" and angle != 90:
+                    beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
                     
             beam.analyse()
             #Giải và plot đồ thị
@@ -340,12 +352,12 @@ with tab2:
             st.markdown('---')
             
             if type_support == 'Roller':
-                roller = st.slider('Roller position (m)', min_value=0.00, max_value=length_2, step=0.01)
+                roller = st.slider('Roller position (m)', min_value=0.00, max_value=length_2, step=0.1)
                 if st.button('Add type support'):
                     st.session_state.type_support.append({'Type support': type_support, 'Position': roller})
             
             elif type_support == 'Pin':
-                pin = st.slider('Pin position (m)', min_value=0.00, max_value=length_2, step=0.01)
+                pin = st.slider('Pin position (m)', min_value=0.00, max_value=length_2, step=0.1)
                 if st.button('Add type support'):
                     st.session_state.type_support.append({'Type support': type_support, 'Position': pin})
             
@@ -381,18 +393,18 @@ with tab2:
             if type_load_2 == 'Point load':
                 magnitude_2 = st.number_input('Magnitude (kN)', step=0.01)
                 position_2 = st.slider('Position (m)', min_value=0.00, max_value=length_2, step=0.01)
-                angle_2 = st.numbet_input('Angle (degree)',min_vlue=0.00, max_Value=360.00, step=0.01)
+                angle_2 = st.numbet_input('Angle (degree)',min_vlue=0.00, max_value=360.00, value=90.00 , step=0.1)
                 if st.button('Add'):
                     st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Position': position_2, 'Angle': angle_2})
             elif type_load_2 == 'Moment':
                 magnitude_2 = st.number_input('Magnitude (kN)', step=0.01)
-                position_2 = st.slider('Position (m)', min_value=0.00, max_value=length_2, step=0.01)
+                position_2 = st.slider('Position (m)', min_value=0.00, max_value=length_2, step=0.1)
                 if st.button('Add'):
                     st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Position': position_2})
             elif type_load_2 == 'Distributed load':
                 magnitude_2 = st.number_input('Magnitude (kN)', step=0.01)
-                start_point_2 = st.slider('Start position (m)', min_value=0.00, max_value=length_2, step=0.01)
-                end_point_2 = st.slider('End position (m)', min_value=0.00, max_value=length_2, step=0.01)
+                start_point_2 = st.slider('Start position (m)', min_value=0.00, max_value=length_2, step=0.1)
+                end_point_2 = st.slider('End position (m)', min_value=0.00, max_value=length_2, step=0.1)
                 if st.button('Add'):
                     st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Start Position': start_point_2, 'End Position': end_point_2})
             
@@ -437,6 +449,7 @@ with tab2:
                     # Trích xuất thông tin từ mỗi phần tử
                     type_load = force.get("Type Load")
                     magnitude = force.get("Magnitude")
+                    angle = force.get("Angle")
                     position = force.get("Position", None)
                     start_position = force.get("Start Position", None)
                     end_position = force.get("End Position", None)
@@ -446,8 +459,10 @@ with tab2:
                         beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
                     elif type_load == "Moment":
                         beam.add_loads(PointTorque(round(magnitude,2), position))
-                    elif type_load == "Point load":
+                    elif type_load == "Point load" and angle==90:
                         beam.add_loads(PointLoadV(round(magnitude,2), position))
+                    elif type_load == "Point load" and angle != 90:
+                        beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
 
                 #Vẽ biểu đồ dựa trên thông tin đã input
                 fig_beam = beam.plot_beam_diagram()
@@ -488,6 +503,7 @@ with tab2:
                 # Trích xuất thông tin từ mỗi phần tử
                 type_load = force.get("Type Load")
                 magnitude = force.get("Magnitude")
+                angle = force.get("Angle")
                 position = force.get("Position", None)
                 start_position = force.get("Start Position", None)
                 end_position = force.get("End Position", None)
@@ -497,8 +513,10 @@ with tab2:
                     beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
                 elif type_load == "Moment":
                     beam.add_loads(PointTorque(round(magnitude,2), position))
-                elif type_load == "Point load":
+                elif type_load == "Point load" and angle == 90:
                     beam.add_loads(PointLoadV(round(magnitude,2), position))
+                elif type_load == "Point load" and angle != 90:
+                    beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
 
             #Vẽ biểu đồ dựa trên thông tin đã input
             beam.analyse()
