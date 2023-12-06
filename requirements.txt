@@ -12,3 +12,4 @@ sectionproperties
 streamlit-option-menu
 streamlit-marquee
 Pillow
+plotly.express
