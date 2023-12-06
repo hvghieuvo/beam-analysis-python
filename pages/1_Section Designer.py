@@ -64,11 +64,7 @@ with tab2:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
 
     elif select == 'C':
-        col1_3, col2_3, col3_3 = st.columns(3, gap='large')
-        with col1_3:
-            uploaded_file = st.file_uploader('Choose a XLXX file', type='xlsx')
-            if uploaded_file:
-                st.markdown('---')
-                df = pd.read_excel(uploaded_file, engine='openpyxl')
-                st.data_editor(df)
+        st.title('Table data of cross-section C')
+        df=pd.read_excel("data/chu_C.csv")
+        st.table(df)
         
