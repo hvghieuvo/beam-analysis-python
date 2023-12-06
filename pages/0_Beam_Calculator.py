@@ -126,11 +126,10 @@ with tab2:
                 fig_beam = beam.plot_beam_diagram()
                 fig_beam.write_image("./images/fig_beam_console.png",format='png',engine='kaleido')
       
-      
         st.markdown('---')
         keo, bua, bao = st.columns([1,3,1])
         with bua:
-          st.image('images/fig_beam_console.png', caption='Console beam', width=700)  
+          st.image('images/fig_beam_console.jpg', caption='Console beam', width=700)
           
         #================================= Solve button #================================= 
         st.markdown('---')
@@ -472,8 +471,7 @@ with tab2:
         
         keo2, bua2, bao2 = st.columns([1,3,1])
         with bua2:
-        #   st.image('images/fig_beam_advanced.png', caption='Beam with many supports', width=700)    
-          st.pyplot(fig_beam)          
+          st.image('images/fig_beam_advanced.png', caption='Beam with many supports', width=700)       
         st.markdown('---')
         
         #================================= Solve button #================================= 

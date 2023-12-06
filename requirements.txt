@@ -5,7 +5,7 @@ pydeck
 streamlit
 kaleido==0.1.*
 openpyxl
-indeterminatebeam==2.2.1
+indeterminatebeam>=2.2.1
 sympy
 matplotlib
 sectionproperties
@@ -13,3 +13,4 @@ streamlit-option-menu
 streamlit-marquee
 Pillow
 plotly.express
+plotly>=4.14.1
