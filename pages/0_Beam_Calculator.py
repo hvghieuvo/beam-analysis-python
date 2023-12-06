@@ -125,7 +125,6 @@ with tab2:
                 #Vẽ biểu đồ dựa trên thông tin đã input
                 fig_beam = beam.plot_beam_diagram()
                 fig_beam.write_image("./images/fig_beam_console.png",format='png',engine='kaleido')
-                st.write("⭯")
       
         st.markdown('---')
         keo, bua, bao = st.columns([1,3,1])
