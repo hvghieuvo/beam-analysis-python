@@ -138,13 +138,13 @@ with tab2:
                 beam.analyse()
                 #Vẽ biểu đồ dựa trên thông tin đã input
                 fig_beam = beam.plot_beam_diagram()
-                fig_beam.write_image("./images/fig_beam_console.png",format='png',engine='kaleido')
+                fig_beam.write_image("./images/fig_beam_console.jpg", format='jpg', engine='kaleido')
       
       
         st.markdown('---')
         keo, bua, bao = st.columns([1,3,1])
         with bua:
-          st.image('images/fig_beam_console.png', caption='Console beam', width=700)  
+          st.image('images/fig_beam_console.jpg', caption = 'Console beam', width = 700)
           
         #================================= Solve button #================================= 
         st.markdown('---')
