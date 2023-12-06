@@ -130,7 +130,7 @@ with tab2:
         st.markdown('---')
         keo, bua, bao = st.columns([1,3,1])
         with bua:
-          st.image('images/fig_beam_console.png', caption='Console beam', width=700)  
+          st.image('images/fig_beam_console.jpg', caption='Console beam', width=700)
           
         #================================= Solve button #================================= 
         st.markdown('---')
