@@ -4,48 +4,62 @@ import streamlit as st
 from streamlit.hello.utils import show_code
 from streamlit_option_menu import option_menu 
 from indeterminatebeam import *
-import pandas as pd
 
-# Kiểm tra nếu 'console_forces' không tồn tại trong session state thì khởi tạo
-if 'console_forces' not in st.session_state:
-    st.session_state.console_forces = []
+# Tạo mảng chứa forces & support & link theory 
+THEORY1_LINK = "https://indeterminatebeam.readthedocs.io/en/main/theory.html"
+added_forces = []
+added_support = []
+# Thủ tục Init GUI 
+def header_init() -> None:
+    st.set_page_config(page_title="Beam Calculator", page_icon="🙃", layout="wide")
+    st.markdown("# Beam Calculator")
+    st.sidebar.header("Beam Calculator Tool")
+    st.markdown("---")
+def force_init() -> None:
+    # Kiểm tra nếu 'console_forces' không tồn tại trong session state thì khởi tạo
+    if 'console_forces' not in st.session_state:
+      st.session_state.console_forces = []
+    # Kiểm tra nếu 'beam_forces' không tồn tại trong session state thì khởi tạo
+    if 'beam_forces' not in st.session_state:
+      st.session_state.beam_forces = []
+    if 'advanced_forces' not in st.session_state:
+      st.session_state.advanced_forces = []
+    if 'type_support' not in st.session_state:
+      st.session_state.type_support = []
+    # Biến trạng thái để kiểm soát việc hiển thị và tính toán
+    if 'solve_clicked' not in st.session_state:
+      st.session_state.solve_clicked = False
+def drawer_init() -> st.tabs:
+    # Tạo các tab
+    tab1, tab2, tab3 = st.tabs(["Theory", "Input", "Output"])
+    # Return tuple 3 tab 
+    return tab1, tab2, tab3
+def theory_view() -> None:
+    # Hiển thị lý thuyết với đường link đến tài liệu
+    st.markdown('''
+                <p style="font-size: 20px; text-align: justify">
+                  A brief overview of the engineering theory and conventions used 
+                  in this program are illustrated below. Theory is adapted from 
+                  the Hibbeler textbook [2]. A more rigorous overview of the basic 
+                  theory behind statically determinate structures is presented in 
+                  the beambending package documentation.
+                </p>
+                ''', unsafe_allow_html = True)
+    st.link_button('Click here!', THEORY1_LINK)
 
-# Kiểm tra nếu 'beam_forces' không tồn tại trong session state thì khởi tạo
-if 'beam_forces' not in st.session_state:
-    st.session_state.beam_forces = []
+# Gọi các GUI mặc định
+force_init()
+header_init()
+tab1, tab2, tab3 = drawer_init()
 
-if 'advanced_forces' not in st.session_state:
-    st.session_state.advanced_forces = []
-
-if 'type_support' not in st.session_state:
-    st.session_state.type_support = []
-
-# Biến trạng thái để kiểm soát việc hiển thị và tính toán
-if 'solve_clicked' not in st.session_state:
-    st.session_state.solve_clicked = False
-
-st.set_page_config(page_title="Beam Calculator", page_icon="🙃", layout="wide")
-st.markdown("# Beam Calculator")
-st.sidebar.header("Beam Calculator Tool")
-st.markdown("---")
-
-# Tạo các tab
-tab1, tab2, tab3 = st.tabs(["Theory", "Input", "Output"])
 # Tab về lý thuyết
 with tab1:
-    # Hiển thị lý thuyết với đường link đến tài liệu
-    st.markdown('''<p style="font-size:20px; text-align:justyfy">A brief overview of the engineering theory and conventions used in this program are illustrated below. Theory is adapted from the Hibbeler textbook [2]. A more rigorous overview of the basic theory behind statically determinate structures is presented in the beambending package documentation.</p>''',unsafe_allow_html=True)
-    st.link_button('Click here!','https://indeterminatebeam.readthedocs.io/en/main/theory.html?fbclid=IwAR18lJpYVJm1MnqkVdXydhA0eLWQwSmCV4w6VzKAIK5dueK9zq-_gYrxMy0')
+    theory_view()
 
-# Tab nhập liệu
-added_forces=[]
-added_support=[]
-
-with tab2:
+with tab2: 
     # Tab nhập liệu
     select = st.selectbox('Beam type', ('Console', 'Beam with 2 supports','Complex beam'))
     st.markdown('---')
-    
     #================================= Chọn Console #=================================
     if select == 'Console':
         col1, col2, col3 = st.columns(3)
@@ -94,7 +108,7 @@ with tab2:
             #================================= Check button #=================================         
             #Button để tạo beam, add sp và lực, hiển thị đề bài        
             if st.button('Check'):
-                
+
                 #Tạo beam với độ dài length
                 beam = Beam(length)
                 
@@ -393,7 +407,7 @@ with tab2:
             if type_load_2 == 'Point load':
                 magnitude_2 = st.number_input('Magnitude (kN)', step=0.01)
                 position_2 = st.slider('Position (m)', min_value=0.00, max_value=length_2, step=0.01)
-                angle_2 = st.numbet_input('Angle (degree)', max_value=360.00, value=90.00 , step=0.1)
+                angle_2 = st.number_input('Angle (degree)', max_value=360.00, value=90.00 , step=0.1)
                 if st.button('Add'):
                     st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Position': position_2, 'Angle': angle_2})
             elif type_load_2 == 'Moment':
