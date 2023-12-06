@@ -212,7 +212,7 @@ with tab2:
                 if st.button('Add'):
                     st.session_state.beam_forces.append({'Type Load': type_load_1, 'Magnitude': magnitude_1, 'Position': position_1, 'Angle': angle_1})
             
-            elif type_load_1 == 'Momnet':
+            elif type_load_1 == 'Moment':
                 magnitude_1 = st.number_input('Magnitude (kN)', step=0.01)
                 position_1 = st.slider('Position (m)', min_value=0.00, max_value=length_1, step=0.1)
                 if st.button('Add'):
