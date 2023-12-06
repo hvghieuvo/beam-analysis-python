@@ -58,7 +58,13 @@ with tab2:
             
         with col2:
             type_load = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment')) 
-            if type_load in ['Point load', 'Moment']:
+            if type_load == 'Point load':
+                magnitude = st.number_input('Magnitude (kN)', step=0.01)
+                position = st.slider('Position (m)', min_value=0.00, max_value=length, step=0.01)
+                angle = st.number_input('Angle (degree)', min_value=0.00, max_value=360.00, step=0.01)
+                if st.button('Add'):
+                    st.session_state.console_forces.append({'Type Load': type_load, 'Magnitude': magnitude, 'Position': position, 'Angle': angle})
+            elif type_load == 'Moment':
                 magnitude = st.number_input('Magnitude (kN)', step=0.01)
                 position = st.slider('Position (m)', min_value=0.00, max_value=length, step=0.01)
                 if st.button('Add'):
@@ -79,6 +85,7 @@ with tab2:
                 delete_checkbox = st.checkbox(f"Delete load {idx}")
                 st.write(f"{idx}. Type load is {force['Type Load']}, Magnitude: {force['Magnitude']} (kN)" +
                     (f", Position: {force['Position']} (m)" if force['Type Load'] in ['Point load', 'Moment'] else "") +
+                    (f", Angle: {force['Angle']} (degree)" if 'Angle' in force else "") +  # Add this line for displaying the angle
                     (f", Start Position: {force['Start Position']} (m)" if 'Start Position' in force else "") +
                     (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox:
@@ -192,7 +199,14 @@ with tab2:
         with col1_3:
             type_load_1 = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment'))
             st.markdown('---')
-            if type_load_1 in ['Point load', 'Moment']:
+            if type_load_1 == 'Point load':
+                magnitude_1 = st.number_input('Magnitude (kN)', step=0.01)
+                position_1 = st.slider('Position (m)', min_value=0.00, max_value=length_1, step=0.01)
+                angle_1 =st.number_input('Angle (degree)', min_value=0.00, max_value=360.00, step=0.01)
+                if st.button('Add'):
+                    st.session_state.beam_forces.append({'Type Load': type_load_1, 'Magnitude': magnitude_1, 'Position': position_1, 'Angle': angle_1})
+            
+            elif type_load_1 == 'Momnet':
                 magnitude_1 = st.number_input('Magnitude (kN)', step=0.01)
                 position_1 = st.slider('Position (m)', min_value=0.00, max_value=length_1, step=0.01)
                 if st.button('Add'):
@@ -209,8 +223,9 @@ with tab2:
             st.write('Added forces:')
             for idx, force in enumerate(st.session_state.beam_forces, start=1):
                 delete_checkbox_1 = st.checkbox(f"Delete load {idx}")
-                st.write(f"{idx}. Type load is {force['Type Load']}, Magnitude: {force['Magnitude']} (kN)" +
+                st.write(f"{idx}. Type load is {force['Type Load']}, Magnitude: {force['Magnitude']} (kN)" + 
                         (f", Position: {force['Position']} (m)" if force['Type Load'] in ['Point load', 'Moment'] else "") +
+                        (f", Angle: {force['Angle']} (degree)" if 'Angle' in force else "") + 
                         (f", Start Position: {force['Start Position']} (m)" if 'Start Position' in force else "") +
                         (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox_1:
@@ -363,12 +378,17 @@ with tab2:
         with col2_3:
             type_load_2 = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment'))
             st.markdown('---')
-            if type_load_2 in ['Point load', 'Moment']:
+            if type_load_2 == 'Point load':
+                magnitude_2 = st.number_input('Magnitude (kN)', step=0.01)
+                position_2 = st.slider('Position (m)', min_value=0.00, max_value=length_2, step=0.01)
+                angle_2 = st.numbet_input('Angle (degree)',min_vlue=0.00, max_Value=360.00, step=0.01)
+                if st.button('Add'):
+                    st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Position': position_2, 'Angle': angle_2})
+            elif type_load_2 == 'Moment':
                 magnitude_2 = st.number_input('Magnitude (kN)', step=0.01)
                 position_2 = st.slider('Position (m)', min_value=0.00, max_value=length_2, step=0.01)
                 if st.button('Add'):
                     st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Position': position_2})
-            
             elif type_load_2 == 'Distributed load':
                 magnitude_2 = st.number_input('Magnitude (kN)', step=0.01)
                 start_point_2 = st.slider('Start position (m)', min_value=0.00, max_value=length_2, step=0.01)
@@ -382,6 +402,7 @@ with tab2:
                 delete_checkbox_2= st.checkbox(f"Delete load {idx}")
                 st.write(f"{idx}. Type load is {force['Type Load']}, Magnitude: {force['Magnitude']} (kN)" +
                         (f", Position: {force['Position']} (m)" if force['Type Load'] in ['Point load', 'Moment'] else "") +
+                        (f", Angle: {force['Angle']} (degree)" if 'Angle' in force else "") +  
                         (f", Start Position: {force['Start Position']} (m)" if 'Start Position' in force else "") +
                         (f", End Position: {force['End Position']} (m)" if 'End Position' in force else ""))
                 if delete_checkbox_2:
