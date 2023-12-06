@@ -124,7 +124,11 @@ with tab2:
                 beam.analyse()
                 #Vẽ biểu đồ dựa trên thông tin đã input
                 fig_beam = beam.plot_beam_diagram()
-                fig_beam.write_image("./images/fig_beam_console.png",format='png',engine='kaleido')
+                
+                fig_test = beam.plot_beam_external()
+                fig_test.write_image("./images/fig_beam_console.png",format='png',engine='kaleido')
+                
+                # fig_beam.write_image("./images/fig_beam_console.png",format='png',engine='kaleido')
       
         st.markdown('---')
         keo, bua, bao = st.columns([1,3,1])
