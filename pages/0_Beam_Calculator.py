@@ -472,8 +472,7 @@ with tab2:
         
         keo2, bua2, bao2 = st.columns([1,3,1])
         with bua2:
-        #   st.image('images/fig_beam_advanced.png', caption='Beam with many supports', width=700)    
-          st.pyplot(fig_beam)          
+          st.image('images/fig_beam_advanced.png', caption='Beam with many supports', width=700)       
         st.markdown('---')
         
         #================================= Solve button #================================= 
