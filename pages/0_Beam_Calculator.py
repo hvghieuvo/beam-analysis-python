@@ -115,7 +115,7 @@ with tab2:
                     if type_load == "Distributed load":
                         beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
                     elif type_load == "Moment":
-                        beam.add_loads(PointTorque(round(magnitude,2), position))
+                        beam.add_loads(PointTorque(force=round(magnitude,2), coord=position))
                     elif type_load == "Point load" and angle == 90:
                         beam.add_loads(PointLoadV(round(magnitude,2), position))
                     elif type_load == "Point load" and angle != 90:
