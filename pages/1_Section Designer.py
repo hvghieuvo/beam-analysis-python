@@ -65,6 +65,6 @@ with tab2:
 
     elif select == 'C':
         st.title('Table data of cross-section C')
-        df=pd.read_excel("data/chu_C.csv")
+        df=pd.read_csv("data/chu_C.csv")
         st.table(df)
         
