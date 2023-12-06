@@ -34,13 +34,14 @@ def add_load(x1, magnitude, type, x2 = None):
         return beam.add_loads(PointTorque(magnitude, x1))
     
 def plot_diagram(x=0):
-    beam.analyse()
+    
     
     if x == 0:
         #PLot beam schematic
         fig_beam = beam.plot_beam_diagram()
         fig_beam.write_image("./images/fig_beam.png",format='png',engine='kaleido')
     else:
+        beam.analyse()
         #PLot beam schematic
         fig_reac = beam.plot_reaction_force()
         fig_reac.write_image("./images/fig_reac.png",format='png',engine='kaleido')
@@ -61,12 +62,22 @@ def plot_diagram(x=0):
         fig_deflection = beam.plot_deflection()
         fig_deflection.write_image("./images/fig_deflection.png",format='png',engine='kaleido')
 
-# beam = create_beam(10)
-# add_sp(0, "fixed")
+beam = create_beam(10)
+add_sp(0, "fixed")
 # add_sp(0, "pin")
-# add_sp(10, "roller")
-# add_load(2, -10, "pload")
-# add_load(0, -10, "dlv", 10)
-# add_load(5, 20, "ptorque")
-# plot_diagram(0)
+add_sp(10, "roller")
+add_load(2, -10, "pload")
+add_load(0, -10, "dlv", 10)
+add_load(5, 20, "ptorque")
+beam.add_loads(PointLoad(force=10, coord=1, angle = 0))
+beam.add_loads(PointLoad(force=10, coord=2, angle = 60))
+beam.add_loads(PointLoad(force=10, coord=3, angle = 90))
+beam.add_loads(PointLoad(force=10, coord=4, angle = 120))
+
+beam.add_loads(PointLoad(force=-10, coord=6, angle = 0))
+beam.add_loads(PointLoad(force=-10, coord=7, angle = 60))
+beam.add_loads(PointLoad(force=-10, coord=8, angle = 90))
+beam.add_loads(PointLoad(force=-10, coord=9, angle = 120))
+
+plot_diagram(0)
 # plot_diagram(1)
