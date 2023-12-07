@@ -24,6 +24,25 @@ if 'type_support' not in st.session_state:
 if 'solve_clicked' not in st.session_state:
     st.session_state.solve_clicked = False
 
+console_bm_max, console_sf_max, console_max_bm_pos, console_sf_at_bm_max = None, None, None, None
+beam2sp_bm_max, beam2sp_sf_max, beam2sp_max_bm_pos, beam2sp_sf_at_bm_max = None, None, None, None
+advanced_bm_max, advanced_sf_max, advanced_max_bm_pos, advanced_sf_at_bm_max = None, None, None, None
+
+def calculate_shear_force_and_bending_moment(length):
+    # Tính shear force và bending moment tại từng vị trí
+    positions = [i * 0.5 for i in range(int(2 * length))]
+    shear_forces = [beam.get_shear_force(pos) for pos in positions]
+    bending_moments = [beam.get_bending_moment(pos) for pos in positions]
+
+    # Tìm vị trí của bending moment max
+    max_bending_moment_position = positions[bending_moments.index(max(bending_moments))]
+
+    # Tính shear force tại vị trí bending moment max
+    shear_force_at_max_bending_moment = beam.get_shear_force(max_bending_moment_position)
+
+    return max_bending_moment_position, shear_force_at_max_bending_moment
+
+
 st.set_page_config(page_title="Beam Calculator", page_icon="🙃", layout="wide")
 st.markdown("# Beam Calculator")
 st.sidebar.header("Beam Calculator Tool")
@@ -129,7 +148,7 @@ with tab2:
         st.markdown('---')
         keo, bua, bao = st.columns([1,3,1])
         with bua:
-          st.image('images/fig_beam_console.jpg', caption='Console beam', width=700)
+          st.image('images/fig_beam_console.png', caption='Console beam', width=700)
           
         #================================= Solve button #================================= 
         st.markdown('---')
@@ -184,7 +203,9 @@ with tab2:
             fig_deflection = beam.plot_deflection()
             fig_deflection.write_image("./images/fig_deflection_console.png",format='png',engine='kaleido')
             
-            
+            console_bm_max = beam.get_bending_moment(return_max = True)
+            console_sf_max = beam.get_shear_force(return_max = True)
+            console_max_bm_pos, console_sf_at_bm_max = calculate_shear_force_and_bending_moment(length)
             
     #================================= Beam with 2 supports #=================================
     elif select == 'Beam with 2 supports':
@@ -339,6 +360,9 @@ with tab2:
             fig_deflection = beam.plot_deflection()
             fig_deflection.write_image("./images/fig_deflection_2sp.png",format='png',engine='kaleido')
 
+            beam2sp_bm_max = beam.get_bending_moment(return_max = True)
+            beam2sp_sf_max = beam.get_shear_force(return_max = True)
+            beam2sp_max_bm_pos, beam2sp_sf_at_bm_max = calculate_shear_force_and_bending_moment(length_1)
 
     #================================= Complex beam #=================================       
     elif select == 'Complex beam':
@@ -540,6 +564,9 @@ with tab2:
             fig_deflection = beam.plot_deflection()
             fig_deflection.write_image("./images/fig_deflection_advanced.png",format='png',engine='kaleido')
 
+            advanced_bm_max = beam.get_bending_moment(return_max = True)
+            advanced_sf_max = beam.get_shear_force(return_max = True)
+            advanced_max_bm_pos, advanced_sf_at_bm_max = calculate_shear_force_and_bending_moment(length_2)
 
 #================================= Output tab #=================================         
 with tab3:
@@ -548,6 +575,12 @@ with tab3:
         keo3, bua3, bao3 = st.columns([1,3,1])
         with bua3:
             st.write("")
+            st.divider()
+            st.write(f"Bending moment max: {console_bm_max}")
+            st.write(f"Shear force max: {console_sf_max}")
+            st.write(f"Shear force at position of max bending moment ({console_max_bm_pos} m): {console_sf_at_bm_max}")
+            
+            st.divider()
             st.image('images/fig_reac_console.png', caption='Reaction force diagram', width=700)
             st.divider()
 
@@ -563,6 +596,12 @@ with tab3:
         keo3, bua3, bao3 = st.columns([1,3,1])
         with bua3:
             st.write("")
+            st.divider()
+            st.write(f"Bending moment max: {beam2sp_bm_max}")
+            st.write(f"Shear force max: {beam2sp_sf_max}")
+            st.write(f"Shear force at position of max bending moment ({beam2sp_max_bm_pos} m): {beam2sp_sf_at_bm_max}")
+            
+            st.divider()
             st.image('images/fig_reac_2sp.png', caption='Reaction force diagram', width=700)
             st.divider()
 
@@ -578,6 +617,12 @@ with tab3:
         keo3, bua3, bao3 = st.columns([1,3,1])
         with bua3:
             st.write("")
+            st.divider()
+            st.write(f"Bending moment max: {advanced_bm_max}")
+            st.write(f"Shear force max: {advanced_sf_max}")
+            st.write(f"Shear force at position of max bending moment ({advanced_max_bm_pos} m): {advanced_sf_at_bm_max}")
+            
+            st.divider()
             st.image('images/fig_reac_advanced.png', caption='Reaction force diagram', width=700)
             st.divider()
 
