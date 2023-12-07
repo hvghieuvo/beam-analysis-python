@@ -34,9 +34,13 @@ tab1, tab2, tab3 = st.tabs(["Theory", "Input", "Output"])
 # Tab về lý thuyết
 with tab1:
     # Hiển thị lý thuyết với đường link đến tài liệu
+    st.title('Theory')
     st.markdown('''<p style="font-size:20px; text-align:justyfy">A brief overview of the engineering theory and conventions used in this program are illustrated below. Theory is adapted from the Hibbeler textbook [2]. A more rigorous overview of the basic theory behind statically determinate structures is presented in the beambending package documentation.</p>''',unsafe_allow_html=True)
     st.link_button('Click here!','https://indeterminatebeam.readthedocs.io/en/main/theory.html?fbclid=IwAR18lJpYVJm1MnqkVdXydhA0eLWQwSmCV4w6VzKAIK5dueK9zq-_gYrxMy0')
-
+    st.markdown('---')
+    st.title('Sign convention')
+    st.link_button('Click here!','https://indeterminatebeam.readthedocs.io/en/main/theory.html?fbclid=IwAR0PBvCzt8FYlYfQ8vIDRMNVBxjC1y0FVLY63nYmZFvk9gwCpKBIS5pT9oI#sign-convention')
+    
 # Tab nhập liệu
 added_forces=[]
 added_support=[]
@@ -129,7 +133,7 @@ with tab2:
         st.markdown('---')
         keo, bua, bao = st.columns([1,3,1])
         with bua:
-          st.image('images/fig_beam_console.jpg', caption='Console beam', width=700)
+          st.image('images/fig_beam_console.png', caption='Console beam', width=700)
           
         #================================= Solve button #================================= 
         st.markdown('---')
@@ -392,7 +396,7 @@ with tab2:
             if type_load_2 == 'Point load':
                 magnitude_2 = st.number_input('Magnitude (kN)', step=0.01)
                 position_2 = st.slider('Position (m)', min_value=0.00, max_value=length_2, step=0.01)
-                angle_2 = st.numbet_input('Angle (degree)', max_value=360.00, value=90.00 , step=0.1)
+                angle_2 = st.number_input('Angle (degree)', max_value=360.00, value=90.00 , step=0.1)
                 if st.button('Add'):
                     st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Position': position_2, 'Angle': angle_2})
             elif type_load_2 == 'Moment':
