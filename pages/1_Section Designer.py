@@ -27,9 +27,9 @@ with tab2:
     if select == 'Rectangle':
         col1, col2, col3 = st.columns(3, gap='large')
         with col1:
-            high = st.number_input(label='Height', min_value=0.00, max_value=None, step=0.01)
-            thickness = st.number_input(label='Thickness', min_value=0.00, max_value=None, step=0.01)
-            width = st.number_input(label='Width', min_value=0.00, max_value=None, step=0.01)
+            high = st.number_input(label='Height (m)', min_value=0.00, max_value=None, step=0.01)
+            thickness = st.number_input(label='Thickness (m)', min_value=0.00, max_value=None, step=0.01)
+            width = st.number_input(label='Width (m)', min_value=0.00, max_value=None, step=0.01)
         with col2:
             max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=0.00, max_value=None, step=0.01)
             max_shear_force = st.number_input('Maximum shear force (kN)', min_value=0.00, max_value=None, step=0.01)
@@ -41,8 +41,8 @@ with tab2:
     elif select == 'Circle':
         col1_1, col2_1, col3_1 = st.columns(3, gap='large')
         with col1_1:
-            R = st.number_input(label="Radius", min_value=0.00, max_value=None, step=0.01)
-            thickness = st.number_input(label='Thickness', min_value=0.00, max_value=None, step=0.01)
+            R = st.number_input(label="Radius (m)", min_value=0.00, max_value=None, step=0.01)
+            thickness = st.number_input(label='Thickness (m)', min_value=0.00, max_value=None, step=0.01)
         with col2_1:
             max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=0.00, max_value=None, step=0.01)
             max_shear_force = st.number_input('Maximum shear force (kN)', min_value=0.00, max_value=None, step=0.01)
@@ -54,9 +54,9 @@ with tab2:
     elif select == 'Annulus':
         col1_2, col2_2, col3_2 = st.columns(3, gap='large')   
         with col1_2:
-            R_in = st.number_input(label='Radius in', min_value=0.00, max_value=None, step=0.01)  
-            R_out = st.number_input(label='Radius out', min_value=0.00, max_value=None, step=0.01)
-            thickness = st.number_input(label='Thickness', min_value=0.00, max_value=None, step=0.01)
+            R_in = st.number_input(label='Radius in (m)', min_value=0.00, max_value=None, step=0.01)  
+            R_out = st.number_input(label='Radius out (m)', min_value=0.00, max_value=None, step=0.01)
+            thickness = st.number_input(label='Thickness (m)', min_value=0.00, max_value=None, step=0.01)
         with col2_2:
             max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=0.00, max_value=None, step=0.01)
             max_shear_force = st.number_input('Maximum shear force (kN)', min_value=0.00, max_value=None, step=0.01)
@@ -121,7 +121,7 @@ with tab2:
         st.markdown('---')
         col1_2, col2_2, col3_2 = st.columns(3, gap='large')
         with col1_2:
-            thickness = st.number_input(label='Thickness', min_value=0.00, max_value=None, step=0.01)
+            thickness = st.number_input(label='Thickness (m)', min_value=0.00, max_value=None, step=0.01)
         with col2_2:
             max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=0.00, max_value=None, step=0.01)
             max_shear_force = st.number_input('Maximum shear force (kN)', min_value=0.00, max_value=None, step=0.01)
@@ -184,7 +184,7 @@ with tab2:
         st.markdown('---')
         col1_2, col2_2, col3_2 = st.columns(3, gap='large')
         with col1_2:
-            thickness = st.number_input(label='Thickness', min_value=0.00, max_value=None, step=0.01)
+            thickness = st.number_input(label='Thickness (m)', min_value=0.00, max_value=None, step=0.01)
         with col2_2:
             max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=0.00, max_value=None, step=0.01)
             max_shear_force = st.number_input('Maximum shear force (kN)', min_value=0.00, max_value=None, step=0.01)
