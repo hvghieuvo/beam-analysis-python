@@ -58,6 +58,11 @@ with tab1:
     st.link_button('Click here!','https://indeterminatebeam.readthedocs.io/en/main/theory.html?fbclid=IwAR18lJpYVJm1MnqkVdXydhA0eLWQwSmCV4w6VzKAIK5dueK9zq-_gYrxMy0')
     st.markdown('---')
     st.title('Sign convention')
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">For External Forces the following convention is used:</p>''',unsafe_allow_html=True)
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">+ For x direction: To the right is positive</p>''',unsafe_allow_html=True)
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">+ For y direction: Up is positive</p>''',unsafe_allow_html=True)
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">+ For m direction: Anti-clockwise is positive</p>''',unsafe_allow_html=True)
+    
     st.link_button('Click here!','https://indeterminatebeam.readthedocs.io/en/main/theory.html?fbclid=IwAR0PBvCzt8FYlYfQ8vIDRMNVBxjC1y0FVLY63nYmZFvk9gwCpKBIS5pT9oI#sign-convention')
     
 # Tab nhập liệu
