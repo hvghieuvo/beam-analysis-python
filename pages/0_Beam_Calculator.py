@@ -223,8 +223,8 @@ with tab2:
             
         
         with col1_2:
-            sup_1 = st.slider("Position of support 1 (m)", 0.00, length_1, None)
-            sup_2 = st.slider("Position of support 2 (m)", 0.00, length_1, None)
+            sup_1 = st.slider("Position of support 1 (m)", 0.00, length_1, None, step=0.1)
+            sup_2 = st.slider("Position of support 2 (m)", 0.00, length_1, None, step=0.1)
             
         with col1_3:
             type_load_1 = st.selectbox('Type forces', ('Point load', 'Distributed load', 'Moment'))
@@ -419,7 +419,7 @@ with tab2:
             st.markdown('---')
             if type_load_2 == 'Point load':
                 magnitude_2 = st.number_input('Magnitude (kN)', step=0.01)
-                position_2 = st.slider('Position (m)', min_value=0.00, max_value=length_2, step=0.01)
+                position_2 = st.slider('Position (m)', min_value=0.00, max_value=length_2, step=0.1)
                 angle_2 = st.number_input('Angle (degree)', max_value=360.00, value=90.00 , step=0.1)
                 if st.button('Add'):
                     st.session_state.advanced_forces.append({'Type Load': type_load_2, 'Magnitude': magnitude_2, 'Position': position_2, 'Angle': angle_2})
