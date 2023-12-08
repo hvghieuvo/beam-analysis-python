@@ -244,7 +244,7 @@ with tab2:
             
             elif type_load_1 == 'Distributed load':
                 magnitude_1 = st.number_input('Magnitude (kN)', step=0.01)
-                start_point_1 = st.slider('Start position (m)', min_value=0.00, max_value=None, step=0.1)
+                start_point_1 = st.slider('Start position (m)', min_value=0.00, max_value=length_1, step=0.1)
                 end_point_1 = st.slider('End position (m)', min_value=0.00, max_value=length_1, step=0.1)
                 if st.button('Add'):
                     st.session_state.beam_forces.append({'Type Load': type_load_1, 'Magnitude': magnitude_1, 'Start Position': start_point_1, 'End Position': end_point_1})
