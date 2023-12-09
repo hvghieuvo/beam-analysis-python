@@ -62,7 +62,21 @@ with tab1:
     st.markdown('''<p style="font-size:20px; text-align:justyfy">+ For x direction: To the right is positive</p>''',unsafe_allow_html=True)
     st.markdown('''<p style="font-size:20px; text-align:justyfy">+ For y direction: Up is positive</p>''',unsafe_allow_html=True)
     st.markdown('''<p style="font-size:20px; text-align:justyfy">+ For m direction: Anti-clockwise is positive</p>''',unsafe_allow_html=True)
-    
+    st.image('images/signconvention.jpg')
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">For internal forces considering the left of a cut:</p>''',unsafe_allow_html=True)
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">+ For axial force (x direction): To the right is positive</p>''',unsafe_allow_html=True)
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">+ For shear force (y direction): Down is positive</p>''',unsafe_allow_html=True)
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">+ For moments: Anti-clockwise is positive</p>''',unsafe_allow_html=True)
+    st.image('images/internalforces.jpg')
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">For deflections:</p>''',unsafe_allow_html=True)
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">+ Up is considered positive</p>''',unsafe_allow_html=True)
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">For angled point loads (assuming a positive force is used):</p>''',unsafe_allow_html=True)
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">+ An angle of 0 indicates a positive force to the right</p>''',unsafe_allow_html=True)
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">+ An angle between 0 and 90 indicates a positive force to the right and a positive force up</p>''',unsafe_allow_html=True)
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">+ An angle of 90 indicates a positive force up</p>''',unsafe_allow_html=True)
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">+ An angle between 90 and 180 degrees indicates a force acting left (negative direction) and a positive force acting up</p>''',unsafe_allow_html=True)
+    st.markdown('''<p style="font-size:20px; text-align:justyfy">+ An angle of 180 indicates a negative horizontal force</p>''',unsafe_allow_html=True)
+    st.image('images/angle.jpg')
     st.link_button('Click here!','https://indeterminatebeam.readthedocs.io/en/main/theory.html?fbclid=IwAR0PBvCzt8FYlYfQ8vIDRMNVBxjC1y0FVLY63nYmZFvk9gwCpKBIS5pT9oI#sign-convention')
     
 # Tab nhập liệu
