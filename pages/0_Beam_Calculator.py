@@ -35,7 +35,7 @@ def calculate_shear_force_and_bending_moment(length):
     bending_moments = [beam.get_bending_moment(pos) for pos in positions]
 
     # Tìm vị trí của bending moment max
-    max_bending_moment_position = positions[bending_moments.index(max(bending_moments))]
+    max_bending_moment_position = positions[bending_moments.index(max(map(abs, bending_moments)))]
 
     # Tính shear force tại vị trí bending moment max
     shear_force_at_max_bending_moment = beam.get_shear_force(max_bending_moment_position)
@@ -123,6 +123,53 @@ with tab2:
             #Button để tạo beam, add sp và lực, hiển thị đề bài        
             if st.button('Check'):
                 
+                try:
+                    #Tạo beam với độ dài length
+                    beam = Beam(length)
+                    
+                    if fixed_type == "Fixed left end":
+                        beam.add_supports(Support(0, (1,1,1)))
+                    else: beam.add_supports(Support(length, (1,1,1)))
+                    
+                    for force in st.session_state.console_forces:
+                        # Trích xuất thông tin từ mỗi phần tử
+                        type_load = force.get("Type Load")
+                        magnitude = force.get("Magnitude")
+                        angle = force.get("Angle")
+                        position = force.get("Position", None)
+                        start_position = force.get("Start Position", None)
+                        end_position = force.get("End Position", None)
+
+                        # Gọi hàm add_load với thông tin từng load
+                        if type_load == "Distributed load":
+                            beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
+                        elif type_load == "Moment":
+                            beam.add_loads(PointTorque(round(magnitude,2), position))
+                        elif type_load == "Point load" and angle == 90:
+                            beam.add_loads(PointLoadV(round(magnitude,2), position))
+                        elif type_load == "Point load" and angle != 90:
+                            beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
+
+                    beam.analyse()
+                    #Vẽ biểu đồ dựa trên thông tin đã input
+                    fig_beam = beam.plot_beam_diagram()
+                    fig_beam.write_image("./images/fig_beam_console.png",format='png',engine='kaleido')
+                except:
+                    st.error('Error! Something not right', icon="🚨")
+                else:
+                    st.success('Plotting success!', icon="✅")
+      
+        st.markdown('---')
+        keo, bua, bao = st.columns([1,3,1])
+        with bua:
+          st.image('images/fig_beam_console.png', caption='Console beam', width=700)
+          
+        #================================= Solve button #================================= 
+        st.markdown('---')
+        if st.button('Solve'):
+            st.session_state.solve_clicked = True
+            
+            try: 
                 #Tạo beam với độ dài length
                 beam = Beam(length)
                 
@@ -144,78 +191,42 @@ with tab2:
                         beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
                     elif type_load == "Moment":
                         beam.add_loads(PointTorque(round(magnitude,2), position))
-                    elif type_load == "Point load" and angle == 90:
+                    elif type_load == "Point load" and angle==90:
                         beam.add_loads(PointLoadV(round(magnitude,2), position))
                     elif type_load == "Point load" and angle != 90:
                         beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
-
+                        
                 beam.analyse()
-                #Vẽ biểu đồ dựa trên thông tin đã input
-                fig_beam = beam.plot_beam_diagram()
-                fig_beam.write_image("./images/fig_beam_console.png",format='png',engine='kaleido')
-      
-        st.markdown('---')
-        keo, bua, bao = st.columns([1,3,1])
-        with bua:
-          st.image('images/fig_beam_console.png', caption='Console beam', width=700)
-          
-        #================================= Solve button #================================= 
-        st.markdown('---')
-        if st.button('Solve'):
-            st.session_state.solve_clicked = True
-            
-            #Tạo beam với độ dài length
-            beam = Beam(length)
-            
-            if fixed_type == "Fixed left end":
-                beam.add_supports(Support(0, (1,1,1)))
-            else: beam.add_supports(Support(length, (1,1,1)))
-            
-            for force in st.session_state.console_forces:
-                # Trích xuất thông tin từ mỗi phần tử
-                type_load = force.get("Type Load")
-                magnitude = force.get("Magnitude")
-                angle = force.get("Angle")
-                position = force.get("Position", None)
-                start_position = force.get("Start Position", None)
-                end_position = force.get("End Position", None)
+                #Giải và plot đồ thị
+                #PLot beam schematic
+                fig_reac = beam.plot_reaction_force()
+                fig_reac.write_image("./images/fig_reac_console.png",format='png',engine='kaleido')
 
-                # Gọi hàm add_load với thông tin từng load
-                if type_load == "Distributed load":
-                    beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
-                elif type_load == "Moment":
-                    beam.add_loads(PointTorque(round(magnitude,2), position))
-                elif type_load == "Point load" and angle==90:
-                    beam.add_loads(PointLoadV(round(magnitude,2), position))
-                elif type_load == "Point load" and angle != 90:
-                    beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
-                    
-            beam.analyse()
-            #Giải và plot đồ thị
-            #PLot beam schematic
-            fig_reac = beam.plot_reaction_force()
-            fig_reac.write_image("./images/fig_reac_console.png",format='png',engine='kaleido')
+                #PLot normal force
+                fig_normal = beam.plot_normal_force()
+                fig_normal.write_image("./images/fig_normal_console.png",format='png',engine='kaleido')
 
-            #PLot normal force
-            fig_normal = beam.plot_normal_force()
-            fig_normal.write_image("./images/fig_normal_console.png",format='png',engine='kaleido')
+                #PLot shear force
+                fig_shear = beam.plot_shear_force()
+                fig_shear.write_image("./images/fig_shear_console.png",format='png',engine='kaleido')
 
-            #PLot shear force
-            fig_shear = beam.plot_shear_force()
-            fig_shear.write_image("./images/fig_shear_console.png",format='png',engine='kaleido')
+                #PLot bending moment
+                fig_moment = beam.plot_bending_moment()
+                fig_moment.write_image("./images/fig_moment_console.png",format='png',engine='kaleido')
 
-            #PLot bending moment
-            fig_moment = beam.plot_bending_moment()
-            fig_moment.write_image("./images/fig_moment_console.png",format='png',engine='kaleido')
-
-            #Plot deflection
-            fig_deflection = beam.plot_deflection()
-            fig_deflection.write_image("./images/fig_deflection_console.png",format='png',engine='kaleido')
-            
-            console_bm_max = beam.get_bending_moment(return_max = True)
-            console_sf_max = beam.get_shear_force(return_max = True)
-            console_max_bm_pos, console_sf_at_bm_max = calculate_shear_force_and_bending_moment(length)
-            
+                #Plot deflection
+                fig_deflection = beam.plot_deflection()
+                fig_deflection.write_image("./images/fig_deflection_console.png",format='png',engine='kaleido')
+                
+                console_bm_max = beam.get_bending_moment(return_absmax = True)
+                console_sf_max = beam.get_shear_force(return_absmax = True)
+                console_max_bm_pos, console_sf_at_bm_max = calculate_shear_force_and_bending_moment(length)
+                
+            except:
+                st.error('Error! Something not right', icon="🚨")
+            else:
+                st.success('Calculation success!', icon="✅")
+                
     #================================= Beam with 2 supports #=================================
     elif select == 'Beam with 2 supports':
         col1_1, col1_2, col1_3, col1_4 = st.columns(4, gap='large')
@@ -269,6 +280,58 @@ with tab2:
             #================================= Check button #=================================         
             if st.button('Check'):
                 
+                try:
+                    #Tạo beam với độ dài length
+                    beam = Beam(length_1)
+                    
+                    if support_type_left == "Pin":
+                        beam.add_supports(Support(sup_1, (1,1,0)))
+                    elif support_type_left == "Roller": 
+                        beam.add_supports(Support(sup_1, (0,1,0)))
+                        
+                    if support_type_right == "Pin":
+                        beam.add_supports(Support(sup_2, (1,1,0)))
+                    elif support_type_right == "Roller":
+                        beam.add_supports(Support(sup_2, (0,1,0)))
+                        
+                    for force in st.session_state.beam_forces:
+                        # Trích xuất thông tin từ mỗi phần tử
+                        type_load = force.get("Type Load")
+                        magnitude = force.get("Magnitude")
+                        angle = force.get("Angle")
+                        position = force.get("Position", None)
+                        start_position = force.get("Start Position", None)
+                        end_position = force.get("End Position", None)
+
+                        # Gọi hàm add_load với thông tin từng load
+                        if type_load == "Distributed load":
+                            beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
+                        elif type_load == "Moment":
+                            beam.add_loads(PointTorque(round(magnitude,2), position))
+                        elif type_load == "Point load" and angle==90:
+                            beam.add_loads(PointLoadV(round(magnitude,2), position))
+                        elif type_load == "Point load" and angle != 90:
+                            beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
+
+                    #Vẽ biểu đồ dựa trên thông tin đã input
+                    fig_beam = beam.plot_beam_diagram()
+                    fig_beam.write_image("./images/fig_beam_2sp.png",format='png',engine='kaleido')
+                except:
+                    st.error('Error! Something not right', icon="🚨")
+                else:
+                    st.success('Plotting success!', icon="✅")
+        
+        st.markdown('---')        
+        keo1, bua1, bao1 = st.columns([1,3,1])
+        with bua1:
+          st.image('images/fig_beam_2sp.png', caption='Beam with 2 supports', width=700)             
+        st.markdown('---')
+        
+        #================================= Solve button #================================= 
+        if st.button('Solve'):
+            st.session_state.solve_clicked = True
+            
+            try:
                 #Tạo beam với độ dài length
                 beam = Beam(length_1)
                 
@@ -281,7 +344,7 @@ with tab2:
                     beam.add_supports(Support(sup_2, (1,1,0)))
                 elif support_type_right == "Roller":
                     beam.add_supports(Support(sup_2, (0,1,0)))
-                    
+                
                 for force in st.session_state.beam_forces:
                     # Trích xuất thông tin từ mỗi phần tử
                     type_load = force.get("Type Load")
@@ -300,78 +363,37 @@ with tab2:
                         beam.add_loads(PointLoadV(round(magnitude,2), position))
                     elif type_load == "Point load" and angle != 90:
                         beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
+                        
+                beam.analyse()
+                #Giải và plot đồ thị
+                #PLot beam schematic
+                fig_reac = beam.plot_reaction_force()
+                fig_reac.write_image("./images/fig_reac_2sp.png",format='png',engine='kaleido')
 
-                #Vẽ biểu đồ dựa trên thông tin đã input
-                fig_beam = beam.plot_beam_diagram()
-                fig_beam.write_image("./images/fig_beam_2sp.png",format='png',engine='kaleido')
-        
-        st.markdown('---')        
-        keo1, bua1, bao1 = st.columns([1,3,1])
-        with bua1:
-          st.image('images/fig_beam_2sp.png', caption='Beam with 2 supports', width=700)             
-        st.markdown('---')
-        
-        #================================= Solve button #================================= 
-        if st.button('Solve'):
-            st.session_state.solve_clicked = True
-            
-            #Tạo beam với độ dài length
-            beam = Beam(length_1)
-            
-            if support_type_left == "Pin":
-                beam.add_supports(Support(sup_1, (1,1,0)))
-            elif support_type_left == "Roller": 
-                beam.add_supports(Support(sup_1, (0,1,0)))
-                
-            if support_type_right == "Pin":
-                beam.add_supports(Support(sup_2, (1,1,0)))
-            elif support_type_right == "Roller":
-                beam.add_supports(Support(sup_2, (0,1,0)))
-            
-            for force in st.session_state.beam_forces:
-                # Trích xuất thông tin từ mỗi phần tử
-                type_load = force.get("Type Load")
-                magnitude = force.get("Magnitude")
-                angle = force.get("Angle")
-                position = force.get("Position", None)
-                start_position = force.get("Start Position", None)
-                end_position = force.get("End Position", None)
+                #PLot normal force
+                fig_normal = beam.plot_normal_force()
+                fig_normal.write_image("./images/fig_normal_2sp.png",format='png',engine='kaleido')
 
-                # Gọi hàm add_load với thông tin từng load
-                if type_load == "Distributed load":
-                    beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
-                elif type_load == "Moment":
-                    beam.add_loads(PointTorque(round(magnitude,2), position))
-                elif type_load == "Point load" and angle==90:
-                    beam.add_loads(PointLoadV(round(magnitude,2), position))
-                elif type_load == "Point load" and angle != 90:
-                    beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
-                    
-            beam.analyse()
-            #Giải và plot đồ thị
-            #PLot beam schematic
-            fig_reac = beam.plot_reaction_force()
-            fig_reac.write_image("./images/fig_reac_2sp.png",format='png',engine='kaleido')
+                #PLot shear force
+                fig_shear = beam.plot_shear_force()
+                fig_shear.write_image("./images/fig_shear_2sp.png",format='png',engine='kaleido')
 
-            #PLot normal force
-            fig_normal = beam.plot_normal_force()
-            fig_normal.write_image("./images/fig_normal_2sp.png",format='png',engine='kaleido')
+                #PLot bending moment
+                fig_moment = beam.plot_bending_moment()
+                fig_moment.write_image("./images/fig_moment_2sp.png",format='png',engine='kaleido')
 
-            #PLot shear force
-            fig_shear = beam.plot_shear_force()
-            fig_shear.write_image("./images/fig_shear_2sp.png",format='png',engine='kaleido')
+                #Plot deflection
+                fig_deflection = beam.plot_deflection()
+                fig_deflection.write_image("./images/fig_deflection_2sp.png",format='png',engine='kaleido')
 
-            #PLot bending moment
-            fig_moment = beam.plot_bending_moment()
-            fig_moment.write_image("./images/fig_moment_2sp.png",format='png',engine='kaleido')
+                beam2sp_bm_max = beam.get_bending_moment(return_absmax = True)
+                beam2sp_sf_max = beam.get_shear_force(return_absmax = True)
+                beam2sp_max_bm_pos, beam2sp_sf_at_bm_max = calculate_shear_force_and_bending_moment(length_1)
 
-            #Plot deflection
-            fig_deflection = beam.plot_deflection()
-            fig_deflection.write_image("./images/fig_deflection_2sp.png",format='png',engine='kaleido')
-
-            beam2sp_bm_max = beam.get_bending_moment(return_max = True)
-            beam2sp_sf_max = beam.get_shear_force(return_max = True)
-            beam2sp_max_bm_pos, beam2sp_sf_at_bm_max = calculate_shear_force_and_bending_moment(length_1)
+            except:
+                st.error('Error! Something not right', icon="🚨")
+            else:
+                st.success('Calculation success!', icon="✅")
 
     #================================= Complex beam #=================================       
     elif select == 'Complex beam':
@@ -456,11 +478,73 @@ with tab2:
             if st.button('Check'):
                 st.session_state.quick_solve_clicked = True
 
+                try:
+                    #Tạo beam với độ dài length
+                    beam = Beam(length_2)
+                    
+                    # st.write(st.session_state.type_support)
+                    
+                    for support in st.session_state.type_support:
+                        # Trích xuất thông tin từ mỗi phần tử
+                        type_support = support.get("Type support")
+                        position = support.get("Position", None)
+
+                        # Gọi hàm add_load với thông tin từng load
+                        if type_support == "Pin":
+                            beam.add_supports(Support(position, (1,1,0)))
+                        elif type_support == "Roller":
+                            beam.add_supports(Support(position, (0,1,0)))
+                        elif type_support == "Fixed":
+                            if 'Fixed left end' in support:
+                                beam.add_supports(Support(0, (1,1,1)))
+                            if 'Fixed right end' in support:
+                                beam.add_supports(Support(length_2, (1,1,1)))
+                        
+                    for force in st.session_state.advanced_forces:
+                        # Trích xuất thông tin từ mỗi phần tử
+                        type_load = force.get("Type Load")
+                        magnitude = force.get("Magnitude")
+                        angle = force.get("Angle")
+                        position = force.get("Position", None)
+                        start_position = force.get("Start Position", None)
+                        end_position = force.get("End Position", None)
+
+                        # Gọi hàm add_load với thông tin từng load
+                        if type_load == "Distributed load":
+                            beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
+                        elif type_load == "Moment":
+                            beam.add_loads(PointTorque(round(magnitude,2), position))
+                        elif type_load == "Point load" and angle==90:
+                            beam.add_loads(PointLoadV(round(magnitude,2), position))
+                        elif type_load == "Point load" and angle != 90:
+                            beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
+
+                    #Vẽ biểu đồ dựa trên thông tin đã input
+                    fig_beam = beam.plot_beam_diagram()
+                    fig_beam.write_image("./images/fig_beam_advanced.png",format='png',engine='kaleido')
+                    
+                except:
+                    st.error('Error! Something not right', icon="🚨")
+                else:
+                    st.success('Plotting success!', icon="✅")
+            
+        st.markdown('---')
+        
+        keo2, bua2, bao2 = st.columns([1,3,1])
+        with bua2:
+          st.image('images/fig_beam_advanced.png', caption='Beam with many supports', width=700)       
+        st.markdown('---')
+        
+        #================================= Solve button #================================= 
+        if st.button('Solve'):
+            st.session_state.solve_clicked = True
+            
+            try:
                 #Tạo beam với độ dài length
                 beam = Beam(length_2)
                 
                 # st.write(st.session_state.type_support)
-                 
+                
                 for support in st.session_state.type_support:
                     # Trích xuất thông tin từ mỗi phần tử
                     type_support = support.get("Type support")
@@ -491,92 +575,43 @@ with tab2:
                         beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
                     elif type_load == "Moment":
                         beam.add_loads(PointTorque(round(magnitude,2), position))
-                    elif type_load == "Point load" and angle==90:
+                    elif type_load == "Point load" and angle == 90:
                         beam.add_loads(PointLoadV(round(magnitude,2), position))
                     elif type_load == "Point load" and angle != 90:
                         beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
 
                 #Vẽ biểu đồ dựa trên thông tin đã input
-                fig_beam = beam.plot_beam_diagram()
-                fig_beam.write_image("./images/fig_beam_advanced.png",format='png',engine='kaleido')
-            
-        st.markdown('---')
-        
-        keo2, bua2, bao2 = st.columns([1,3,1])
-        with bua2:
-          st.image('images/fig_beam_advanced.png', caption='Beam with many supports', width=700)       
-        st.markdown('---')
-        
-        #================================= Solve button #================================= 
-        if st.button('Solve'):
-            st.session_state.solve_clicked = True
-            #Tạo beam với độ dài length
-            beam = Beam(length_2)
-            
-            # st.write(st.session_state.type_support)
-             
-            for support in st.session_state.type_support:
-                # Trích xuất thông tin từ mỗi phần tử
-                type_support = support.get("Type support")
-                position = support.get("Position", None)
+                beam.analyse()
+                #Giải và plot đồ thị
+                #PLot beam schematic
+                fig_reac = beam.plot_reaction_force()
+                fig_reac.write_image("./images/fig_reac_advanced.png",format='png',engine='kaleido')
 
-                # Gọi hàm add_load với thông tin từng load
-                if type_support == "Pin":
-                    beam.add_supports(Support(position, (1,1,0)))
-                elif type_support == "Roller":
-                    beam.add_supports(Support(position, (0,1,0)))
-                elif type_support == "Fixed":
-                    if 'Fixed left end' in support:
-                        beam.add_supports(Support(0, (1,1,1)))
-                    if 'Fixed right end' in support:
-                        beam.add_supports(Support(length_2, (1,1,1)))
+                #PLot normal force
+                fig_normal = beam.plot_normal_force()
+                fig_normal.write_image("./images/fig_normal_advanced.png",format='png',engine='kaleido')
+
+                #PLot shear force
+                fig_shear = beam.plot_shear_force()
+                fig_shear.write_image("./images/fig_shear_advanced.png",format='png',engine='kaleido')
+
+                #PLot bending moment
+                fig_moment = beam.plot_bending_moment()
+                fig_moment.write_image("./images/fig_moment_advanced.png",format='png',engine='kaleido')
+
+                #Plot deflection
+                fig_deflection = beam.plot_deflection()
+                fig_deflection.write_image("./images/fig_deflection_advanced.png",format='png',engine='kaleido')
+
+                advanced_bm_max = beam.get_bending_moment(return_absmax = True)
+                advanced_sf_max = beam.get_shear_force(return_absmax = True)
+                advanced_max_bm_pos, advanced_sf_at_bm_max = calculate_shear_force_and_bending_moment(length_2)
+
+            except:
+                st.error('Error! Something not right', icon="🚨")
+            else:
+                st.success('Calculation success!', icon="✅")
                 
-            for force in st.session_state.advanced_forces:
-                # Trích xuất thông tin từ mỗi phần tử
-                type_load = force.get("Type Load")
-                magnitude = force.get("Magnitude")
-                angle = force.get("Angle")
-                position = force.get("Position", None)
-                start_position = force.get("Start Position", None)
-                end_position = force.get("End Position", None)
-
-                # Gọi hàm add_load với thông tin từng load
-                if type_load == "Distributed load":
-                    beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
-                elif type_load == "Moment":
-                    beam.add_loads(PointTorque(round(magnitude,2), position))
-                elif type_load == "Point load" and angle == 90:
-                    beam.add_loads(PointLoadV(round(magnitude,2), position))
-                elif type_load == "Point load" and angle != 90:
-                    beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
-
-            #Vẽ biểu đồ dựa trên thông tin đã input
-            beam.analyse()
-            #Giải và plot đồ thị
-            #PLot beam schematic
-            fig_reac = beam.plot_reaction_force()
-            fig_reac.write_image("./images/fig_reac_advanced.png",format='png',engine='kaleido')
-
-            #PLot normal force
-            fig_normal = beam.plot_normal_force()
-            fig_normal.write_image("./images/fig_normal_advanced.png",format='png',engine='kaleido')
-
-            #PLot shear force
-            fig_shear = beam.plot_shear_force()
-            fig_shear.write_image("./images/fig_shear_advanced.png",format='png',engine='kaleido')
-
-            #PLot bending moment
-            fig_moment = beam.plot_bending_moment()
-            fig_moment.write_image("./images/fig_moment_advanced.png",format='png',engine='kaleido')
-
-            #Plot deflection
-            fig_deflection = beam.plot_deflection()
-            fig_deflection.write_image("./images/fig_deflection_advanced.png",format='png',engine='kaleido')
-
-            advanced_bm_max = beam.get_bending_moment(return_max = True)
-            advanced_sf_max = beam.get_shear_force(return_max = True)
-            advanced_max_bm_pos, advanced_sf_at_bm_max = calculate_shear_force_and_bending_moment(length_2)
-
 #================================= Output tab #=================================         
 with tab3:
     image = st.selectbox('Problem', ('Console', 'Beam with 2 supports', 'Complex beam'))
@@ -585,9 +620,9 @@ with tab3:
         with bua3:
             st.write("")
             st.divider()
-            st.write(f"Bending moment max: {console_bm_max}")
-            st.write(f"Shear force max: {console_sf_max}")
-            st.write(f"Shear force at position of max bending moment ({console_max_bm_pos} m): {console_sf_at_bm_max}")
+            st.write(f"Bending moment absolute max: {console_bm_max}")
+            st.write(f"Shear force absolute max: {console_sf_max}")
+            st.write(f"Shear force at position of absolute max bending moment ({console_max_bm_pos} m): {console_sf_at_bm_max}")
             
             st.divider()
             st.image('images/fig_reac_console.png', caption='Reaction force diagram', width=700)
@@ -606,9 +641,9 @@ with tab3:
         with bua3:
             st.write("")
             st.divider()
-            st.write(f"Bending moment max: {beam2sp_bm_max}")
-            st.write(f"Shear force max: {beam2sp_sf_max}")
-            st.write(f"Shear force at position of max bending moment ({beam2sp_max_bm_pos} m): {beam2sp_sf_at_bm_max}")
+            st.write(f"Bending moment absolute max: {beam2sp_bm_max}")
+            st.write(f"Shear force absolute max: {beam2sp_sf_max}")
+            st.write(f"Shear force at position of absolute max bending moment ({beam2sp_max_bm_pos} m): {beam2sp_sf_at_bm_max}")
             
             st.divider()
             st.image('images/fig_reac_2sp.png', caption='Reaction force diagram', width=700)
@@ -627,9 +662,9 @@ with tab3:
         with bua3:
             st.write("")
             st.divider()
-            st.write(f"Bending moment max: {advanced_bm_max}")
-            st.write(f"Shear force max: {advanced_sf_max}")
-            st.write(f"Shear force at position of max bending moment ({advanced_max_bm_pos} m): {advanced_sf_at_bm_max}")
+            st.write(f"Bending moment absolute max: {advanced_bm_max}")
+            st.write(f"Shear force absolute max: {advanced_sf_max}")
+            st.write(f"Shear force at position of absolute max bending moment ({advanced_max_bm_pos} m): {advanced_sf_at_bm_max}")
             
             st.divider()
             st.image('images/fig_reac_advanced.png', caption='Reaction force diagram', width=700)
