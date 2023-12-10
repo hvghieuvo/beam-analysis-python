@@ -31,10 +31,10 @@ with tab2:
             thickness = st.number_input(label='Thickness (m)', min_value=0.00, max_value=None, step=0.01)
             width = st.number_input(label='Width (m)', min_value=0.00, max_value=None, step=0.01)
         with col2:
-            max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=0.00, max_value=None, step=0.01)
-            max_shear_force = st.number_input('Maximum shear force (kN)', min_value=0.00, max_value=None, step=0.01)
-            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=0.00, max_value=None, step=0.01)
-            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=0.00, max_value=None, step=0.01)
+            max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=None, max_value=None, step=0.01)
+            max_shear_force = st.number_input('Maximum shear force (kN)', min_value=None, max_value=None, step=0.01)
+            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=None, max_value=None, step=0.01)
+            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
         with col3:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
     
@@ -44,10 +44,10 @@ with tab2:
             R = st.number_input(label="Radius (m)", min_value=0.00, max_value=None, step=0.01)
             thickness = st.number_input(label='Thickness (m)', min_value=0.00, max_value=None, step=0.01)
         with col2_1:
-            max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=0.00, max_value=None, step=0.01)
-            max_shear_force = st.number_input('Maximum shear force (kN)', min_value=0.00, max_value=None, step=0.01)
-            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=0.00, max_value=None, step=0.01)
-            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=0.00, max_value=None, step=0.01)
+            max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=None, max_value=None, step=0.01)
+            max_shear_force = st.number_input('Maximum shear force (kN)', min_value=None, max_value=None, step=0.01)
+            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=None, max_value=None, step=0.01)
+            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
         with col3_1:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
 
@@ -58,10 +58,10 @@ with tab2:
             R_out = st.number_input(label='Radius out (m)', min_value=0.00, max_value=None, step=0.01)
             thickness = st.number_input(label='Thickness (m)', min_value=0.00, max_value=None, step=0.01)
         with col2_2:
-            max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=0.00, max_value=None, step=0.01)
-            max_shear_force = st.number_input('Maximum shear force (kN)', min_value=0.00, max_value=None, step=0.01)
-            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=0.00, max_value=None, step=0.01)
-            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=0.00, max_value=None, step=0.01)
+            max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=None, max_value=None, step=0.01)
+            max_shear_force = st.number_input('Maximum shear force (kN)', min_value=None, max_value=None, step=0.01)
+            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=None, max_value=None, step=0.01)
+            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
         with col3_2:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
 
@@ -123,10 +123,10 @@ with tab2:
         with col1_2:
             thickness = st.number_input(label='Thickness (m)', min_value=0.00, max_value=None, step=0.01)
         with col2_2:
-            max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=0.00, max_value=None, step=0.01)
-            max_shear_force = st.number_input('Maximum shear force (kN)', min_value=0.00, max_value=None, step=0.01)
-            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=0.00, max_value=None, step=0.01)
-            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=0.00, max_value=None, step=0.01)
+            max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=None, max_value=None, step=0.01)
+            max_shear_force = st.number_input('Maximum shear force (kN)', min_value=None, max_value=None, step=0.01)
+            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=None, max_value=None, step=0.01)
+            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
         with col3_2:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
     elif select == 'I':
@@ -186,10 +186,10 @@ with tab2:
         with col1_2:
             thickness = st.number_input(label='Thickness (m)', min_value=0.00, max_value=None, step=0.01)
         with col2_2:
-            max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=0.00, max_value=None, step=0.01)
-            max_shear_force = st.number_input('Maximum shear force (kN)', min_value=0.00, max_value=None, step=0.01)
-            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=0.00, max_value=None, step=0.01)
-            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=0.00, max_value=None, step=0.01)
+            max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=None, max_value=None, step=0.01)
+            max_shear_force = st.number_input('Maximum shear force (kN)', min_value=None, max_value=None, step=0.01)
+            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=None, max_value=None, step=0.01)
+            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
         with col3_2:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
 
