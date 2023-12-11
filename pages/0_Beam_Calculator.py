@@ -35,7 +35,8 @@ def calculate_shear_force_and_bending_moment(length):
     bending_moments = [beam.get_bending_moment(pos) for pos in positions]
 
     # Tìm vị trí của bending moment max
-    max_bending_moment_position = positions[bending_moments.index(max(map(abs, bending_moments)))]
+    max_bending_moment_position = positions[bending_moments.index(max(bending_moments, key=abs))]
+    
 
     # Tính shear force tại vị trí bending moment max
     shear_force_at_max_bending_moment = beam.get_shear_force(max_bending_moment_position)
