@@ -251,7 +251,9 @@ elif loaimatcat == 'hình I':
         print(f"Giá trị '{I}' không được tìm thấy trong tệp Excel.")
     Sx = hinhI.iloc[hangchuagiatri, 12]
     Jx = hinhI.iloc[hangchuagiatri, 9]
+    Jy = hinhI.iloc[hangchuagiatri, 13]
     d = (hinhI.iloc[hangchuagiatri, 4]) / 10
+    b = (hinhI.iloc[hangchuagiatri, 3]) / 10
     Wx = hinhI.iloc[hangchuagiatri, 10]
     Wy = hinhI.iloc[hangchuagiatri, 14]
     h = (hinhI.iloc[hangchuagiatri, 2]) / 10
@@ -261,7 +263,7 @@ elif loaimatcat == 'hình I':
         tau = sigma / math.sqrt(3)
     else:
         tau = sigma / 2
-    def hinhI(Qmax, Sx, Jx, d, Mmax, Wx):
+    def hinhI():
         print('Xét lớp biên, ta có:')
         sigmamax = (abs(Mmax)) / Wx
         print('Ứng suất pháp lớn nhất trên mặt cắt là:', sigmamax)
@@ -275,11 +277,11 @@ elif loaimatcat == 'hình I':
             print('Lớp trung hòa thỏa bền')
         else:
             print('Lớp trung hòa không thỏa bền')
-        return sigmamax, taumax
-    hinhI(Qmax, Sx, Jx, d, Mmax, Wx)
+        return
+    hinhI()
     # Tinh sigmatd
     print('Mặt cắt còn 1 lớp nguy hiểm -> tính trạng thái ứng suất phẳng đặc biệt qua lớp trung gian')
-    def tinhsigmatd(Mmax, Jx, h, t, Qy, Sx, d):
+    def tinhsigmatd():
         sigmaN = (Mmax / Jx) * (h / 2 - t)
         Sd = Sx - (d / 2) * (h / 2 - t) ** 2
         tauN = (Qy * Sd) / (Jx * d)
@@ -288,18 +290,102 @@ elif loaimatcat == 'hình I':
         else:
             sigmatd = math.sqrt((sigmaN ** 2) + (4 * tauN ** 2))
         print('Ứng suất pháp tương đương của mặt cắt có giá trị là:', sigmatd)
-        return sigmaN, Sd, tauN, sigmatd
-    tinhsigmatd(Mmax, Jx, h, t, Qy, Sx, d)
+        return
+    tinhsigmatd()
     print('Kiểm bền cho thanh khi thanh nằm ngang')
-    def kiembenngang(Mmax, Wy):
+    def kiembenngang():
         sigmamin = abs(Mmax) / Wy
         print('sigmamin =', abs(sigmamin))
         if abs(sigmamin) > sigma:
             print('Thanh nằm ngang không bền')
         else:
             print('Thanh nằm ngang bền')
-        return sigmamin
-    kiembenngang(Mmax, Wy)
+        return
+        kiembenngang()
+        # PLOT CROSS-SECTION AND STRESS DESCRIPTION
+
+    plt.subplot(2, 1, 1)
+
+    x_vertical = [0, h / 2, h / 2, d / 2, d / 2, h / 2, h / 2, 0]
+    y_vertical = [-h / 2, -h / 2, -(h - 2 * t) / 2, -(h - 2 * t) / 2, (h - 2 * t) / 2, (h - 2 * t) / 2, h / 2,
+                      h / 2]
+
+        # Plot the original rectangular shape
+    plt.plot(x_vertical, y_vertical, color="b")
+
+        # Mirror the rectangular shape about the y-axis
+    mirrored_x_vertical = [-xi for xi in x_vertical]  # Reverse the sign of each x-coordinate about y-axis
+    plt.plot(mirrored_x_vertical, y_vertical, color="b")
+
+    x_st = [1 * b, 2 * b, 2 * b, 3 * b, 1 * b]
+    y_st = [h / 2, h / 2, -h / 2, -h / 2, h / 2]
+
+    if Qy > 0:
+        plt.plot(x_st, y_st)
+        plt.text(1.35 * b, 0.35 * h, r"$\sigma_{min}$", fontsize=14)
+        plt.text(2.1 * b, -0.45 * h, r"$\sigma_{max}$", fontsize=14)
+    else:
+        mirrored_y_st = [-yi for yi in y_st]
+        plt.plot(x_st, mirrored_y_st)
+        plt.text(1.35 * b, -0.45 * h, r"$\sigma_{min}$", fontsize=14)
+        plt.text(2.05 * b, 0.35 * h, r"$\sigma_{max}$", fontsize=14)
+
+    theta = np.linspace(-np.pi / 2, np.pi / 2, 100)
+    radius = h / 2
+    x_t = 3.5 * b + radius * np.cos(theta)
+    y_t = radius * np.sin(theta)
+    plt.plot(x_t, y_t)
+    plt.plot([3.5 * b, 3.5 * b], [-h / 2, h / 2])
+    plt.text(3.5 * b + h / 2, -.1 * h, r"$\tau_{max}$", fontsize=14)
+
+    plt.plot([0, 3.5 * b + 1.2 * h / 2], [0, 0], color="k", linestyle="--")
+    plt.plot([0, 0], [0, -.6 * h], color="k", linestyle="--")
+    plt.text(3.5 * b + 1.2 * h / 2, .02 * h, "x", fontsize=14)
+    plt.text(.5 * d, -.6 * h, "y", fontsize=14)
+
+        # Set aspect ratio to be equal
+    plt.axis("off")
+    plt.axis("equal")
+    plt.title("I-SHAPE CROSS-SECTION IN CM AND ITS STRESS DESCRIPTION")
+
+    plt.subplot(2, 1, 2)
+    x_horizontal = [0, 0, t, t, h - t, h - t, h, h]
+    y_horizontal = [0, b / 2, b / 2, d / 2, d / 2, b / 2, b / 2, 0]
+    plt.plot(x_horizontal, y_horizontal, color='b')
+
+    mirrored_y_horizontal = [-yi for yi in y_horizontal]
+    plt.plot(x_horizontal, mirrored_y_horizontal, color='b')
+
+    step = h + b
+    x_st = [step, step + b, step + b, step + 2 * b, step]
+    y_st = [b / 2, b / 2, -b / 2, -b / 2, b / 2]
+
+    if Qy > 0:
+        plt.plot(x_st, y_st)
+        plt.text(step + .35 * b, 0.35 * b, r"$\sigma_{min}$", fontsize=14)
+        plt.text(step + 1.15 * b, -0.45 * b, r"$\sigma_{max}$", fontsize=14)
+    else:
+        mirrored_y_st = [-yi for yi in y_st]
+        plt.plot(x_st, mirrored_y_st)
+        plt.text(step + .35 * b, -0.45 * b, r"$\sigma_{min}$", fontsize=14)
+        plt.text(step + 1.05 * b, 0.35 * b, r"$\sigma_{max}$", fontsize=14)
+
+    theta = np.linspace(-np.pi / 2, np.pi / 2, 100)
+    radius = b / 2
+    x_t = step + 3 * b + radius * np.cos(theta)
+    y_t = radius * np.sin(theta)
+    plt.plot(x_t, y_t)
+    plt.plot([step + 3 * b, step + 3 * b], [-b / 2, b / 2])
+    plt.text(step + 3 * b + radius, -.1 * b, r"$\tau_{max}$", fontsize=14)
+
+    plt.plot([h / 2, step + 3.7 * b], [0, 0], color="k", linestyle="--")
+    plt.plot([h / 2, h / 2], [0, -.6 * b], color="k", linestyle="--")
+    plt.text(step + 3.7 * b, .02 * b, "x", fontsize=14)
+    plt.text(.52 * h, -.6 * b, "y", fontsize=14)
+
+    plt.axis("off")
+    plt.show()
+    plt.show()
 elif loaimatcat == 'hình C':
     C = input('Hãy nhập số hiệu mặt cắt C:')
     print('Mã số hiệu mặt cắt C:',C)
@@ -318,6 +404,8 @@ elif loaimatcat == 'hình C':
         print(f"Giá trị '{C}' không được tìm thấy trong tệp Excel.")
     Sx = hinhC.iloc[hangchuagiatri, 12]
     Jx = hinhC.iloc[hangchuagiatri, 9]
+    Jy = hinhI.iloc[hangchuagiatri, 13]
+    b = (hinhI.iloc[hangchuagiatri, 3]) / 10
     d = (hinhC.iloc[hangchuagiatri, 4]) / 10
     Wx = hinhC.iloc[hangchuagiatri, 10]
     Wy = hinhC.iloc[hangchuagiatri, 14]
@@ -367,6 +455,83 @@ elif loaimatcat == 'hình C':
             print('Thanh nằm ngang bền')
         return sigmamin
     kiembenngang(Mmax, Wy)
+    # PLOT CROSS-SECTION AND STRESS DESCRIPTION
+
+    plt.subplot(2, 1, 1)
+    x_vertical = [0, 0, b, b, d, d]
+    y_vertical = [0, h / 2, h / 2, (h - 2 * t) / 2, (h - 2 * t) / 2, 0]
+
+    # Plot the original shape
+    plt.plot(x_vertical, y_vertical, color="b")
+
+    # Mirror the rectangular shape about the y-axis
+    mirrored_y_vertical = [-yi for yi in y_vertical]  # Reverse the sign of each y-coordinate
+    plt.plot(x_vertical, mirrored_y_vertical, color="b")
+    x_st = [2 * b, 3 * b, 3 * b, 4 * b, 2 * b]
+    y_st = [h / 2, h / 2, -h / 2, -h / 2, h / 2]
+
+    if Qy > 0:
+        plt.plot(x_st, y_st)
+        plt.text(2.35 * b, 0.35 * h, r"$\sigma_{min}$", fontsize=14)
+        plt.text(3.1 * b, -0.45 * h, r"$\sigma_{max}$", fontsize=14)
+    else:
+        mirrored_y_st = [-yi for yi in y_st]
+        plt.plot(x_st, mirrored_y_st)
+        plt.text(2.35 * b, -0.45 * h, r"$\sigma_{min}$", fontsize=14)
+        plt.text(3.05 * b, 0.35 * h, r"$\sigma_{max}$", fontsize=14)
+
+    theta = np.linspace(-np.pi / 2, np.pi / 2, 100)
+    radius = h / 2
+    x_t = 5 * b + radius * np.cos(theta)
+    y_t = radius * np.sin(theta)
+    plt.plot(x_t, y_t)
+    plt.plot([5 * b, 5 * b], [-h / 2, h / 2])
+    plt.text(5 * b + radius, -.1 * h, r"$\tau_{max}$", fontsize=14)
+
+    plt.plot([b / 2, 5 * b + 1.2 * radius], [0, 0], color='k', linestyle='--')
+    plt.plot([b / 2, b / 2], [0, -.6 * h], color='k', linestyle='--')
+    plt.text(5 * b + 1.2 * radius, .05 * h, 'x', fontsize=14)
+    plt.text(.6 * b, -.6 * h, 'y', fontsize=14)
+
+    # Set aspect ratio to be equal
+    plt.axis("off")
+    plt.axis("equal")
+    plt.title("C-SHAPE CROSS-SECTION IN MM AND ITS STRESS DESCRIPTION")
+
+    plt.subplot(2, 1, 2)
+    x_horizontal = [0, h, h, h - t, h - t, t, t, 0, 0]
+    y_horizontal = [b / 2, b / 2, -b / 2, -b / 2, b / 2 - d, b / 2 - d, -b / 2, -b / 2, b / 2]
+    plt.plot(x_horizontal, y_horizontal, color='b')
+
+    step = h + b
+    x_st = [step, step + b, step + b, step + 2 * b, step]
+    y_st = [b / 2, b / 2, -b / 2, -b / 2, b / 2]
+
+    if Qy > 0:
+        plt.plot(x_st, y_st)
+        plt.text(step + .35 * b, 0.35 * b, r"$\sigma_{min}$", fontsize=14)
+        plt.text(step + 1.15 * b, -0.45 * b, r"$\sigma_{max}$", fontsize=14)
+    else:
+        mirrored_y_st = [-yi for yi in y_st]
+        plt.plot(x_st, mirrored_y_st)
+        plt.text(step + .35 * b, -0.45 * b, r"$\sigma_{min}$", fontsize=14)
+        plt.text(step + 1.05 * b, 0.35 * b, r"$\sigma_{max}$", fontsize=14)
+
+    theta = np.linspace(-np.pi / 2, np.pi / 2, 100)
+    radius = b / 2
+    x_t = step + 3 * b + radius * np.cos(theta)
+    y_t = radius * np.sin(theta)
+    plt.plot(x_t, y_t)
+    plt.plot([step + 3 * b, step + 3 * b], [-b / 2, b / 2])
+    plt.text(step + 3 * b + radius, -.1 * b, r"$\tau_{max}$", fontsize=14)
+
+    plt.plot([h / 2, step + 3.7 * b], [0, 0], color="k", linestyle="--")
+    plt.plot([h / 2, h / 2], [0, -.6 * b], color="k", linestyle="--")
+    plt.text(step + 3.7 * b, .02 * b, "x", fontsize=14)
+    plt.text(.52 * h, -.6 * b, "y", fontsize=14)
+
+    plt.axis("off")
+    plt.show()
 else:
     print('Hãy nhập đúng một trong các mặt cắt sau: hình chữ nhật, hình tròn, hình vành khăn, hình I, hình C')
 
