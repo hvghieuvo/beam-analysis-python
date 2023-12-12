@@ -169,8 +169,9 @@ with tab2:
                     #Vẽ biểu đồ dựa trên thông tin đã input
                     fig_beam = beam.plot_beam_diagram()
                     fig_beam.write_image("./images/fig_beam_console.png",format='png',engine='kaleido')
-                except:
+                except Exception as error:
                     st.error('Error! Something not right', icon="🚨")
+                    st.write(f"An exception occurred: {type(error).__name__} {error}")
                 else:
                     st.success('Plotting success!', icon="✅")
       
@@ -237,8 +238,9 @@ with tab2:
                 console_sf_max = beam.get_shear_force(return_absmax = True)
                 console_max_bm_pos, console_sf_at_bm_max = calculate_shear_force_and_bending_moment(length)
                 
-            except:
+            except Exception as error:
                 st.error('Error! Something not right', icon="🚨")
+                st.write(f"An exception occurred: {type(error).__name__} {error}")
             else:
                 st.success('Calculation success!', icon="✅")
                 
@@ -331,8 +333,10 @@ with tab2:
                     #Vẽ biểu đồ dựa trên thông tin đã input
                     fig_beam = beam.plot_beam_diagram()
                     fig_beam.write_image("./images/fig_beam_2sp.png",format='png',engine='kaleido')
-                except:
+                    
+                except Exception as error:
                     st.error('Error! Something not right', icon="🚨")
+                    st.write(f"An exception occurred: {type(error).__name__} {error}")
                 else:
                     st.success('Plotting success!', icon="✅")
         
@@ -405,8 +409,9 @@ with tab2:
                 beam2sp_sf_max = beam.get_shear_force(return_absmax = True)
                 beam2sp_max_bm_pos, beam2sp_sf_at_bm_max = calculate_shear_force_and_bending_moment(length_1)
 
-            except:
+            except Exception as error:
                 st.error('Error! Something not right', icon="🚨")
+                st.write(f"An exception occurred: {type(error).__name__} {error}")
             else:
                 st.success('Calculation success!', icon="✅")
 
@@ -538,8 +543,9 @@ with tab2:
                     fig_beam = beam.plot_beam_diagram()
                     fig_beam.write_image("./images/fig_beam_advanced.png",format='png',engine='kaleido')
                     
-                except:
+                except Exception as error:
                     st.error('Error! Something not right', icon="🚨")
+                    st.write(f"An exception occurred: {type(error).__name__} {error}")
                 else:
                     st.success('Plotting success!', icon="✅")
             
@@ -622,8 +628,9 @@ with tab2:
                 advanced_sf_max = beam.get_shear_force(return_absmax = True)
                 advanced_max_bm_pos, advanced_sf_at_bm_max = calculate_shear_force_and_bending_moment(length_2)
 
-            except:
+            except Exception as error:
                 st.error('Error! Something not right', icon="🚨")
+                st.write(f"An exception occurred: {type(error).__name__} {error}")
             else:
                 st.success('Calculation success!', icon="✅")
                 

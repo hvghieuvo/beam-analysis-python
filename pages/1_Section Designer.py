@@ -9,13 +9,21 @@ from io import StringIO, BytesIO
 from PIL import Image
 import base64
 import plotly.express as px
+import math
+import sys
+from section import hinhchunhat, plot_rec, hinhtron, plot_circle, hinhvanhkhan, plot_annulus, hinh_I_C, plot_C, plot_I
+
+if 'solve_clicked' not in st.session_state:
+    st.session_state.solve_clicked = False
+    
+Sx, Sy, Jx, Jy, Wx, Wy, sigmamax, sigmamin, sigmatd, taumax, tau = None, None, None, None, None, None, None, None, None, None, None
 
 st.set_page_config(page_title="Section Designer", page_icon="🙃", layout = 'wide')
 st.markdown("# Section Designer")
 st.sidebar.header("Section Designer Tool")
 st.markdown("---")
 
-tab1, tab2, tab3 = st.tabs(["Theory", "Input", "Output"])
+tab1, tab2, tab3 = st.tabs(["Theory", "Implement", "Output"])
 with tab1:
     # Hiển thị lý thuyết với đường link đến tài liệu
     st.header('Introduction')
@@ -23,21 +31,83 @@ with tab1:
     st.link_button('Click here!','https://sectionproperties.readthedocs.io/en/stable/user_guide/theory.html')
 
 with tab2:
-    select = st.selectbox('Cross section type', ('Rectangle', 'Circle','Annulus','C','I'))
+    select = st.selectbox('Cross section type', ('Rectangle', 'Circle','Annulus','C shape','I shape'))
+    
+#============================= Hình chữ nhật #=============================
     if select == 'Rectangle':
         col1, col2, col3 = st.columns(3, gap='large')
         with col1:
-            high = st.number_input(label='Height (m)', min_value=0.00, max_value=None, step=0.01)
+            height = st.number_input(label='Height (m)', min_value=0.00, max_value=None, step=0.01)
             thickness = st.number_input(label='Thickness (m)', min_value=0.00, max_value=None, step=0.01)
             width = st.number_input(label='Width (m)', min_value=0.00, max_value=None, step=0.01)
         with col2:
             max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=None, max_value=None, step=0.01)
             max_shear_force = st.number_input('Maximum shear force (kN)', min_value=None, max_value=None, step=0.01)
             shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=None, max_value=None, step=0.01)
-            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
+            sigma = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
         with col3:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
-    
+            
+            #==================== Button solve rectangle #====================
+            if st.button("Clear result", type="primary"):
+                st.session_state.solve_clicked = False
+                
+            if st.button('Analysis'):
+                st.session_state.solve_clicked = True
+                
+                try:
+                    if type_criterion == "Tresca":
+                        tau = sigma/2
+                    elif type_criterion == "von Mises":
+                        tau = sigma/math.sqrt(3)
+                        
+                    Sx, Sy, Jx, Jy, Wx, Wy, sigmamax, taumax = hinhchunhat(width, height, max_bending_moment, max_shear_force)
+                    plot_rec(width, height, shear_force_at_maximum_moment)
+                except Exception as error:
+                    st.error('Error! Something not right', icon="🚨")
+                    st.write(f"An exception occurred: {type(error).__name__} {error}")
+                else:
+                    st.success('Analysis success!', icon="✅")
+                
+        st.divider()
+        
+        output1, output2 = st.columns(2, gap='large')
+        with output1:
+            if st.session_state.solve_clicked:
+                try:
+                    st.header("Result:")
+                    st.write("")
+                    st.write(f'Static moment Sx: {Sx}')
+                    st.write(f'Static moment Sy: {Sy}')
+                    st.write(f'Moment of inertia Jx: {Jx}')
+                    st.write(f'Moment of inertia Jy: {Jy}')
+                    st.write(f'Bending moment Wx: {Wx}')
+                    st.write(f'Bending moment Wy: {Wy}')
+                    st.write(f'Principal stress sigma_max: {sigmamax}')
+                    st.write(f'Maximun shear stress on the section: {taumax}')
+                    if sigmamax <= sigma:
+                        st.write('Ductile (Durable) boundary layer')
+                    else:
+                        st.write('Brittle (Not Durable) boundary layer')
+                        
+                    if taumax <= tau:
+                        st.write('Ductile (Durable) neutral layer')
+                    else:
+                        st.write('Brittle (Not Durable) neutral layer')
+                except Exception as error:
+                    st.error('Error! Something not right', icon="🚨")
+                    st.write(f"An exception occurred: {type(error).__name__} {error}")
+            else:
+                st.write("The result will be here once clicked analysis button")
+                
+        with output2:
+            if st.session_state.solve_clicked:
+                st.header("Plot")
+                st.image('images/plot_rec.png', caption='Rectangle cross-section')
+            else:
+                st.write("The plot result will appear here once clicked analysis button")
+            
+#============================= Hình tròn #=============================
     elif select == 'Circle':
         col1_1, col2_1, col3_1 = st.columns(3, gap='large')
         with col1_1:
@@ -47,25 +117,138 @@ with tab2:
             max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=None, max_value=None, step=0.01)
             max_shear_force = st.number_input('Maximum shear force (kN)', min_value=None, max_value=None, step=0.01)
             shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=None, max_value=None, step=0.01)
-            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
+            sigma = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
         with col3_1:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
-
+            
+            #==================== Button solve circle #====================
+            if st.button("Clear result", type="primary"):
+                st.session_state.solve_clicked = False
+                
+            if st.button('Analysis'):
+                st.session_state.solve_clicked = True
+                
+                try:
+                    if type_criterion == "Tresca":
+                        tau = sigma/2
+                    elif type_criterion == "von Mises":
+                        tau = sigma/math.sqrt(3)
+                        
+                    Jx, Wx, sigmamax, taumax = hinhtron(max_bending_moment, max_shear_force, R)
+                    plot_circle(R, shear_force_at_maximum_moment)
+                    
+                except Exception as error:
+                    st.error('Error! Something not right', icon="🚨")
+                    st.write(f"An exception occurred: {type(error).__name__} {error}")
+                else:
+                    st.success('Analysis success!', icon="✅")
+                
+        st.divider()
+        
+        output1_1, output2_1 = st.columns(2, gap='large')
+        with output1_1:
+            if st.session_state.solve_clicked:
+                try:
+                    st.header("Result:")
+                    st.write("")
+                    st.write(f'Moment of inertia Jx: {Jx}')
+                    st.write(f'Bending moment Wx: {Wx}')
+                    st.write(f'Principal stress sigma_max: {sigmamax}')
+                    st.write(f'Maximun shear stress on the section: {taumax}')
+                    if sigmamax <= sigma:
+                        st.write('Ductile (Durable) boundary layer')
+                    else:
+                        st.write('Brittle (Not Durable) boundary layer')
+                        
+                    if taumax <= tau:
+                        st.write('Ductile (Durable) neutral layer')
+                    else:
+                        st.write('Brittle (Not Durable) neutral layer')
+                except Exception as error:
+                    st.error('Error! Something not right', icon="🚨")
+                    st.write(f"An exception occurred: {type(error).__name__} {error}")
+            else:
+                st.write("The result will appear here once clicked analysis button")
+                
+        with output2_1:
+            if st.session_state.solve_clicked:
+                st.header("Plot")
+                st.image('images/plot_circle.png', caption='Circle cross-section')
+            else:
+                st.write("The plot result will appear here once clicked analysis button")
+                
+#============================= Hình vành khăn #=============================
     elif select == 'Annulus':
         col1_2, col2_2, col3_2 = st.columns(3, gap='large')   
         with col1_2:
-            R_in = st.number_input(label='Radius in (m)', min_value=0.00, max_value=None, step=0.01)  
-            R_out = st.number_input(label='Radius out (m)', min_value=0.00, max_value=None, step=0.01)
+            R1 = st.number_input(label='Radius in (m)', min_value=0.00, max_value=None, step=0.01)  
+            R2 = st.number_input(label='Radius out (m)', min_value=0.00, max_value=None, step=0.01)
             thickness = st.number_input(label='Thickness (m)', min_value=0.00, max_value=None, step=0.01)
         with col2_2:
             max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=None, max_value=None, step=0.01)
             max_shear_force = st.number_input('Maximum shear force (kN)', min_value=None, max_value=None, step=0.01)
             shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=None, max_value=None, step=0.01)
-            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
+            sigma = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
         with col3_2:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
-
-    elif select == 'C':
+            
+            #==================== Button solve annulus #====================
+            if st.button("Clear result", type="primary"):
+                st.session_state.solve_clicked = False
+                
+            if st.button('Analysis'):
+                st.session_state.solve_clicked = True
+                
+                try:
+                    if type_criterion == "Tresca":
+                        tau = sigma/2
+                    elif type_criterion == "von Mises":
+                        tau = sigma/math.sqrt(3)
+                        
+                    Jx, Wx, sigmamax, taumax = hinhvanhkhan(max_bending_moment, max_shear_force, R1, R2)
+                    plot_annulus(R1, R2, shear_force_at_maximum_moment)
+                except Exception as error:
+                    st.error('Error! Something not right', icon="🚨")
+                    st.write(f"An exception occurred: {type(error).__name__} {error}")
+                else:
+                    st.success('Analysis success!', icon="✅")
+                
+        st.divider()
+        
+        output1_2, output2_2 = st.columns(2, gap='large')
+        with output1_2:
+            if st.session_state.solve_clicked:
+                try:
+                    st.header("Result:")
+                    st.write("")
+                    st.write(f'Moment of inertia Jx: {Jx}')
+                    st.write(f'Bending moment Wx: {Wx}')
+                    st.write(f'Principal stress sigma_max: {sigmamax}')
+                    st.write(f'Maximun shear stress on the section: {taumax}')
+                    if sigmamax <= sigma:
+                        st.write('Ductile (Durable) boundary layer')
+                    else:
+                        st.write('Brittle (Not Durable) boundary layer')
+                        
+                    if taumax <= tau:
+                        st.write('Ductile (Durable) neutral layer')
+                    else:
+                        st.write('Brittle (Not Durable) neutral layer')
+                except Exception as error:
+                    st.error('Error! Something not right', icon="🚨")
+                    st.write(f"An exception occurred: {type(error).__name__} {error}")
+            else:
+                st.write("The result will appear here once clicked analysis button")
+                
+        with output2_2:
+            if st.session_state.solve_clicked:
+                st.header("Plot")
+                st.image('images/plot_annulus.png', caption='Annulus cross-section')
+            else:
+                st.write("The plot result will appear here once clicked analysis button")
+                
+#============================= Hình C #=============================
+    elif select == 'C shape':
         st.title('Cross-section C table')
         N0_values=[5, 6.5, 8, 10, 12, 14, '14a', 16, '16a', 18, '18a', 20, '20a', 22, '22a', 24, '24a', 27, 30, 33, 36, 40]
         P_values=[54.2, 65, 77.8, 92, 108, 123, 132, 141, 151, 161, 172, 184, 196, 209, 225, 240, 258, 277, 318, 365, 419, 483]
@@ -117,7 +300,8 @@ with tab2:
         # Hiển thị thông tin chi tiết
         if not selected_rows.empty:
             st.markdown("Detail:")
-            st.write(selected_rows)     
+            st.write(selected_rows)
+        # st.write(type(float(selected_rows['r'])))
         st.markdown('---')
         col1_2, col2_2, col3_2 = st.columns(3, gap='large')
         with col1_2:
@@ -126,10 +310,74 @@ with tab2:
             max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=None, max_value=None, step=0.01)
             max_shear_force = st.number_input('Maximum shear force (kN)', min_value=None, max_value=None, step=0.01)
             shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=None, max_value=None, step=0.01)
-            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
+            sigma = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
         with col3_2:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
-    elif select == 'I':
+            
+            #==================== Button solve C shape #====================
+            if st.button("Clear result", type="primary"):
+                st.session_state.solve_clicked = False
+                
+            if st.button('Analysis'):
+                st.session_state.solve_clicked = True
+                
+                try:
+                        
+                    sigmamax, sigmatd, sigmamin, tau, taumax, sigmaN = hinh_I_C(type_criterion, shear_force_at_maximum_moment, max_shear_force, max_bending_moment, 
+                                                        selected_rows['Sx'], selected_rows['Jx'], selected_rows['d'],
+                                                        selected_rows['h'], selected_rows['t'], selected_rows['Wx'], selected_rows['Wy'],
+                                                        sigma)
+                    plot_C(shear_force_at_maximum_moment, selected_rows['h'], selected_rows['b'], selected_rows['d'], selected_rows['t'])
+                    
+                except Exception as error:
+                    st.error('Error! Something not right', icon="🚨")
+                    st.write(f"An exception occurred: {type(error).__name__} {error}")
+                else:
+                    st.success('Analysis success!', icon="✅")
+                
+        st.divider()
+        
+        output1_2, output2_2 = st.columns(2, gap='large')
+        with output1_2:
+            if st.session_state.solve_clicked:
+                try:
+                    st.header("Result:")
+                    st.write("")
+                    st.write(f'Principal stress sigma_max: {sigmamax}')
+                    st.write("The cross section still has 1 dangerous layer -> calculate the special plane stress state through the intermediate layer")
+                    st.write(f'Equivalent stress sigma_td: {sigmatd}')
+                    st.write(f'Maximun shear stress on the section tau_max: {taumax}')
+                    
+                    if sigmamax <= sigma:
+                        st.write('Ductile (Durable) boundary layer')
+                    else:
+                        st.write('Brittle (Not Durable) boundary layer')
+                        
+                    if taumax <= tau:
+                        st.write('Ductile (Durable) neutral layer')
+                    else:
+                        st.write('Brittle (Not Durable) neutral layer')
+                        
+                    st.write("Check the strength of the bar when the bar is horizontal")
+                    if abs(sigmamin) > sigma:
+                        st.write('Ductile (Durable) horizontal bar')
+                    else:
+                        st.write('Brittle (Not Durable) horizontal bar')
+                except Exception as error:
+                    st.error('Error! Something not right', icon="🚨")
+                    st.write(f"An exception occurred: {type(error).__name__} {error}")
+            else:
+                st.write("The result will appear here once clicked analysis button")
+                
+        with output2_2:
+            if st.session_state.solve_clicked:
+                st.header("Plot")
+                st.image('images/plot_C.png', caption='C shape cross-section')
+            else:
+                st.write("The plot result will appear here once clicked analysis button")
+                
+#============================= Hình I #=============================
+    elif select == 'I shape':
         st.title('Cross-section I table')
         N0_values=['10', '12', '14', '16', '18', '18a', '20', '20a', '22', '22a', '24', '24a','27', '27a', '30', '30a', '33', '36', '40', '45', '50', '55', '60', '65','70', '70a', '70b']
         P_values=[111, 130, 148, 169, 187, 199, 207, 222, 237, 254, 273, 294, 315, 339, 365, 392, 422, 486, 561, 652, 761, 886, 1030, 1190, 1370, 1580, 1840]
@@ -189,10 +437,74 @@ with tab2:
             max_bending_moment = st.number_input('Maximum bending moment (kNm)', min_value=None, max_value=None, step=0.01)
             max_shear_force = st.number_input('Maximum shear force (kN)', min_value=None, max_value=None, step=0.01)
             shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', min_value=None, max_value=None, step=0.01)
-            allowable_stress = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
+            sigma = st.number_input('Allowable stress (N/m^2)', min_value=None, max_value=None, step=0.01)
         with col3_2:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
-
-
+            
+            #==================== Button solve I shape #====================
+            if st.button("Clear result", type="primary"):
+                st.session_state.solve_clicked = False
+                
+            if st.button('Analysis'):
+                st.session_state.solve_clicked = True
+                
+                try:
+                        
+                    sigmamax, sigmatd, sigmamin, tau, taumax, sigmaN = hinh_I_C(type_criterion, shear_force_at_maximum_moment, max_shear_force, max_bending_moment, 
+                                                        selected_rows['Sx'], selected_rows['Jx'], selected_rows['d'],
+                                                        selected_rows['h'], selected_rows['t'], selected_rows['Wx'], selected_rows['Wy'],
+                                                        sigma)
+                    plot_I(shear_force_at_maximum_moment, selected_rows['h'], selected_rows['b'], selected_rows['d'], selected_rows['t'])
+                    
+                except Exception as error:
+                    st.error('Error! Something not right', icon="🚨")
+                    st.write(f"An exception occurred: {type(error).__name__} {error}")
+                else:
+                    st.success('Analysis success!', icon="✅")
+                
+        st.divider()
         
+        output1_2, output2_2 = st.columns(2, gap='large')
+        with output1_2:
+            if st.session_state.solve_clicked:
+                try:
+                    st.header("Result:")
+                    st.write("")
+                    st.write(f'Principal stress sigma_max: {sigmamax}')
+                    st.write("The cross section still has 1 dangerous layer -> calculate the special plane stress state through the intermediate layer")
+                    st.write(f'Equivalent stress sigma_td: {sigmatd}')
+                    st.write(f'Maximun shear stress on the section tau_max: {taumax}')
+                    
+                    if sigmamax <= sigma:
+                        st.write('Ductile (Durable) boundary layer')
+                    else:
+                        st.write('Brittle (Not Durable) boundary layer')
+                        
+                    if taumax <= tau:
+                        st.write('Ductile (Durable) neutral layer')
+                    else:
+                        st.write('Brittle (Not Durable) neutral layer')
+                        
+                    st.write("Check the strength of the bar when the bar is horizontal")
+                    if abs(sigmamin) > sigma:
+                        st.write('Ductile (Durable) horizontal bar')
+                    else:
+                        st.write('Brittle (Not Durable) horizontal bar')
+                        
+                except Exception as error:
+                    st.error('Error! Something not right', icon="🚨")
+                    st.write(f"An exception occurred: {type(error).__name__} {error}")
+            else:
+                st.write("The result will appear here once clicked analysis button")
+                
+        with output2_2:
+            if st.session_state.solve_clicked:
+                st.header("Plot")
+                st.image('images/plot_I.png', caption='I shape cross-section')
+            else:
+                st.write("The plot result will appear here once clicked analysis button")
+
+with tab3:
+    st.divider()
+    st.header("Nothing here")
                 
