@@ -55,11 +55,29 @@ with tab2:
             height = st.number_input(label='Height (m)', min_value=0.00, step=0.01)
             thickness = st.number_input(label='Thickness (m)', min_value=0.00, step=0.01)
             width = st.number_input(label='Width (m)', min_value=0.00, step=0.01)
+            st.divider()
+            input_method = st.selectbox('Choose input method', ('Manual', 'From file'))
         with col2:
-            max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
-            max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
-            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
-            sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+            
+            if input_method == "Manual":
+                max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
+                max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
+                shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
+                sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                
+            elif input_method == "From file":
+                max_bm, max_sf, sf_at_max_bm = read_output_file()
+                if max_bm != None and max_sf != None and sf_at_max_bm != None:
+                    max_bending_moment = max_bm
+                    max_shear_force = max_sf
+                    shear_force_at_maximum_moment = sf_at_max_bm
+                    st.success('Import data from file success!', icon="✅")
+                    st.write(f"Maximum bending moment (kNm): {max_bm}")
+                    st.write(f"Maximum shear force (kN): {max_sf}")
+                    st.write(f"Shear force at maximum moment (kN): {sf_at_max_bm}")
+                    sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                else:
+                    st.error('Error! Something not right', icon="🚨")
         with col3:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
             
@@ -69,6 +87,10 @@ with tab2:
                 
             if st.button('Analysis'):
                 st.session_state.solve_clicked = True
+                
+                st.write(f"Maximum bending moment (kNm): {max_bending_moment}")
+                st.write(f"Maximum shear force (kN): {max_shear_force}")
+                st.write(f"Shear force at maximum moment (kN): {shear_force_at_maximum_moment}")
                 
                 try:
                     if type_criterion == "Tresca":
@@ -92,6 +114,11 @@ with tab2:
                 try:
                     st.header("Result:")
                     st.write("")
+                    
+                    st.write(f"Maximum bending moment (kNm): {max_bending_moment}")
+                    st.write(f"Maximum shear force (kN): {max_shear_force}")
+                    st.write(f"Shear force at maximum moment (kN): {shear_force_at_maximum_moment}")
+                    
                     st.write(f'Static moment Sx: {Sx}')
                     st.write(f'Static moment Sy: {Sy}')
                     st.write(f'Moment of inertia Jx: {Jx}')
@@ -131,11 +158,29 @@ with tab2:
         with col1_1:
             R = st.number_input(label="Radius (m)", min_value=0.00, step=0.01)
             thickness = st.number_input(label='Thickness (m)', min_value=0.00, step=0.01)
+            st.divider()
+            input_method = st.selectbox('Choose input method', ('Manual', 'From file'))
         with col2_1:
-            max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
-            max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
-            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
-            sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+            
+            if input_method == "Manual":
+                max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
+                max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
+                shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
+                sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                
+            elif input_method == "From file":
+                max_bm, max_sf, sf_at_max_bm = read_output_file()
+                if max_bm != None and max_sf != None and sf_at_max_bm != None:
+                    max_bending_moment = max_bm
+                    max_shear_force = max_sf
+                    shear_force_at_maximum_moment = sf_at_max_bm
+                    st.success('Import data from file success!', icon="✅")
+                    st.write(f"Maximum bending moment (kNm): {max_bm}")
+                    st.write(f"Maximum shear force (kN): {max_sf}")
+                    st.write(f"Shear force at maximum moment (kN): {sf_at_max_bm}")
+                    sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                else:
+                    st.error('Error! Something not right', icon="🚨")
         with col3_1:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
             
@@ -205,11 +250,29 @@ with tab2:
             R1 = st.number_input(label='Radius in (m)', min_value=0.00, step=0.01)  
             R2 = st.number_input(label='Radius out (m)', min_value=0.00, step=0.01)
             thickness = st.number_input(label='Thickness (m)', min_value=0.00, step=0.01)
+            st.divider()
+            input_method = st.selectbox('Choose input method', ('Manual', 'From file'))
         with col2_2:
-            max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
-            max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
-            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
-            sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+            
+            if input_method == "Manual":
+                max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
+                max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
+                shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
+                sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                
+            elif input_method == "From file":
+                max_bm, max_sf, sf_at_max_bm = read_output_file()
+                if max_bm != None and max_sf != None and sf_at_max_bm != None:
+                    max_bending_moment = max_bm
+                    max_shear_force = max_sf
+                    shear_force_at_maximum_moment = sf_at_max_bm
+                    st.success('Import data from file success!', icon="✅")
+                    st.write(f"Maximum bending moment (kNm): {max_bm}")
+                    st.write(f"Maximum shear force (kN): {max_sf}")
+                    st.write(f"Shear force at maximum moment (kN): {sf_at_max_bm}")
+                    sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                else:
+                    st.error('Error! Something not right', icon="🚨")
         with col3_2:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
             
@@ -330,11 +393,28 @@ with tab2:
         col1_2, col2_2, col3_2 = st.columns(3, gap='large')
         with col1_2:
             thickness = st.number_input(label='Thickness (m)', min_value=0.00, step=0.01)
+            st.divider()
+            input_method = st.selectbox('Choose input method', ('Manual', 'From file'))
         with col2_2:
-            max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
-            max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
-            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
-            sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+            if input_method == "Manual":
+                max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
+                max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
+                shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
+                sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                
+            elif input_method == "From file":
+                max_bm, max_sf, sf_at_max_bm = read_output_file()
+                if max_bm != None and max_sf != None and sf_at_max_bm != None:
+                    max_bending_moment = max_bm
+                    max_shear_force = max_sf
+                    shear_force_at_maximum_moment = sf_at_max_bm
+                    st.success('Import data from file success!', icon="✅")
+                    st.write(f"Maximum bending moment (kNm): {max_bm}")
+                    st.write(f"Maximum shear force (kN): {max_sf}")
+                    st.write(f"Shear force at maximum moment (kN): {sf_at_max_bm}")
+                    sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                else:
+                    st.error('Error! Something not right', icon="🚨")
         with col3_2:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
             
@@ -462,11 +542,28 @@ with tab2:
         col1_2, col2_2, col3_2 = st.columns(3, gap='large')
         with col1_2:
             thickness = st.number_input(label='Thickness (m)', min_value=0.00, step=0.01)
+            st.divider()
+            input_method = st.selectbox('Choose input method', ('Manual', 'From file'))
         with col2_2:
-            max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
-            max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
-            shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
-            sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+            if input_method == "Manual":
+                max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
+                max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
+                shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
+                sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                
+            elif input_method == "From file":
+                max_bm, max_sf, sf_at_max_bm = read_output_file()
+                if max_bm != None and max_sf != None and sf_at_max_bm != None:
+                    max_bending_moment = max_bm
+                    max_shear_force = max_sf
+                    shear_force_at_maximum_moment = sf_at_max_bm
+                    st.success('Import data from file success!', icon="✅")
+                    st.write(f"Maximum bending moment (kNm): {max_bm}")
+                    st.write(f"Maximum shear force (kN): {max_sf}")
+                    st.write(f"Shear force at maximum moment (kN): {sf_at_max_bm}")
+                    sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                else:
+                    st.error('Error! Something not right', icon="🚨")
         with col3_2:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
             
