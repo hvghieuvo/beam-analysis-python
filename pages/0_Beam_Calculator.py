@@ -28,6 +28,13 @@ console_bm_max, console_sf_max, console_max_bm_pos, console_sf_at_bm_max = None,
 beam2sp_bm_max, beam2sp_sf_max, beam2sp_max_bm_pos, beam2sp_sf_at_bm_max = None, None, None, None
 advanced_bm_max, advanced_sf_max, advanced_max_bm_pos, advanced_sf_at_bm_max = None, None, None, None
 
+def export_txt(bm_max, sf_max, bm_max_pos, sf_at_bm_max):
+    f = open("output.txt", "w")
+    f.write(f"Bending moment absolute max: {bm_max} \n")
+    f.write(f"Shear force absolute max: {sf_max} \n")
+    f.write(f"Shear force at position of absolute max bending moment ({bm_max_pos} m): {sf_at_bm_max} \n")
+    f.close()
+    
 def calculate_shear_force_and_bending_moment(length):
     # Tính shear force và bending moment tại từng vị trí
     positions = [i * 0.5 for i in range(int(2 * length))]
@@ -238,6 +245,8 @@ with tab2:
                 console_sf_max = beam.get_shear_force(return_absmax = True)
                 console_max_bm_pos, console_sf_at_bm_max = calculate_shear_force_and_bending_moment(length)
                 
+                #Export thông tin mặt cắt nguy hiểm ra file output.txt
+                export_txt(console_bm_max, console_sf_max, console_max_bm_pos, console_sf_at_bm_max)
             except Exception as error:
                 st.error('Error! Something not right', icon="🚨")
                 st.write(f"An exception occurred: {type(error).__name__} {error}")
@@ -408,7 +417,10 @@ with tab2:
                 beam2sp_bm_max = beam.get_bending_moment(return_absmax = True)
                 beam2sp_sf_max = beam.get_shear_force(return_absmax = True)
                 beam2sp_max_bm_pos, beam2sp_sf_at_bm_max = calculate_shear_force_and_bending_moment(length_1)
-
+                
+                #Export thông tin mặt cắt nguy hiểm ra file output.txt
+                export_txt(beam2sp_bm_max, beam2sp_sf_max, beam2sp_max_bm_pos, beam2sp_sf_at_bm_max)
+                
             except Exception as error:
                 st.error('Error! Something not right', icon="🚨")
                 st.write(f"An exception occurred: {type(error).__name__} {error}")
@@ -628,6 +640,9 @@ with tab2:
                 advanced_sf_max = beam.get_shear_force(return_absmax = True)
                 advanced_max_bm_pos, advanced_sf_at_bm_max = calculate_shear_force_and_bending_moment(length_2)
 
+                #Export thông tin mặt cắt nguy hiểm ra file output.txt
+                export_txt(advanced_bm_max, advanced_sf_max, advanced_max_bm_pos, advanced_sf_at_bm_max)
+                
             except Exception as error:
                 st.error('Error! Something not right', icon="🚨")
                 st.write(f"An exception occurred: {type(error).__name__} {error}")
@@ -678,7 +693,7 @@ with tab3:
             st.divider()
 
             st.image('images/fig_moment_2sp.png', caption='Bending moment diagram', width=700)
-    
+
     elif image == 'Complex beam':
         keo3, bua3, bao3 = st.columns([1,3,1])
         with bua3:

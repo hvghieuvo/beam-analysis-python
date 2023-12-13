@@ -1,0 +1,3 @@
+Bending moment absolute max: 18
+Shear force absolute max: 8.0 
+Shear force at position of absolute max bending moment (0.0 m): 8.0 
