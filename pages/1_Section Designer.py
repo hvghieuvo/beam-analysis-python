@@ -86,14 +86,17 @@ with tab2:
                     st.write(f'Principal stress sigma_max: {sigmamax}')
                     st.write(f'Maximun shear stress on the section: {taumax}')
                     if sigmamax <= sigma:
-                        st.write('Ductile (Durable) boundary layer')
+                        # st.write('Ductile (Durable) boundary layer')
+                        st.success('Boundary layer satisfying strength', icon="✅")
                     else:
-                        st.write('Brittle (Not Durable) boundary layer')
-                        
+                        # st.write('Brittle (Not Durable) boundary layer')
+                        st.error('Boundary layer NOT satisfying strength', icon="🚨")
                     if taumax <= tau:
-                        st.write('Ductile (Durable) neutral layer')
+                        # st.write('Ductile (Durable) neutral layer')
+                        st.success('Neutral layer satisfying strength', icon="✅")
                     else:
-                        st.write('Brittle (Not Durable) neutral layer')
+                        # st.write('Brittle (Not Durable) neutral layer')
+                        st.error('Neutral layer NOT satisfying strength', icon="🚨")
                 except Exception as error:
                     st.error('Error! Something not right', icon="🚨")
                     st.write(f"An exception occurred: {type(error).__name__} {error}")
@@ -156,14 +159,17 @@ with tab2:
                     st.write(f'Principal stress sigma_max: {sigmamax}')
                     st.write(f'Maximun shear stress on the section: {taumax}')
                     if sigmamax <= sigma:
-                        st.write('Ductile (Durable) boundary layer')
+                        # st.write('Ductile (Durable) boundary layer')
+                        st.success('Boundary layer satisfying strength', icon="✅")
                     else:
-                        st.write('Brittle (Not Durable) boundary layer')
-                        
+                        # st.write('Brittle (Not Durable) boundary layer')
+                        st.error('Boundary layer NOT satisfying strength', icon="🚨")
                     if taumax <= tau:
-                        st.write('Ductile (Durable) neutral layer')
+                        # st.write('Ductile (Durable) neutral layer')
+                        st.success('Neutral layer satisfying strength', icon="✅")
                     else:
-                        st.write('Brittle (Not Durable) neutral layer')
+                        # st.write('Brittle (Not Durable) neutral layer')
+                        st.error('Neutral layer NOT satisfying strength', icon="🚨")
                 except Exception as error:
                     st.error('Error! Something not right', icon="🚨")
                     st.write(f"An exception occurred: {type(error).__name__} {error}")
@@ -226,14 +232,17 @@ with tab2:
                     st.write(f'Principal stress sigma_max: {sigmamax}')
                     st.write(f'Maximun shear stress on the section: {taumax}')
                     if sigmamax <= sigma:
-                        st.write('Ductile (Durable) boundary layer')
+                        # st.write('Ductile (Durable) boundary layer')
+                        st.success('Boundary layer satisfying strength', icon="✅")
                     else:
-                        st.write('Brittle (Not Durable) boundary layer')
-                        
+                        # st.write('Brittle (Not Durable) boundary layer')
+                        st.error('Boundary layer NOT satisfying strength', icon="🚨")
                     if taumax <= tau:
-                        st.write('Ductile (Durable) neutral layer')
+                        # st.write('Ductile (Durable) neutral layer')
+                        st.success('Neutral layer satisfying strength', icon="✅")
                     else:
-                        st.write('Brittle (Not Durable) neutral layer')
+                        # st.write('Brittle (Not Durable) neutral layer')
+                        st.error('Neutral layer NOT satisfying strength', icon="🚨")
                 except Exception as error:
                     st.error('Error! Something not right', icon="🚨")
                     st.write(f"An exception occurred: {type(error).__name__} {error}")
@@ -349,20 +358,25 @@ with tab2:
                     st.write(f'Maximun shear stress on the section tau_max: {taumax}')
                     
                     if sigmamax <= sigma:
-                        st.write('Ductile (Durable) boundary layer')
+                        # st.write('Ductile (Durable) boundary layer')
+                        st.success('Boundary layer satisfying strength', icon="✅")
                     else:
-                        st.write('Brittle (Not Durable) boundary layer')
-                        
+                        # st.write('Brittle (Not Durable) boundary layer')
+                        st.error('Boundary layer NOT satisfying strength', icon="🚨")
                     if taumax <= tau:
-                        st.write('Ductile (Durable) neutral layer')
+                        # st.write('Ductile (Durable) neutral layer')
+                        st.success('Neutral layer satisfying strength', icon="✅")
                     else:
-                        st.write('Brittle (Not Durable) neutral layer')
+                        # st.write('Brittle (Not Durable) neutral layer')
+                        st.error('Neutral layer NOT satisfying strength', icon="🚨")
                         
                     st.write("Check the strength of the bar when the bar is horizontal")
                     if abs(sigmamin) > sigma:
-                        st.write('Ductile (Durable) horizontal bar')
+                        # st.write('Ductile (Durable) horizontal bar')
+                        st.success('Horizontal bar satisfying strength', icon="✅")
                     else:
-                        st.write('Brittle (Not Durable) horizontal bar')
+                        # st.write('Brittle (Not Durable) horizontal bar')
+                        st.error('Horizontal bar NOT satisfying strength', icon="🚨")
                 except Exception as error:
                     st.error('Error! Something not right', icon="🚨")
                     st.write(f"An exception occurred: {type(error).__name__} {error}")
@@ -476,20 +490,25 @@ with tab2:
                     st.write(f'Maximun shear stress on the section tau_max: {taumax}')
                     
                     if sigmamax <= sigma:
-                        st.write('Ductile (Durable) boundary layer')
+                        # st.write('Ductile (Durable) boundary layer')
+                        st.success('Boundary layer satisfying strength', icon="✅")
                     else:
-                        st.write('Brittle (Not Durable) boundary layer')
-                        
+                        # st.write('Brittle (Not Durable) boundary layer')
+                        st.error('Boundary layer NOT satisfying strength', icon="🚨")
                     if taumax <= tau:
-                        st.write('Ductile (Durable) neutral layer')
+                        # st.write('Ductile (Durable) neutral layer')
+                        st.success('Neutral layer satisfying strength', icon="✅")
                     else:
-                        st.write('Brittle (Not Durable) neutral layer')
+                        # st.write('Brittle (Not Durable) neutral layer')
+                        st.error('Neutral layer NOT satisfying strength', icon="🚨")
                         
                     st.write("Check the strength of the bar when the bar is horizontal")
                     if abs(sigmamin) > sigma:
-                        st.write('Ductile (Durable) horizontal bar')
+                        # st.write('Ductile (Durable) horizontal bar')
+                        st.success('Horizontal bar satisfying strength', icon="✅")
                     else:
-                        st.write('Brittle (Not Durable) horizontal bar')
+                        # st.write('Brittle (Not Durable) horizontal bar')
+                        st.error('Horizontal bar NOT satisfying strength', icon="🚨")
                         
                 except Exception as error:
                     st.error('Error! Something not right', icon="🚨")
