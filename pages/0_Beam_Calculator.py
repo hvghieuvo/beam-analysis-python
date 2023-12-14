@@ -672,6 +672,10 @@ with tab3:
             st.divider()
 
             st.image('images/fig_moment_console.png', caption='Bending moment diagram', width=700)
+            st.divider()
+            
+            st.image('images/fig_deflection_console.png', caption='Deflection diagram', width=700)
+            st.divider()
     
     elif image == 'Beam with 2 supports': 
         keo3, bua3, bao3 = st.columns([1,3,1])
@@ -693,6 +697,10 @@ with tab3:
             st.divider()
 
             st.image('images/fig_moment_2sp.png', caption='Bending moment diagram', width=700)
+            st.divider()
+            
+            st.image('images/fig_deflection_2sp.png', caption='Deflection diagram', width=700)
+            st.divider()
 
     elif image == 'Complex beam':
         keo3, bua3, bao3 = st.columns([1,3,1])
@@ -714,6 +722,10 @@ with tab3:
             st.divider()
 
             st.image('images/fig_moment_advanced.png', caption='Bending moment diagram', width=700)
+            st.divider()
+            
+            st.image('images/fig_deflection_advanced.png', caption='Deflection diagram', width=700)
+            st.divider()
     
 
     
