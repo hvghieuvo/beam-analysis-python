@@ -37,6 +37,7 @@ load_3 = PointTorque(2*10**3, 3.5)
 beam.add_loads(load_1,load_2,load_3)
 
 #========== End step 3
+beam.add_query_points(1,3,5)
 
 #========== Step 4: Solve and plot result
 

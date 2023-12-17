@@ -212,12 +212,20 @@ with tab2:
                     # Gọi hàm add_load với thông tin từng load
                     if type_load == "Distributed load":
                         beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
+                        # Add query point
+                        beam.add_query_points(float(start_position), float(end_position))
                     elif type_load == "Moment":
                         beam.add_loads(PointTorque(round(magnitude,2), position))
+                        # Add query point
+                        beam.add_query_points(float(position))
                     elif type_load == "Point load" and angle==90:
                         beam.add_loads(PointLoadV(round(magnitude,2), position))
+                        # Add query point
+                        beam.add_query_points(float(position))
                     elif type_load == "Point load" and angle != 90:
                         beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
+                        # Add query point
+                        beam.add_query_points(float(position))
                         
                 beam.analyse()
                 #Giải và plot đồ thị
@@ -373,6 +381,9 @@ with tab2:
                 elif support_type_right == "Roller":
                     beam.add_supports(Support(sup_2, (0,1,0)))
                 
+                # Add query point
+                beam.add_query_points(sup_1, sup_2)
+                        
                 for force in st.session_state.beam_forces:
                     # Trích xuất thông tin từ mỗi phần tử
                     type_load = force.get("Type Load")
@@ -385,12 +396,20 @@ with tab2:
                     # Gọi hàm add_load với thông tin từng load
                     if type_load == "Distributed load":
                         beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
+                        # Add query point
+                        beam.add_query_points(float(start_position), float(end_position))
                     elif type_load == "Moment":
                         beam.add_loads(PointTorque(round(magnitude,2), position))
+                        # Add query point
+                        beam.add_query_points(position)
                     elif type_load == "Point load" and angle==90:
                         beam.add_loads(PointLoadV(round(magnitude,2), position))
+                        # Add query point
+                        beam.add_query_points(position)
                     elif type_load == "Point load" and angle != 90:
                         beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
+                        # Add query point
+                        beam.add_query_points(position)
                         
                 beam.analyse()
                 #Giải và plot đồ thị
@@ -583,6 +602,10 @@ with tab2:
                     type_support = support.get("Type support")
                     position = support.get("Position", None)
 
+                    # Add query point
+                    if position != None:
+                        beam.add_query_points(position)
+                    
                     # Gọi hàm add_load với thông tin từng load
                     if type_support == "Pin":
                         beam.add_supports(Support(position, (1,1,0)))
@@ -606,12 +629,20 @@ with tab2:
                     # Gọi hàm add_load với thông tin từng load
                     if type_load == "Distributed load":
                         beam.add_loads(DistributedLoadV(round(magnitude,2), (float(start_position), float(end_position))))
+                        # Add query point
+                        beam.add_query_points(float(start_position), float(end_position))
                     elif type_load == "Moment":
                         beam.add_loads(PointTorque(round(magnitude,2), position))
+                        # Add query point
+                        beam.add_query_points(position)
                     elif type_load == "Point load" and angle == 90:
                         beam.add_loads(PointLoadV(round(magnitude,2), position))
+                        # Add query point
+                        beam.add_query_points(position)
                     elif type_load == "Point load" and angle != 90:
                         beam.add_loads(PointLoad(round(magnitude,2), position, angle=angle))
+                        # Add query point
+                        beam.add_query_points(position)
 
                 #Vẽ biểu đồ dựa trên thông tin đã input
                 beam.analyse()

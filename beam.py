@@ -78,6 +78,7 @@ beam.add_loads(PointLoad(force=-10, coord=6, angle = 0))
 beam.add_loads(PointLoad(force=-10, coord=7, angle = 60))
 beam.add_loads(PointLoad(force=-10, coord=8, angle = 90))
 beam.add_loads(PointLoad(force=-10, coord=9, angle = 120))
+beam.add_query_points(1,3,5)
 
 plot_diagram(0)
 # plot_diagram(1)
