@@ -22,6 +22,7 @@ def hinhchunhat(x, y, Mmax, Qmax):
     # print('Xét lớp biên, ta có:')
     
     sigmamax = (abs(Mmax)) / Wx
+    sigmamin = -sigmamax
     # print('Ứng suất pháp lớn nhất trên mặt cắt là:', sigmamax)
     # if sigmamax <= sigma:
     #     print('Lớp biên thỏa bền')
@@ -53,13 +54,13 @@ def plot_rec(x, y, Qy):
 
     if Qy > 0:
         plt.plot(x_st, y_st)
-        plt.text(1.2 * step_max, 1.05 * y / 2, r"$\sigma_{min}$", fontsize=14)
-        plt.text(1.2 * step_max + 1.4 * step_min, -1.15 * y / 2, r"$\sigma_{max}$", fontsize=14)
+        plt.text(1.2 * step_max, 1.05 * y / 2, fr"$\sigma_{{min}}$={sigmamin}", fontsize=14)
+        plt.text(1.2 * step_max + 1.4 * step_min, -1.15 * y / 2, fr"$\sigma_{{max}}$={sigmamax}", fontsize=14)
     else:
         mirrored_y_St = [-yi for yi in y_st]
         plt.plot(x_st, mirrored_y_St)
-        plt.text(1.2 * step_max, -1.15 * y / 2, r"$\sigma_{min}$", fontsize=14)
-        plt.text(1.2 * step_max + 1.4 * step_min, 1.05 * y / 2, r"$\sigma_{max}$", fontsize=14)
+        plt.text(1.2 * step_max, -1.15 * y / 2, fr"$\sigma_{{min}}$={sigmamin}", fontsize=14)
+        plt.text(1.2 * step_max + 1.4 * step_min, 1.05 * y / 2, fr"$\sigma_{{max}}$={sigmamax}", fontsize=14)
 
     # Calculate the center of the half circle
     x_circle_center = 1.20 * step_max + 3 * step_min
@@ -72,13 +73,15 @@ def plot_rec(x, y, Qy):
 
     plt.plot([x_circle_center, x_circle_center], [y / 2, -y / 2])
     plt.plot(x_circle, y_circle)
-    plt.text(1.20 * step_max + 3 * step_min + 1.1 * radius, -.2 * y / 2, r"$\tau_{max}$", fontsize=14)
+    plt.text(1.20 * step_max + 3 * step_min + 1.1 * radius, -.2 * y / 2, fr"$\tau_{{max}}$={abs(taumax)}", fontsize=14)
     plt.plot([x / 2, 1.20 * step_max + 3 * step_min + 2 * radius], [0, 0], linestyle="--", color='k')  # X-axis
     plt.plot([x / 2, x / 2], [-1.25 * y / 2, 0], linestyle="--", color='k')  # Y-axis
     plt.text(1.20 * step_max + 3 * step_min + 2 * radius, .05 * y / 2, "x", fontsize=14)
     plt.text(1.05 * x / 2, -1.25 * y / 2, "y", fontsize=14)
 
-    plt.title(fr"RECTANGULAR CROSS SECTION (x = {x}, y = {y})")
+    plt.title(fr"RECTANGULAR CROSS SECTION ")
+    plt.text(0, (1.05 * y / 2), fr"$x$={x}", fontsize=14)
+    plt.text(-x/2, -.2 * y / 2, f"$y$={y}", fontsize=14)
     plt.axis("off")
     
     plt.savefig("./images/plot_rec", bbox_inches='tight', pad_inches=0.1)
@@ -92,6 +95,7 @@ def hinhtron(Mmax, Qmax, R):
     # print('Moment chống uốn Wx = Wy có giá trị là:', Wx)
     # print('Xét lớp biên, ta có:')
     sigmamax = (abs(Mmax)) / Wx
+    sigmamin = -sigmamax
     # # print('Ứng suất pháp lớn nhất trên mặt cắt là:', sigmamax)
     # if sigmamax <= sigma:
     #     print('Lớp biên thỏa bền')
@@ -119,26 +123,31 @@ def plot_circle(R, Qy):
 
     if Qy > 0:
         plt.plot(x, y)
-        plt.text(1.85 * radius, .75 * radius, r"$\sigma_{min}$", fontsize=14)
-        plt.text(2.6 * radius, -.85 * radius, r"$\sigma_{max}$", fontsize=14)
+        plt.text(1.85 * radius, .75 * radius, fr"$\sigma_{{min}}$={sigmamin}", fontsize=14)
+        plt.text(2.6 * radius, -.85 * radius, fr"$\sigma_{{max}}$={sigmamax}", fontsize=14)
     else:
         mirrored_y = [-yi for yi in y]
         plt.plot(x, mirrored_y)
-        plt.text(1.85 * radius, -.85 * radius, r"$\sigma_{min}$", fontsize=14)
-        plt.text(2.6 * radius, .75 * radius, r"$\sigma_{max}$", fontsize=14)
+        plt.text(1.85 * radius, -.85 * radius, fr"$\sigma_{{min}}$={sigmamin}", fontsize=14)
+        plt.text(2.6 * radius, .75 * radius, fr"$\sigma_{{max}}$={sigmamax}", fontsize=14)
 
     theta_tau = np.linspace(-np.pi / 2, np.pi / 2, 150)
     a_tau = radius * np.cos(theta_tau) + 4 * radius
     b_tau = radius * np.sin(theta_tau)
     plt.plot(a_tau, b_tau)
     plt.plot([4 * radius, 4 * radius], [-R, R])
+    
+    plt.text(5*R,-R/3, fr"$\tau_{{max}}$={abs(taumax)}",fontsize=14)
 
     plt.plot([0, 0], [0, -1.2 * R], linestyle="--", color='k')  # Y-axis
     plt.plot([0, 5.2 * R], [0, 0], linestyle="--", color='k')  # X-axis
     plt.text(5.1 * R, .1 * R, "x", fontsize=14)
     plt.text(.1 * R, -1.2 * R, "y", fontsize=14)
+    
 
-    plt.title(fr"Circular Cross-Section with radius R = {R}")
+    plt.title(fr"Circular Cross-Section")
+    plt.axis("off")
+    plt.text(-R, R/3, f"$R$={R}", fontsize=14)
 
     plt.savefig("./images/plot_circle", bbox_inches='tight', pad_inches=0.1)
     plt.close()
@@ -152,6 +161,7 @@ def hinhvanhkhan(Mmax, Qmax, r1, r2):
     # print('Moment chống uốn Wx = Wy có giá trị là:', Wx)
     # print('Xét lớp biên, ta có:')
     sigmamax = (abs(Mmax)) / Wx
+    sigmamin = -sigmamax
     # print('Ứng suất pháp lớn nhất trên mặt cắt là:', sigmamax)
     # if sigmamax <= sigma:
     #     print('Lớp biên thỏa bền')
@@ -186,27 +196,30 @@ def plot_annulus(r1, r2, Qy):
 
     if Qy > 0:
         plt.plot(x, y)
-        plt.text(1.85 * r2, .75 * r2, r"$\sigma_{min}$", fontsize=14)
-        plt.text(2.6 * r2, -.85 * r2, r"$\sigma_{max}$", fontsize=14)
+        plt.text(1.85 * r2, .75 * r2, fr"$\sigma_{{min}}$={sigmamin}", fontsize=14)
+        plt.text(2.6 * r2, -.85 * r2, fr"$\sigma_{{max}}$={sigmamax}", fontsize=14)
     else:
         mirrored_y = [-yi for yi in y]
         plt.plot(x, mirrored_y)
-        plt.text(1.85 * r2, -.85 * r2, r"$\sigma_{min}$", fontsize=14)
-        plt.text(2.6 * r2, .75 * r2, r"$\sigma_{max}$", fontsize=14)
+        plt.text(1.85 * r2, -.85 * r2, fr"$\sigma_{{min}}$={sigmamin}", fontsize=14)
+        plt.text(2.6 * r2, .75 * r2, fr"$\sigma_{{max}}$={sigmamax}", fontsize=14)
 
     theta_tau = np.linspace(-np.pi / 2, np.pi / 2, 150)
     a_tau = r2 * np.cos(theta_tau) + 4 * r2
     b_tau = r2 * np.sin(theta_tau)
     plt.plot(a_tau, b_tau)
     plt.plot([4 * r2, 4 * r2], [-r2, r2])
-    plt.text(5 * r2, -0.09 * r2, r"$\tau_{max}$", fontsize=14)
+    plt.text(5 * r2, -0.09 * r2, fr"$\tau_{{max}}$={abs(taumax)}", fontsize=14)
 
     plt.plot([0, 0], [0, -1.2 * r2], linestyle="--", color='k')  # Y-axis
     plt.plot([0, 5.2 * r2], [0, 0], linestyle="--", color='k')  # X-axis
     plt.text(5.2 * r2, .1 * r2, "x", fontsize=14)
     plt.text(.1 * r2, -1.1 * r2, "y", fontsize=14)
 
-    plt.title(f"ANNULAR CROSS-SECTION WITH $(r1, r2) = ({r1}, {r2})$")
+    plt.title(f"ANNULAR CROSS-SECTION")
+    plt.text(-r1, r2 / 3, f"$R1$={r1}", fontsize=14)
+    plt.text(r2, r2 / 3, f"$R2$={r2}", fontsize=14)
+    plt.axis("off")
 
     plt.savefig("./images/plot_annulus", bbox_inches='tight', pad_inches=0.1)
     plt.close()
@@ -274,24 +287,24 @@ def plot_I(Qy, h, b, d, t):
                       h / 2]
 
         # Plot the original rectangular shape
-    plt.plot(x_vertical, y_vertical, color="b")
+    plt.plot(x_vertical, y_vertical, color="black")
 
         # Mirror the rectangular shape about the y-axis
     mirrored_x_vertical = [-xi for xi in x_vertical]  # Reverse the sign of each x-coordinate about y-axis
-    plt.plot(mirrored_x_vertical, y_vertical, color="b")
+    plt.plot(mirrored_x_vertical, y_vertical, color="black")
 
     x_st = [1 * b, 2 * b, 2 * b, 3 * b, 1 * b]
     y_st = [h / 2, h / 2, -h / 2, -h / 2, h / 2]
 
     if Qy > 0:
         plt.plot(x_st, y_st)
-        plt.text(1.35 * b, 0.35 * h, r"$\sigma_{min}$", fontsize=14)
-        plt.text(2.1 * b, -0.45 * h, r"$\sigma_{max}$", fontsize=14)
+        plt.text(1.35 * b, 0.35 * h, fr"$\sigma_{{min}}$={-sigmamax}", fontsize=14)
+        plt.text(2.1 * b, -0.45 * h, fr"$\sigma_{{max}}$={sigmamax}", fontsize=14)
     else:
         mirrored_y_st = [-yi for yi in y_st]
         plt.plot(x_st, mirrored_y_st)
-        plt.text(1.35 * b, -0.45 * h, r"$\sigma_{min}$", fontsize=14)
-        plt.text(2.05 * b, 0.35 * h, r"$\sigma_{max}$", fontsize=14)
+        plt.text(1.35 * b, -0.45 * h, fr"$\sigma_{{min}}$={-sigmamax}", fontsize=14)
+        plt.text(2.05 * b, 0.35 * h, fr"$\sigma_{{max}}$={sigmamax}", fontsize=14)
 
     theta = np.linspace(-np.pi / 2, np.pi / 2, 100)
     radius = h / 2
@@ -299,25 +312,25 @@ def plot_I(Qy, h, b, d, t):
     y_t = radius * np.sin(theta)
     plt.plot(x_t, y_t)
     plt.plot([3.5 * b, 3.5 * b], [-h / 2, h / 2])
-    plt.text(3.5 * b + h / 2, -.1 * h, r"$\tau_{max}$", fontsize=14)
+    plt.text(3.5 * b + h / 2, -.1 * h, fr"$\tau_{{max}}$={abs(taumax)}", fontsize=14)
 
-    plt.plot([0, 3.5 * b + 1.2 * h / 2], [0, 0], color="k", linestyle="--")
-    plt.plot([0, 0], [0, -.6 * h], color="k", linestyle="--")
+    plt.plot([0, 3.5 * b + 1.2 * h / 2], [0, 0], color="black", linestyle="-")
+    plt.plot([0, 0], [0, -.6 * h], color="black", linestyle="-")
     plt.text(3.5 * b + 1.2 * h / 2, .02 * h, "x", fontsize=14)
     plt.text(.5 * d, -.6 * h, "y", fontsize=14)
 
         # Set aspect ratio to be equal
     plt.axis("off")
     plt.axis("equal")
-    plt.title("I-SHAPE CROSS-SECTION IN CM AND ITS STRESS DESCRIPTION")
+    plt.title("I-SHAPE CROSS-SECTION ")
 
     plt.subplot(2, 1, 2)
     x_horizontal = [0, 0, t, t, h - t, h - t, h, h]
     y_horizontal = [0, b / 2, b / 2, d / 2, d / 2, b / 2, b / 2, 0]
-    plt.plot(x_horizontal, y_horizontal, color='b')
+    plt.plot(x_horizontal, y_horizontal, color='black')
 
     mirrored_y_horizontal = [-yi for yi in y_horizontal]
-    plt.plot(x_horizontal, mirrored_y_horizontal, color='b')
+    plt.plot(x_horizontal, mirrored_y_horizontal, color='black')
 
     step = h + b
     x_st = [step, step + b, step + b, step + 2 * b, step]
@@ -325,13 +338,13 @@ def plot_I(Qy, h, b, d, t):
 
     if Qy > 0:
         plt.plot(x_st, y_st)
-        plt.text(step + .35 * b, 0.35 * b, r"$\sigma_{min}$", fontsize=14)
-        plt.text(step + 1.15 * b, -0.45 * b, r"$\sigma_{max}$", fontsize=14)
+        plt.text(step + .35 * b, 0.35 * b, fr"$\sigma_{{min}}$={-sigmatd}", fontsize=14)
+        plt.text(step + 1.15 * b, -0.45 * b, fr"$\sigma_{{max}}$={sigmatd}", fontsize=14)
     else:
         mirrored_y_st = [-yi for yi in y_st]
         plt.plot(x_st, mirrored_y_st)
-        plt.text(step + .35 * b, -0.45 * b, r"$\sigma_{min}$", fontsize=14)
-        plt.text(step + 1.05 * b, 0.35 * b, r"$\sigma_{max}$", fontsize=14)
+        plt.text(step + .35 * b, -0.45 * b, fr"$\sigma_{{min}}$={-sigmatd}", fontsize=14)
+        plt.text(step + 1.05 * b, 0.35 * b, fr"$\sigma_{{max}}$={sigmatd}", fontsize=14)
 
     theta = np.linspace(-np.pi / 2, np.pi / 2, 100)
     radius = b / 2
@@ -339,10 +352,10 @@ def plot_I(Qy, h, b, d, t):
     y_t = radius * np.sin(theta)
     plt.plot(x_t, y_t)
     plt.plot([step + 3 * b, step + 3 * b], [-b / 2, b / 2])
-    plt.text(step + 3 * b + radius, -.1 * b, r"$\tau_{max}$", fontsize=14)
+    plt.text(step + 3 * b + radius, -.1 * b, fr"$\tau_{{max}}$={abs(taumax)}", fontsize=14)
 
-    plt.plot([h / 2, step + 3.7 * b], [0, 0], color="k", linestyle="--")
-    plt.plot([h / 2, h / 2], [0, -.6 * b], color="k", linestyle="--")
+    plt.plot([h / 2, step + 3.7 * b], [0, 0], color="black", linestyle="-")
+    plt.plot([h / 2, h / 2], [0, -.6 * b], color="black", linestyle="-")
     plt.text(step + 3.7 * b, .02 * b, "x", fontsize=14)
     plt.text(.52 * h, -.6 * b, "y", fontsize=14)
 
@@ -361,23 +374,23 @@ def plot_C(Qy, h, b, d, t):
     y_vertical = [0, h / 2, h / 2, (h - 2 * t) / 2, (h - 2 * t) / 2, 0]
 
     # Plot the original shape
-    plt.plot(x_vertical, y_vertical, color="b")
+    plt.plot(x_vertical, y_vertical, color="black")
 
     # Mirror the rectangular shape about the y-axis
     mirrored_y_vertical = [-yi for yi in y_vertical]  # Reverse the sign of each y-coordinate
-    plt.plot(x_vertical, mirrored_y_vertical, color="b")
+    plt.plot(x_vertical, mirrored_y_vertical, color="black")
     x_st = [2 * b, 3 * b, 3 * b, 4 * b, 2 * b]
     y_st = [h / 2, h / 2, -h / 2, -h / 2, h / 2]
 
     if Qy > 0:
         plt.plot(x_st, y_st)
-        plt.text(2.35 * b, 0.35 * h, r"$\sigma_{min}$", fontsize=14)
-        plt.text(3.1 * b, -0.45 * h, r"$\sigma_{max}$", fontsize=14)
+        plt.text(2.35 * b, 0.35 * h, fr"$\sigma_{{min}}$={-sigmamax}", fontsize=14)
+        plt.text(3.1 * b, -0.45 * h, fr"$\sigma_{{max}}$={sigmamax}", fontsize=14)
     else:
         mirrored_y_st = [-yi for yi in y_st]
         plt.plot(x_st, mirrored_y_st)
-        plt.text(2.35 * b, -0.45 * h, r"$\sigma_{min}$", fontsize=14)
-        plt.text(3.05 * b, 0.35 * h, r"$\sigma_{max}$", fontsize=14)
+        plt.text(2.35 * b, -0.45 * h, fr"$\sigma_{{min}}$={-sigmamax}", fontsize=14)
+        plt.text(3.05 * b, 0.35 * h, fr"$\sigma_{{max}}$={sigmamax}", fontsize=14)
 
     theta = np.linspace(-np.pi / 2, np.pi / 2, 100)
     radius = h / 2
@@ -385,22 +398,22 @@ def plot_C(Qy, h, b, d, t):
     y_t = radius * np.sin(theta)
     plt.plot(x_t, y_t)
     plt.plot([5 * b, 5 * b], [-h / 2, h / 2])
-    plt.text(5 * b + radius, -.1 * h, r"$\tau_{max}$", fontsize=14)
+    plt.text(5 * b + radius, -.1 * h, fr"$\tau_{{max}}$={abs(taumax)}", fontsize=14)
 
-    plt.plot([b / 2, 5 * b + 1.2 * radius], [0, 0], color='k', linestyle='--')
-    plt.plot([b / 2, b / 2], [0, -.6 * h], color='k', linestyle='--')
+    plt.plot([b / 2, 5 * b + 1.2 * radius], [0, 0], color='black', linestyle='-')
+    plt.plot([b / 2, b / 2], [0, -.6 * h], color='black', linestyle='-')
     plt.text(5 * b + 1.2 * radius, .05 * h, 'x', fontsize=14)
     plt.text(.6 * b, -.6 * h, 'y', fontsize=14)
 
     # Set aspect ratio to be equal
     plt.axis("off")
     plt.axis("equal")
-    plt.title("C-SHAPE CROSS-SECTION IN MM AND ITS STRESS DESCRIPTION")
+    plt.title("C-SHAPE CROSS-SECTION")
 
     plt.subplot(2, 1, 2)
     x_horizontal = [0, h, h, h - t, h - t, t, t, 0, 0]
     y_horizontal = [b / 2, b / 2, -b / 2, -b / 2, b / 2 - d, b / 2 - d, -b / 2, -b / 2, b / 2]
-    plt.plot(x_horizontal, y_horizontal, color='b')
+    plt.plot(x_horizontal, y_horizontal, color='black')
 
     step = h + b
     x_st = [step, step + b, step + b, step + 2 * b, step]
@@ -408,13 +421,13 @@ def plot_C(Qy, h, b, d, t):
 
     if Qy > 0:
         plt.plot(x_st, y_st)
-        plt.text(step + .35 * b, 0.35 * b, r"$\sigma_{min}$", fontsize=14)
-        plt.text(step + 1.15 * b, -0.45 * b, r"$\sigma_{max}$", fontsize=14)
+        plt.text(step + .35 * b, 0.35 * b, fr"$\sigma_{{min}}$={-sigmatd}", fontsize=14)
+        plt.text(step + 1.15 * b, -0.45 * b, fr"$\sigma_{{max}}$={sigmatd}"", fontsize=14)
     else:
         mirrored_y_st = [-yi for yi in y_st]
         plt.plot(x_st, mirrored_y_st)
-        plt.text(step + .35 * b, -0.45 * b, r"$\sigma_{min}$", fontsize=14)
-        plt.text(step + 1.05 * b, 0.35 * b, r"$\sigma_{max}$", fontsize=14)
+        plt.text(step + .35 * b, -0.45 * b, fr"$\sigma_{{min}}$={-sigmatd}", fontsize=14)
+        plt.text(step + 1.05 * b, 0.35 * b, fr"$\sigma_{{max}}$={sigmatd}", fontsize=14)
 
     theta = np.linspace(-np.pi / 2, np.pi / 2, 100)
     radius = b / 2
@@ -422,10 +435,10 @@ def plot_C(Qy, h, b, d, t):
     y_t = radius * np.sin(theta)
     plt.plot(x_t, y_t)
     plt.plot([step + 3 * b, step + 3 * b], [-b / 2, b / 2])
-    plt.text(step + 3 * b + radius, -.1 * b, r"$\tau_{max}$", fontsize=14)
+    plt.text(step + 3 * b + radius, -.1 * b, fr"$\tau_{{max}}$={abs(taumax)}", fontsize=14)
 
-    plt.plot([h / 2, step + 3.7 * b], [0, 0], color="k", linestyle="--")
-    plt.plot([h / 2, h / 2], [0, -.6 * b], color="k", linestyle="--")
+    plt.plot([h / 2, step + 3.7 * b], [0, 0], color="black", linestyle="-")
+    plt.plot([h / 2, h / 2], [0, -.6 * b], color="black", linestyle="-")
     plt.text(step + 3.7 * b, .02 * b, "x", fontsize=14)
     plt.text(.52 * h, -.6 * b, "y", fontsize=14)
 
