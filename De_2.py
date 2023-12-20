@@ -11,7 +11,8 @@ print('Từ kết quả của bài tính toán trên, hãy nhập những dữ l
 Mmax = float(input('Hãy nhập giá trị moment uốn lớn nhất trên thanh:'))
 Qmax = float(input('Hãy nhập giá trị lực cắt lớn nhất trên thanh:'))
 Qy = float(input('Hãy nhập giá trị lực cắt tại vị trí có moment lớn nhất:'))
-sigma = float(input('Hãy nhập ứng suất cho phép (giới hạn bền):'))
+sigma = float(input('Hãy nhập ứng suất giới hạn kéo cho phép:'))
+sigman = float(input('Hãy nhập ứng suất giới hạn nén cho phép:'))
 loaimatcat = str(input('Hãy nhập loại mặt cắt:'))
 if loaimatcat == 'hình chữ nhật':
     x,y = map(float,input('Hãy nhập kích thước dài x rộng:').split())
@@ -296,7 +297,7 @@ elif loaimatcat == 'hình I':
     def kiembenngang():
         sigmamin = abs(Mmax) / Wy
         print('sigmamin =', abs(sigmamin))
-        if abs(sigmamin) > sigma:
+        if abs(sigmamin) > sigman:
             print('Thanh nằm ngang không bền')
         else:
             print('Thanh nằm ngang bền')
@@ -449,7 +450,7 @@ elif loaimatcat == 'hình C':
     def kiembenngang(Mmax, Wy):
         sigmamin = abs(Mmax) / Wy
         print('sigmamin =', abs(sigmamin))
-        if abs(sigmamin) > sigma:
+        if abs(sigmamin) > sigman:
             print('Thanh nằm ngang không bền')
         else:
             print('Thanh nằm ngang bền')
