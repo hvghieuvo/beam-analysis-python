@@ -445,3 +445,6 @@ def plot_C(Qy, h, b, d, t, sigmamax, sigmatd, taumax):
     plt.axis("off")
     plt.savefig("./images/plot_C", bbox_inches='tight', pad_inches=0.1)
     plt.close()
+
+# Sx, Sy, Jx, Jy, Wx, Wy, sigmamin, sigmamax, taumax = hinhchunhat(4, 3, 2.5, 1)
+# plot_rec(4, 3, 3, sigmamin, sigmamax, taumax)

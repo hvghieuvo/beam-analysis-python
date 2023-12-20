@@ -63,7 +63,7 @@ with tab2:
                 max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
                 max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
                 shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
-                sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                # sigma_t = st.number_input('Allowable tensile stress (N/m^2)', step=0.01)
                 
             elif input_method == "From file":
                 max_bm, max_sf, sf_at_max_bm = read_output_file()
@@ -75,9 +75,13 @@ with tab2:
                     st.write(f"Maximum bending moment (kNm): {max_bm}")
                     st.write(f"Maximum shear force (kN): {max_sf}")
                     st.write(f"Shear force at maximum moment (kN): {sf_at_max_bm}")
-                    sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                    # sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
                 else:
                     st.error('Error! Something not right', icon="🚨")
+                    
+            sigma_t = st.number_input('Allowable tensile stress (N/m^2)', step=0.01)
+            sigma_c = st.number_input('Allowable compress stress (N/m^2)', step=0.01)
+            
         with col3:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
             
@@ -94,9 +98,9 @@ with tab2:
                 
                 try:
                     if type_criterion == "Tresca":
-                        tau = sigma/2
+                        tau = sigma_t/2
                     elif type_criterion == "von Mises":
-                        tau = sigma/math.sqrt(3)
+                        tau = sigma_t/math.sqrt(3)
                         
                     Sx, Sy, Jx, Jy, Wx, Wy, sigmamin, sigmamax, taumax = hinhchunhat(width, height, max_bending_moment, max_shear_force)
                     plot_rec(width, height, shear_force_at_maximum_moment, sigmamin, sigmamax, taumax)
@@ -127,7 +131,7 @@ with tab2:
                     st.write(f'Bending moment Wy: {Wy}')
                     st.write(f'Principal stress sigma_max: {sigmamax}')
                     st.write(f'Maximun shear stress on the section: {taumax}')
-                    if sigmamax <= sigma:
+                    if sigmamax <= sigma_t:
                         # st.write('Ductile (Durable) boundary layer')
                         st.success('Boundary layer satisfying strength', icon="✅")
                     else:
@@ -166,7 +170,7 @@ with tab2:
                 max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
                 max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
                 shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
-                sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                # sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
                 
             elif input_method == "From file":
                 max_bm, max_sf, sf_at_max_bm = read_output_file()
@@ -178,9 +182,13 @@ with tab2:
                     st.write(f"Maximum bending moment (kNm): {max_bm}")
                     st.write(f"Maximum shear force (kN): {max_sf}")
                     st.write(f"Shear force at maximum moment (kN): {sf_at_max_bm}")
-                    sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                    # sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
                 else:
                     st.error('Error! Something not right', icon="🚨")
+                    
+            sigma_t = st.number_input('Allowable tensile stress (N/m^2)', step=0.01)
+            sigma_c = st.number_input('Allowable compress stress (N/m^2)', step=0.01)
+            
         with col3_1:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
             
@@ -193,9 +201,9 @@ with tab2:
                 
                 try:
                     if type_criterion == "Tresca":
-                        tau = sigma/2
+                        tau = sigma_t/2
                     elif type_criterion == "von Mises":
-                        tau = sigma/math.sqrt(3)
+                        tau = sigma_t/math.sqrt(3)
                         
                     Jx, Wx, sigmamin, sigmamax, taumax = hinhtron(max_bending_moment, max_shear_force, R)
                     plot_circle(R, shear_force_at_maximum_moment, sigmamin, sigmamax, taumax)
@@ -218,7 +226,7 @@ with tab2:
                     st.write(f'Bending moment Wx: {Wx}')
                     st.write(f'Principal stress sigma_max: {sigmamax}')
                     st.write(f'Maximun shear stress on the section: {taumax}')
-                    if sigmamax <= sigma:
+                    if sigmamax <= sigma_t:
                         # st.write('Ductile (Durable) boundary layer')
                         st.success('Boundary layer satisfying strength', icon="✅")
                     else:
@@ -258,7 +266,7 @@ with tab2:
                 max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
                 max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
                 shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
-                sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                # sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
                 
             elif input_method == "From file":
                 max_bm, max_sf, sf_at_max_bm = read_output_file()
@@ -270,9 +278,11 @@ with tab2:
                     st.write(f"Maximum bending moment (kNm): {max_bm}")
                     st.write(f"Maximum shear force (kN): {max_sf}")
                     st.write(f"Shear force at maximum moment (kN): {sf_at_max_bm}")
-                    sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                    # sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
                 else:
                     st.error('Error! Something not right', icon="🚨")
+            sigma_t = st.number_input('Allowable tensile stress (N/m^2)', step=0.01)
+            sigma_c = st.number_input('Allowable compress stress (N/m^2)', step=0.01)
         with col3_2:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
             
@@ -285,9 +295,9 @@ with tab2:
                 
                 try:
                     if type_criterion == "Tresca":
-                        tau = sigma/2
+                        tau = sigma_t/2
                     elif type_criterion == "von Mises":
-                        tau = sigma/math.sqrt(3)
+                        tau = sigma_t/math.sqrt(3)
                         
                     Jx, Wx, sigmamin, sigmamax, taumax = hinhvanhkhan(max_bending_moment, max_shear_force, R1, R2)
                     plot_annulus(R1, R2, shear_force_at_maximum_moment, sigmamin, sigmamax, taumax)
@@ -309,7 +319,7 @@ with tab2:
                     st.write(f'Bending moment Wx: {Wx}')
                     st.write(f'Principal stress sigma_max: {sigmamax}')
                     st.write(f'Maximun shear stress on the section: {taumax}')
-                    if sigmamax <= sigma:
+                    if sigmamax <= sigma_t:
                         # st.write('Ductile (Durable) boundary layer')
                         st.success('Boundary layer satisfying strength', icon="✅")
                     else:
@@ -400,7 +410,7 @@ with tab2:
                 max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
                 max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
                 shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
-                sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                # sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
                 
             elif input_method == "From file":
                 max_bm, max_sf, sf_at_max_bm = read_output_file()
@@ -412,9 +422,11 @@ with tab2:
                     st.write(f"Maximum bending moment (kNm): {max_bm}")
                     st.write(f"Maximum shear force (kN): {max_sf}")
                     st.write(f"Shear force at maximum moment (kN): {sf_at_max_bm}")
-                    sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                    # sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
                 else:
                     st.error('Error! Something not right', icon="🚨")
+            sigma_t = st.number_input('Allowable tensile stress (N/m^2)', step=0.01)
+            sigma_c = st.number_input('Allowable compress stress (N/m^2)', step=0.01)
         with col3_2:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
             
@@ -430,7 +442,7 @@ with tab2:
                     sigmamax, sigmatd, sigmamin, sigmamax, tau, taumax, sigmaN = hinh_I_C(type_criterion, shear_force_at_maximum_moment, max_shear_force, max_bending_moment, 
                                                         selected_rows['Sx'], selected_rows['Jx'], selected_rows['d'],
                                                         selected_rows['h'], selected_rows['t'], selected_rows['Wx'], selected_rows['Wy'],
-                                                        sigma)
+                                                        sigma_t)
                     plot_C(shear_force_at_maximum_moment, selected_rows['h'], selected_rows['b'], selected_rows['d'], selected_rows['t'], sigmamax, sigmatd, taumax)
                     
                 except Exception as error:
@@ -452,7 +464,7 @@ with tab2:
                     st.write(f'Equivalent stress sigma_td: {sigmatd}')
                     st.write(f'Maximun shear stress on the section tau_max: {taumax}')
                     
-                    if sigmamax <= sigma:
+                    if sigmamax <= sigma_t:
                         # st.write('Ductile (Durable) boundary layer')
                         st.success('Boundary layer satisfying strength', icon="✅")
                     else:
@@ -466,7 +478,7 @@ with tab2:
                         st.error('Neutral layer NOT satisfying strength', icon="🚨")
                         
                     st.write("Check the strength of the bar when the bar is horizontal")
-                    if abs(sigmamin) > sigma:
+                    if abs(sigmamin) > sigma_c:
                         # st.write('Ductile (Durable) horizontal bar')
                         st.success('Horizontal bar satisfying strength', icon="✅")
                     else:
@@ -549,7 +561,7 @@ with tab2:
                 max_bending_moment = st.number_input('Maximum bending moment (kNm)', step=0.01)
                 max_shear_force = st.number_input('Maximum shear force (kN)', step=0.01)
                 shear_force_at_maximum_moment = st.number_input('Shear force at maximum moment (kN)', step=0.01)
-                sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                # sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
                 
             elif input_method == "From file":
                 max_bm, max_sf, sf_at_max_bm = read_output_file()
@@ -561,9 +573,11 @@ with tab2:
                     st.write(f"Maximum bending moment (kNm): {max_bm}")
                     st.write(f"Maximum shear force (kN): {max_sf}")
                     st.write(f"Shear force at maximum moment (kN): {sf_at_max_bm}")
-                    sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
+                    # sigma = st.number_input('Allowable stress (N/m^2)', step=0.01)
                 else:
                     st.error('Error! Something not right', icon="🚨")
+            sigma_t = st.number_input('Allowable tensile stress (N/m^2)', step=0.01)
+            sigma_c = st.number_input('Allowable compress stress (N/m^2)', step=0.01)
         with col3_2:
             type_criterion = st.selectbox('Type criterion', ('Tresca', 'von Mises'))
             
@@ -579,7 +593,7 @@ with tab2:
                     sigmamax, sigmatd, sigmamin, sigmamax, tau, taumax, sigmaN = hinh_I_C(type_criterion, shear_force_at_maximum_moment, max_shear_force, max_bending_moment, 
                                                         selected_rows['Sx'], selected_rows['Jx'], selected_rows['d'],
                                                         selected_rows['h'], selected_rows['t'], selected_rows['Wx'], selected_rows['Wy'],
-                                                        sigma)
+                                                        sigma_t)
                     plot_I(shear_force_at_maximum_moment, selected_rows['h'], selected_rows['b'], selected_rows['d'], selected_rows['t'], sigmamax, sigmatd, taumax)
                     
                 except Exception as error:
@@ -601,7 +615,7 @@ with tab2:
                     st.write(f'Equivalent stress sigma_td: {sigmatd}')
                     st.write(f'Maximun shear stress on the section tau_max: {taumax}')
                     
-                    if sigmamax <= sigma:
+                    if sigmamax <= sigma_t:
                         # st.write('Ductile (Durable) boundary layer')
                         st.success('Boundary layer satisfying strength', icon="✅")
                     else:
@@ -615,7 +629,7 @@ with tab2:
                         st.error('Neutral layer NOT satisfying strength', icon="🚨")
                         
                     st.write("Check the strength of the bar when the bar is horizontal")
-                    if abs(sigmamin) > sigma:
+                    if abs(sigmamin) > sigma_c:
                         # st.write('Ductile (Durable) horizontal bar')
                         st.success('Horizontal bar satisfying strength', icon="✅")
                     else:
