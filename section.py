@@ -422,7 +422,7 @@ def plot_C(Qy, h, b, d, t):
     if Qy > 0:
         plt.plot(x_st, y_st)
         plt.text(step + .35 * b, 0.35 * b, fr"$\sigma_{{min}}$={-sigmatd}", fontsize=14)
-        plt.text(step + 1.15 * b, -0.45 * b, fr"$\sigma_{{max}}$={sigmatd}"", fontsize=14)
+        plt.text(step + 1.15 * b, -0.45 * b, fr"$\sigma_{{max}}$={sigmatd}", fontsize=14)
     else:
         mirrored_y_st = [-yi for yi in y_st]
         plt.plot(x_st, mirrored_y_st)
