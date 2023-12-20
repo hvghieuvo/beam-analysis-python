@@ -98,8 +98,8 @@ with tab2:
                     elif type_criterion == "von Mises":
                         tau = sigma/math.sqrt(3)
                         
-                    Sx, Sy, Jx, Jy, Wx, Wy, sigmamax, taumax = hinhchunhat(width, height, max_bending_moment, max_shear_force)
-                    plot_rec(width, height, shear_force_at_maximum_moment)
+                    Sx, Sy, Jx, Jy, Wx, Wy, sigmamin, sigmamax, taumax = hinhchunhat(width, height, max_bending_moment, max_shear_force)
+                    plot_rec(width, height, shear_force_at_maximum_moment, sigmamin, sigmamax, taumax)
                 except Exception as error:
                     st.error('Error! Something not right', icon="🚨")
                     st.write(f"An exception occurred: {type(error).__name__} {error}")
@@ -197,8 +197,8 @@ with tab2:
                     elif type_criterion == "von Mises":
                         tau = sigma/math.sqrt(3)
                         
-                    Jx, Wx, sigmamax, taumax = hinhtron(max_bending_moment, max_shear_force, R)
-                    plot_circle(R, shear_force_at_maximum_moment)
+                    Jx, Wx, sigmamin, sigmamax, taumax = hinhtron(max_bending_moment, max_shear_force, R)
+                    plot_circle(R, shear_force_at_maximum_moment, sigmamin, sigmamax, taumax)
                     
                 except Exception as error:
                     st.error('Error! Something not right', icon="🚨")
@@ -289,8 +289,8 @@ with tab2:
                     elif type_criterion == "von Mises":
                         tau = sigma/math.sqrt(3)
                         
-                    Jx, Wx, sigmamax, taumax = hinhvanhkhan(max_bending_moment, max_shear_force, R1, R2)
-                    plot_annulus(R1, R2, shear_force_at_maximum_moment)
+                    Jx, Wx, sigmamin, sigmamax, taumax = hinhvanhkhan(max_bending_moment, max_shear_force, R1, R2)
+                    plot_annulus(R1, R2, shear_force_at_maximum_moment, sigmamin, sigmamax, taumax)
                 except Exception as error:
                     st.error('Error! Something not right', icon="🚨")
                     st.write(f"An exception occurred: {type(error).__name__} {error}")
@@ -427,11 +427,11 @@ with tab2:
                 
                 try:
                         
-                    sigmamax, sigmatd, sigmamin, tau, taumax, sigmaN = hinh_I_C(type_criterion, shear_force_at_maximum_moment, max_shear_force, max_bending_moment, 
+                    sigmamax, sigmatd, sigmamin, sigmamax, tau, taumax, sigmaN = hinh_I_C(type_criterion, shear_force_at_maximum_moment, max_shear_force, max_bending_moment, 
                                                         selected_rows['Sx'], selected_rows['Jx'], selected_rows['d'],
                                                         selected_rows['h'], selected_rows['t'], selected_rows['Wx'], selected_rows['Wy'],
                                                         sigma)
-                    plot_C(shear_force_at_maximum_moment, selected_rows['h'], selected_rows['b'], selected_rows['d'], selected_rows['t'])
+                    plot_C(shear_force_at_maximum_moment, selected_rows['h'], selected_rows['b'], selected_rows['d'], selected_rows['t'], sigmamax, sigmatd, taumax)
                     
                 except Exception as error:
                     st.error('Error! Something not right', icon="🚨")
@@ -576,11 +576,11 @@ with tab2:
                 
                 try:
                         
-                    sigmamax, sigmatd, sigmamin, tau, taumax, sigmaN = hinh_I_C(type_criterion, shear_force_at_maximum_moment, max_shear_force, max_bending_moment, 
+                    sigmamax, sigmatd, sigmamin, sigmamax, tau, taumax, sigmaN = hinh_I_C(type_criterion, shear_force_at_maximum_moment, max_shear_force, max_bending_moment, 
                                                         selected_rows['Sx'], selected_rows['Jx'], selected_rows['d'],
                                                         selected_rows['h'], selected_rows['t'], selected_rows['Wx'], selected_rows['Wy'],
                                                         sigma)
-                    plot_I(shear_force_at_maximum_moment, selected_rows['h'], selected_rows['b'], selected_rows['d'], selected_rows['t'])
+                    plot_I(shear_force_at_maximum_moment, selected_rows['h'], selected_rows['b'], selected_rows['d'], selected_rows['t'], sigmamax, sigmatd, taumax)
                     
                 except Exception as error:
                     st.error('Error! Something not right', icon="🚨")

@@ -37,9 +37,9 @@ def hinhchunhat(x, y, Mmax, Qmax):
     #     print('Lớp trung hòa thỏa bền')
     # else:
     #     print('Lớp trung hòa không thỏa bền')
-    return Sx, Sy, Jx, Jy, Wx, Wy, sigmamax, taumax
+    return Sx, Sy, Jx, Jy, Wx, Wy, sigmamin, sigmamax, taumax
 
-def plot_rec(x, y, Qy):
+def plot_rec(x, y, Qy, sigmamin, sigmamax, taumax):
     # PLOT CROSS-SECTION
     step_min, step_max = min(x, y), max(x, y)
     avg_step = (step_max + step_min) / 2
@@ -108,9 +108,9 @@ def hinhtron(Mmax, Qmax, R):
     #     print('Lớp trung hòa thỏa bền')
     # else:
     #     print('Lớp trung hòa không thỏa bền')
-    return Jx, Wx, sigmamax, taumax
+    return Jx, Wx, sigmamin, sigmamax, taumax
 
-def plot_circle(R, Qy):
+def plot_circle(R, Qy, sigmamin, sigmamax, taumax):
     #PLOT
     radius = R
     figure, axes = plt.subplots()
@@ -174,9 +174,9 @@ def hinhvanhkhan(Mmax, Qmax, r1, r2):
     #     print('Lớp trung hòa thỏa bền')
     # else:
     #     print('Lớp trung hòa không thỏa bền')
-    return Jx, Wx, sigmamax, taumax
+    return Jx, Wx, sigmamin, sigmamax, taumax
 
-def plot_annulus(r1, r2, Qy):
+def plot_annulus(r1, r2, Qy, sigmamin, sigmamax, taumax):
     # PLOT CROSS-SECTION AND STRESS DESCRIPTION
 
     n, radius = 50, [r1, r2]
@@ -248,7 +248,7 @@ def hinh_I_C(thuyetben, Qy, Qmax, Mmax, Sx, Jx, d, h, t, Wx, Wy, sigma):
     
     sigmamin = abs(Mmax) / Wy
         
-    return sigmamax, sigmatd, sigmamin, tau, taumax, sigmaN
+    return sigmamax, sigmatd, sigmamin, sigmamax, tau, taumax, sigmaN
 
 # def tinhsigmatd(Mmax, Jx, h, t, Qy, Sx, d):
 #     sigmaN = (Mmax / Jx) * (h / 2 - t)
@@ -272,7 +272,7 @@ def hinh_I_C(thuyetben, Qy, Qmax, Mmax, Sx, Jx, d, h, t, Wx, Wy, sigma):
     
 #============================= Func plot hình I #=============================
 
-def plot_I(Qy, h, b, d, t):
+def plot_I(Qy, h, b, d, t, sigmamax, sigmatd, taumax):
         
     # PLOT CROSS-SECTION AND STRESS DESCRIPTION
     h = float(h)/10
@@ -365,7 +365,7 @@ def plot_I(Qy, h, b, d, t):
     
 #============================= Func plot hình C #=============================
 
-def plot_C(Qy, h, b, d, t):
+def plot_C(Qy, h, b, d, t, sigmamax, sigmatd, taumax):
     # PLOT CROSS-SECTION AND STRESS DESCRIPTION
     h, b, d, t = float(h)/10, float(b)/10, float(d)/10, float(t)/10
     
